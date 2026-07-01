@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Festival Guide</title>
+    <title>Big Squeeze Guide</title>
     <!-- PapaParse Engine CDN -->
     <script src="https://cloudflare.com"></script>
     <style>
@@ -95,7 +95,7 @@ const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v9
 // Database memory engine collection caches
 let dbEvents = [];
 let dbStands = [];
-let dbLocations = {}; 
+let dbLocations = []; 
 let selectedDayString = "2026-06-25"; // Synchronized tracking index initialization string key
 
 // Promisified Remote Dataset Network PapaParse Fetcher execution routine loop block
@@ -115,9 +115,9 @@ async function initDatabaseApp() {
     try {
         // Asynchronous structural data parallel network load requests pipeline execution
         const [rawEvents, rawStands, rawLocations] = await Promise.all([
+            fetchAndParseCsv(URL_LOCATIONS),
             fetchAndParseCsv(URL_EVENTS),
-            fetchAndParseCsv(URL_STANDS),
-            fetchAndParseCsv(URL_LOCATIONS)
+            fetchAndParseCsv(URL_STANDS)
         ]);
 
         // 1. Compile primary location hash index lookups mapping object keys structure
@@ -125,6 +125,8 @@ async function initDatabaseApp() {
             if(row.id) {
                 dbLocations[row.id.trim()] = {
                     name: row.name ? row.name.trim() : "Unknown Location",
+                    latitude: row.latitude ? row.latitude.trim() : "",
+                    longitude: row.longitude ? row.longitude.trim() : "",
                     mapUrl: row.mapUrl ? row.mapUrl.trim() : "#"
                 };
             }
