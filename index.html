@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Big Squeeze Guide</title>
-    <!-- PapaParse Engine CDN -->
-    <script src="https://cloudflare.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         /* Base Reset & Native Mobile Layouts */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f9; color: #333; padding-bottom: 75px; }
@@ -20,9 +19,10 @@
         /* Dynamic Presentation Data Cards Layout */
         h2 { color: #2c3e50; font-size: 1.2em; border-bottom: 2px solid #bdc3c7; padding-bottom: 5px; margin-top: 20px; }
         .card { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .time { font-weight: bold; color: #e67e22; }
-        .location { color: #7f8c8d; font-size: 0.9em; margin-top: 5px; }
-        .btn { display: inline-block; background: #3498db; color: white; padding: 10px 14px; text-decoration: none; border-radius: 4px; margin-top: 10px; font-size: 0.9em; font-weight: bold; }
+        .card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: #2c3e50; }
+        .time { font-weight: bold; color: #e67e22; font-size: 0.9em; }
+        .location { color: #7f8c8d; font-size: 0.9em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
+        .btn { display: inline-block; background: #3498db; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; margin-top: 10px; font-size: 0.85em; font-weight: bold; }
         .no-events { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
 
         /* Responsive Iframe Map Wrapper Aspect Scaling */
@@ -33,7 +33,7 @@
 
         /* Persistent Navigation Tab Layout Architecture */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
-        .tab-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #7f8c8d; font-size: 0.75em; font-weight: bold; cursor: pointer; }
+        .tab-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #7f8c8d; font-size: 0.75em; font-weight: bold; cursor: pointer; user-select: none; }
         .tab-link.active { color: #3498db; }
         .tab-icon { font-size: 1.4em; margin-bottom: 2px; }
     </style>
@@ -43,11 +43,10 @@
     <div class="container">
         <h1>🍋 The Big Squeeze Festival Guide</h1>
         
-        <!-- SCREEN 1: SCHEDULE EVENTS VIEW TAB -->
         <div id="events-screen" class="tab-content">
             <div class="day-filter-container">
-                <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-06-30')">Day 1 (Tue)</button>
-                <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-01')">Day 2 (Wed)</button>
+                <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-06-30', event)">Day 1 (Tue)</button>
+                <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-01', event)">Day 2 (Wed)</button>
             </div>
             <h2>Happening Right Now</h2>
             <div id="live-events">Loading active schedule items...</div>
@@ -55,7 +54,6 @@
             <div id="upcoming-events">Loading upcoming schedule items...</div>
         </div>
 
-        <!-- SCREEN 2: STANDS TRACKING VIEW TAB -->
         <div id="stands-screen" class="tab-content hidden">
             <h2>Active Lemonade Stands</h2>
             <div id="live-stands">Loading open lemonade stands...</div>
@@ -63,17 +61,14 @@
             <div id="closed-stands">Loading closed stand operational timelines...</div>
         </div>
 
-        <!-- SCREEN 3: INTERACTIVE IFRAME MAP EMBED VIEW TAB -->
         <div id="map-screen" class="tab-content hidden">
             <h2>Festival Grounds Layout Map</h2>
             <div class="map-responsive">
-                <!-- REPLACE THE LINK PARAMETER MID ID BELOW WITH YOUR CUSTOM GOOGLE MY MAPS LINK -->
-                <iframe src=""https://www.google.com/maps/d/u/2/edit?mid=1hTRsvmXzmZLwJjvV9iTtvOoa65q9VYs&usp=sharing" loading="lazy"></iframe>
+                <iframe src="https://maps.google.com/maps?q=Festival&t=&z=13&ie=UTF-8&iwloc=&output=embed" loading="lazy"></iframe>
             </div>
         </div>
     </div>
 
-    <!-- System Fixed Persistent Navigation View Controller Tab Elements Bar -->
     <nav class="bottom-nav">
         <div class="tab-link active" id="nav-events" onclick="switchTab('events')">
             <span class="tab-icon">📅</span><span>Events</span>
@@ -87,7 +82,7 @@
     </nav>
 
 <script>
-// Replace these cloud placeholders strings endpoints with your unique published Google Sheet Tab CSV URLs
+// Published Google Sheet Tab CSV Endpoints
 const URL_EVENTS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=0&single=true&output=csv";
 const URL_STANDS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=605861319&single=true&output=csv";
 const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=127409386&single=true&output=csv";
@@ -95,8 +90,8 @@ const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v9
 // Database memory engine collection caches
 let dbEvents = [];
 let dbStands = [];
-let dbLocations = []; 
-let selectedDayString = "2026-06-25"; // Synchronized tracking index initialization string key
+let dbLocations = {}; // Adjusted into an object map to support key-value assignments
+let selectedDayString = "2026-06-30"; // Set to match your Day 1 Event Default Initialization Filter
 
 // Promisified Remote Dataset Network PapaParse Fetcher execution routine loop block
 function fetchAndParseCsv(url) {
@@ -104,7 +99,7 @@ function fetchAndParseCsv(url) {
         Papa.parse(url, {
             download: true,       
             header: true,         
-            skipEmptyLines: true, 
+            skipEmptyLines: true,  
             complete: (results) => resolve(results.data),
             error: (error) => reject(error)
         });
@@ -113,20 +108,16 @@ function fetchAndParseCsv(url) {
 
 async function initDatabaseApp() {
     try {
-        // Asynchronous structural data parallel network load requests pipeline execution
-        const [rawEvents, rawStands, rawLocations] = await Promise.all([
+        // FIXED Pipeline order to map correctly with the deconstructed array variables
+        const [rawLocations, rawEvents, rawStands] = await Promise.all([
             fetchAndParseCsv(URL_LOCATIONS),
             fetchAndParseCsv(URL_EVENTS),
             fetchAndParseCsv(URL_STANDS)
         ]);
 
-        console.log("Parsed Events Headers Look Like This:", rawEvents[0]);
-        console.log("Parsed Stands Headers Look Like This:", rawStands[0]);
-        console.log("Parsed Locations Headers Look Like This:", rawLocations[0]);
-
-        // 1. Compile primary location hash index lookups mapping object keys structure
+        // 1. FIXED condition from row.id to row.Loc_ID to build the relational map structure
         rawLocations.forEach(row => {
-            if(row.id) {
+            if(row.Loc_ID) {
                 dbLocations[row.Loc_ID.trim()] = {
                     name: row.Loc_Name ? row.Loc_Name.trim() : "Unknown Location",
                     latitude: row.Loc_Lat ? row.Loc_Lat.trim() : "",
@@ -136,7 +127,7 @@ async function initDatabaseApp() {
             }
         });
 
-        // 2. Hydrate compiled local application state array collections elements indices (Events JOIN Locations)
+        // 2. Hydrate local state array collections (Events JOIN Locations)
         dbEvents = rawEvents.map(row => {
             const locId = row.Event_Loc_ID ? row.Event_Loc_ID.trim() : "";
             return {
@@ -149,7 +140,7 @@ async function initDatabaseApp() {
             };
         });
 
-        // 3. Hydrate compiled local application state array collections elements indices (Stands JOIN Locations)
+        // 3. Hydrate local state array collections (Stands JOIN Locations)
         dbStands = rawStands.map(row => {
             const locId = row.Stand_Loc_ID ? row.Stand_Loc_ID.trim() : "";
             return {
@@ -162,7 +153,7 @@ async function initDatabaseApp() {
             };
         });
 
-        // Relational index assembly complete. Run view data calculation loops routines engines.
+        // Run data rendering logic
         processAllSchedules();
 
     } catch (err) {
@@ -174,14 +165,14 @@ async function initDatabaseApp() {
 function processAllSchedules() {
     const now = new Date();
 
-    // --- PRESENTATION FILTER TIMELINES RULES: MAIN EVENTS VIEWS LAYERS ---
+    // --- MAIN EVENTS VIEWS LAYERS ---
     const liveEv = dbEvents.filter(e => e.start.startsWith(selectedDayString) && now >= new Date(e.start) && now <= new Date(e.end));
     const upcomingEv = dbEvents.filter(e => e.start.startsWith(selectedDayString) && new Date(e.start) > now).sort((a,b) => new Date(a.start) - new Date(b.start));
     
     renderCards(liveEv, "live-events", "No events running right now. Grab a lemonade!", true);
     renderCards(upcomingEv, "upcoming-events", "No more events scheduled today.", false);
 
-    // --- PRESENTATION FILTER TIMELINES RULES: LEMONADE STANDS VIEWS LAYERS ---
+    // --- LEMONADE STANDS VIEWS LAYERS ---
     const liveStands = dbStands.filter(s => now >= new Date(s.start) && now <= new Date(s.end));
     const closedStands = dbStands.filter(s => now < new Date(s.start) || now > new Date(s.end));
 
@@ -201,17 +192,59 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     list.forEach(item => {
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
-        const indicator = isLive ? "🟢 OPEN NOW:" : "⏰";
+        const indicator = isLive ? "🟢 OPEN NOW" : "⏰ UPCOMING";
         
+        // FIXED structured template markup appending routine strings
         container.innerHTML += `
             <div class="card">
-${indicator} ${startT} - ${endT}${item.name}📍 ${item.locationName}Navigate to Spot`;});}// Global UI Interactivity View-switching State Layer Manipulation Commands Loopsfunction switchTab(target) {document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));document.getElementById(${target}-screen).classList.remove('hidden');document.getElementById(nav-${target}).classList.add('active');}function switchDay(dateStr) {selectedDayString = dateStr;document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));event.target.classList.add('active');processAllSchedules();}
+                <span class="time">${indicator}: ${startT} - ${endT}</span>
+                <div class="card-title">${item.name}</div>
+                <div class="location">📍 ${item.locationName}</div>
+                ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Navigate to Spot</button>` : ''}
+            </div>`;
+    });
+}
 
+// Global UI Interactivity View-switching State Layer Manipulation Commands Loops
+function switchTab(target) {
+    document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+    
+    // FIXED string quotes into template literals backticks
+    document.getElementById(`${target}-screen`).classList.remove('hidden');
+    document.getElementById(`nav-${target}`).classList.add('active');
+}
+
+function openLocationInAppMap(mapUrl) {
+    // 1. Locate the iframe element inside your map layout screen wrapper
+    const mapIframe = document.querySelector('#map-screen iframe');
+    
+    if (mapIframe) {
+        // 2. Set the target iframe source to the clean map destination URL 
+        mapIframe.src = mapUrl;
+    }
+    
+    // 3. Programmatically trigger the existing switch view command routine
+    switchTab('map');
+}
+
+function switchDay(dateStr, event) {
+    selectedDayString = dateStr;
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    if(event && event.target) {
+        event.target.classList.add('active');
+    }
+    processAllSchedules();
+}
+
+// Recalculate layout schedules every 5 minutes
 setInterval(() => {
     console.log("Locally recalculating timelines based on current device clock...");
     processAllSchedules();
 }, 300000); 
 
-// Global invocation pipeline boot trigger bootstrap initialization execution call
+// Initialize Application Engine
 initDatabaseApp();
 </script>
+</body>
+</html>
