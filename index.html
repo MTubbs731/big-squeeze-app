@@ -120,6 +120,10 @@ async function initDatabaseApp() {
             fetchAndParseCsv(URL_STANDS)
         ]);
 
+        console.log("Parsed Events Headers Look Like This:", rawEvents[0]);
+        console.log("Parsed Stands Headers Look Like This:", rawStands[0]);
+        console.log("Parsed Locations Headers Look Like This:", rawLocations[0]);
+
         // 1. Compile primary location hash index lookups mapping object keys structure
         rawLocations.forEach(row => {
             if(row.id) {
