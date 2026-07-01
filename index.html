@@ -127,23 +127,23 @@ async function initDatabaseApp() {
         // 1. Compile primary location hash index lookups mapping object keys structure
         rawLocations.forEach(row => {
             if(row.id) {
-                dbLocations[row.id.trim()] = {
-                    name: row.name ? row.name.trim() : "Unknown Location",
-                    latitude: row.latitude ? row.latitude.trim() : "",
-                    longitude: row.longitude ? row.longitude.trim() : "",
-                    mapUrl: row.mapUrl ? row.mapUrl.trim() : "#"
+                dbLocations[row.Loc_ID.trim()] = {
+                    name: row.Loc_Name ? row.Loc_Name.trim() : "Unknown Location",
+                    latitude: row.Loc_Lat ? row.Loc_Lat.trim() : "",
+                    longitude: row.Loc_Long ? row.Loc_Long.trim() : "",
+                    mapUrl: row.Loc_Map_URL ? row.Loc_Map_URL.trim() : "#"
                 };
             }
         });
 
         // 2. Hydrate compiled local application state array collections elements indices (Events JOIN Locations)
         dbEvents = rawEvents.map(row => {
-            const locId = row.location_id ? row.location_id.trim() : "";
+            const locId = row.Event_Loc_ID ? row.Event_Loc_ID.trim() : "";
             return {
-                id: row.id ? row.id.trim() : "",
-                name: row.name ? row.name.trim() : "Unnamed Event",
-                start: row.start ? row.start.trim() : "",
-                end: row.end ? row.end.trim() : "",
+                id: row.Event_ID ? row.Event_ID.trim() : "",
+                name: row.Event_Name ? row.Event_Name.trim() : "Unnamed Event",
+                start: row.Event_Start ? row.Event_Start.trim() : "",
+                end: row.Event_End ? row.Event_End.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
             };
@@ -151,12 +151,12 @@ async function initDatabaseApp() {
 
         // 3. Hydrate compiled local application state array collections elements indices (Stands JOIN Locations)
         dbStands = rawStands.map(row => {
-            const locId = row.location_id ? row.location_id.trim() : "";
+            const locId = row.Stand_Loc_ID ? row.Stand_Loc_ID.trim() : "";
             return {
-                id: row.id ? row.id.trim() : "",
-                name: row.name ? row.name.trim() : "Unnamed Stand",
-                start: row.start ? row.start.trim() : "",
-                end: row.end ? row.end.trim() : "",
+                id: row.Stand_ID ? row.Stand_ID.trim() : "",
+                name: row.Stand_Name ? row.Stand_Name.trim() : "Unnamed Stand",
+                start: row.Stand_Start ? row.Stand_Start.trim() : "",
+                end: row.Stand_End ? row.Stand_End.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
                 mapUrl: dbLocations[locId]?.mapUrl || "#"
             };
