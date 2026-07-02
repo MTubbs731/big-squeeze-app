@@ -17,7 +17,7 @@
 <body>
 
     <div class="container">
-        <div id="header"class="header">
+        <div id="header" class="header">
             <img src="./images/big_squeeze_logo.png" width="12.5%" alt="The Big Squeeze Logo" /><h1>The Big Squeeze App</h1>
         </div>
         
@@ -51,20 +51,20 @@
         <div class="modal-box" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
             <h2 id="modal-title" style="margin-top: 0; border-bottom: none; padding-bottom: 0;">Event Details</h2>
-            <img id="modal-image" class="modal-img hidden" src="" alt="Event Feature Graphic" />
+            <img id="modal-image" class="modal-img hidden" src="" alt="" />
             <div id="modal-description" class="modal-desc">No context data specified.</div>
         </div>
     </div>
 
     <nav class="bottom-nav">
         <div class="tab-link active" id="nav-events" onclick="switchTab('events')">
-            <span class="tab-icon">📅</span><span>Events</span>
+            <span class="tab-icon" aria-hidden="true">📅</span><span>Events</span>
         </div>
         <div class="tab-link" id="nav-stands" onclick="switchTab('stands')">
-            <span class="tab-icon">🍋</span><span>Stands</span>
+            <span class="tab-icon" aria-hidden="true">🍋</span><span>Stands</span>
         </div>
         <div class="tab-link" id="nav-map" onclick="switchTab('map')">
-            <span class="tab-icon">📍</span><span>Map View</span>
+            <span class="tab-icon" aria-hidden="true">📍</span><span>Map View</span>
         </div>
     </nav>
 
