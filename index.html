@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Big Squeeze Guide</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         /* Base Reset & Native Mobile Layouts */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f9; color: #333; padding-bottom: 75px; }
         h1 { text-align: center; color: #2c3e50; margin: 15px 0 5px 0; font-size: 1.5em; }
         .container { max-width: 600px; margin: auto; padding: 15px; }
+        .header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
         
         /* Day Switcher Tab Grid Buttons */
         .day-filter-container { display: flex; gap: 10px; margin-bottom: 15px; }
@@ -41,12 +46,14 @@
 <body>
 
     <div class="container">
-        <h1>🍋 The Big Squeeze Festival Guide</h1>
+        <div id="header"class="header">
+            <img src="images/big_squeeze_logo.png" width="12.5%" alt="The Big Squeeze Logo" /><h1>The Big Squeeze Guide</h1>
+        </div>
         
         <div id="events-screen" class="tab-content">
             <div class="day-filter-container">
-                <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-06-30', event)">Day 1 (Tue)</button>
-                <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-01', event)">Day 2 (Wed)</button>
+                <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-07-10', event)">Day 1 (Fri)</button>
+                <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-11', event)">Day 2 (Sat)</button>
             </div>
             <h2>Happening Right Now</h2>
             <div id="live-events">Loading active schedule items...</div>
@@ -62,9 +69,9 @@
         </div>
 
         <div id="map-screen" class="tab-content hidden">
-            <h2>Festival Grounds Layout Map</h2>
+            <!--<h2>Festival Map</h2>-->
             <div class="map-responsive">
-                <iframe src="https://maps.google.com/maps?q=Festival&t=&z=13&ie=UTF-8&iwloc=&output=embed" loading="lazy"></iframe>
+                <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1hTRsvmXzmZLwJjvV9iTtvOoa65q9VYs&ehbc=2E312F&z=18" loading="lazy"></iframe>
             </div>
         </div>
     </div>
@@ -91,7 +98,7 @@ const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v9
 let dbEvents = [];
 let dbStands = [];
 let dbLocations = {}; // Adjusted into an object map to support key-value assignments
-let selectedDayString = "2026-06-30"; // Set to match your Day 1 Event Default Initialization Filter
+let selectedDayString = "2026-07-10"; // Set to match your Day 1 Event Default Initialization Filter
 
 // Promisified Remote Dataset Network PapaParse Fetcher execution routine loop block
 function fetchAndParseCsv(url) {
@@ -164,15 +171,31 @@ async function initDatabaseApp() {
 
 function processAllSchedules() {
     const now = new Date();
+    
+    // Parse our tracking string ("2026-06-30" or "2026-07-01") into local YYYY, MM, DD integers
+    const [targetYear, targetMonth, targetDay] = selectedDayString.split('-').map(Number);
+
+    // Helper helper function to check if an event falls on the currently selected tab day
+    const isSelectedDay = (dateStr) => {
+        if (!dateStr) return false;
+        const d = new Date(dateStr);
+        // getMonth() is 0-indexed (Jan is 0), so add 1 to match your string format
+        return d.getFullYear() === targetYear && (d.getMonth() + 1) === targetMonth && d.getDate() === targetDay;
+    };
 
     // --- MAIN EVENTS VIEWS LAYERS ---
-    const liveEv = dbEvents.filter(e => e.start.startsWith(selectedDayString) && now >= new Date(e.start) && now <= new Date(e.end));
-    const upcomingEv = dbEvents.filter(e => e.start.startsWith(selectedDayString) && new Date(e.start) > now).sort((a,b) => new Date(a.start) - new Date(b.start));
+    // 1. Matches today's date AND current clock is inside the event window
+    const liveEv = dbEvents.filter(e => isSelectedDay(e.start) && now >= new Date(e.start) && now <= new Date(e.end));
     
-    renderCards(liveEv, "live-events", "No events running right now. Grab a lemonade!", true);
+    // 2. Matches today's date AND event starts in the future
+    const upcomingEv = dbEvents.filter(e => isSelectedDay(e.start) && new Date(e.start) > now)
+                              .sort((a,b) => new Date(a.start) - new Date(b.start));
+    
+    renderCards(liveEv, "live-events", "Currently there are no events happening.", true);
     renderCards(upcomingEv, "upcoming-events", "No more events scheduled today.", false);
 
     // --- LEMONADE STANDS VIEWS LAYERS ---
+    // (Stands don't usually filter by day tabs, they just look at current absolute clock availability)
     const liveStands = dbStands.filter(s => now >= new Date(s.start) && now <= new Date(s.end));
     const closedStands = dbStands.filter(s => now < new Date(s.start) || now > new Date(s.end));
 
@@ -190,6 +213,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     }
 
     list.forEach(item => {
+        const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit' }) : "??";
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const indicator = isLive ? "🟢 OPEN NOW" : "⏰ UPCOMING";
@@ -197,7 +221,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         // FIXED structured template markup appending routine strings
         container.innerHTML += `
             <div class="card">
-                <span class="time">${indicator}: ${startT} - ${endT}</span>
+                <span class="time">${indicator}: ${startD} ${startT} - ${endT}</span>
                 <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Navigate to Spot</button>` : ''}
