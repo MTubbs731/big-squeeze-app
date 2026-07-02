@@ -258,6 +258,9 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const safeName = item.name ? item.name.replace(/'/g, "\\'") : "";
         const safeDesc = item.details ? item.details.replace(/'/g, "\\'") : "";
         const safeImg = item.image ? item.image.replace(/'/g, "\\'") : "";
+
+        // Check conditions to selectively show details action trigger
+        const hasDetailsButton = (safeDesc !== "" || safeImg !== "");
         
         // FIXED structured template markup appending routine strings
         container.innerHTML += `
