@@ -147,7 +147,8 @@ async function initDatabaseApp() {
                 start: row.Event_Start ? row.Event_Start.trim() : "",
                 end: row.Event_End ? row.Event_End.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
-                mapUrl: dbLocations[locId]?.mapUrl || "#"
+                mapUrl: dbLocations[locId]?.mapUrl || "#",
+                details: row.Event_Details_ID ? row.Event_Details_ID.trim() : ""
             };
         });
 
