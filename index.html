@@ -178,6 +178,7 @@ async function initDatabaseApp() {
                 end: row.Event_End ? row.Event_End.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
+                dname: dbDetails[DtlId].name || "",
                 image: dbDetails[DtlId]?.image || "",
                 details: dbDetails[DtlId]?.desc || ""
             };
@@ -255,7 +256,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const indicator = isLive ? "🟢 OPEN NOW" : "⏰ UPCOMING";
 
         // Escape content strings securely for click arguments
-        const safeName = item.name ? item.name.replace(/'/g, "\\'") : "";
+        const safeName = item.dname ? item.dname.replace(/'/g, "\\'") : "";
         const safeDesc = item.details ? item.details.replace(/'/g, "\\'") : "";
         const safeImg = item.image ? item.image.replace(/'/g, "\\'") : "";
 
@@ -266,7 +267,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         container.innerHTML += `
             <div class="card">
                 <span class="time">${indicator}: ${startD} ${startT} - ${endT}</span>
-                <div class="card-title">${item.name}</div>
+                <div class="card-title">${item.dname}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
                     ${hasDetailsButton ? `<button onclick="openDetailsModal('${safeName}', '${safeDesc}', '${safeImg}')" class="btn btn-alt">View Details</button>` : ''}
