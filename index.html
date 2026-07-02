@@ -97,11 +97,13 @@
 const URL_EVENTS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=0&single=true&output=csv";
 const URL_STANDS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=605861319&single=true&output=csv";
 const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=127409386&single=true&output=csv";
+const URL_DETAILS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2086466838&single=true&output=csv";    
 
 // Database memory engine collection caches
 let dbEvents = [];
 let dbStands = [];
 let dbLocations = {}; // Adjusted into an object map to support key-value assignments
+let dbDetails = {};
 let selectedDayString = "2026-07-10"; // Set to match your Day 1 Event Default Initialization Filter
 
 // Promisified Remote Dataset Network PapaParse Fetcher execution routine loop block
@@ -120,8 +122,9 @@ function fetchAndParseCsv(url) {
 async function initDatabaseApp() {
     try {
         // FIXED Pipeline order to map correctly with the deconstructed array variables
-        const [rawLocations, rawEvents, rawStands] = await Promise.all([
+        const [rawLocations, rawDetails, rawEvents, rawStands] = await Promise.all([
             fetchAndParseCsv(URL_LOCATIONS),
+            fetchAndParseCsv(URL_DETAILS),
             fetchAndParseCsv(URL_EVENTS),
             fetchAndParseCsv(URL_STANDS)
         ]);
@@ -138,9 +141,19 @@ async function initDatabaseApp() {
             }
         });
 
+        rawDetails.forEach(row => {
+            if(row.Detail_ID) {
+                dbDetails[row.Detail_ID.trim()] = {
+                    name: row.Detail_Name ? row.Detail_Name.trim() : "No Details",
+                    image: row.Detail_Image ? row.Detail_Image.trim() : "",
+                    desc: row.Detail_Descrip ? row.Detail_Descrip.trim() : ""
+                };
+            }
+        });
         // 2. Hydrate local state array collections (Events JOIN Locations)
         dbEvents = rawEvents.map(row => {
             const locId = row.Event_Loc_ID ? row.Event_Loc_ID.trim() : "";
+            const DtlId = row.Event_Details_ID ? row.Event_Details_ID.trim() : "";
             return {
                 id: row.Event_ID ? row.Event_ID.trim() : "",
                 name: row.Event_Name ? row.Event_Name.trim() : "Unnamed Event",
@@ -148,7 +161,8 @@ async function initDatabaseApp() {
                 end: row.Event_End ? row.Event_End.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
-                details: row.Event_Details_ID ? row.Event_Details_ID.trim() : ""
+                image: dbDetails[DtlId]?.image || "",
+                details: dbDetails[DtlId]?.details || ""
             };
         });
 
