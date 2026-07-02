@@ -178,7 +178,7 @@ async function initDatabaseApp() {
                 end: row.Event_End ? row.Event_End.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
-                dname: dbDetails[DtlId].name || "",
+                dname: dbDetails[DtlId]?.name || "",
                 image: dbDetails[DtlId]?.image || "",
                 details: dbDetails[DtlId]?.desc || ""
             };
