@@ -34,7 +34,7 @@
 
         /* MODAL DIALOG POPUP STYLES */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 15px; }
-        .modal-box { background: #bce189; width: 100%; max-width: 450px; border-radius: 12px; padding: 20px; box-sizing: border-box; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; }
+        .modal-box { background: #c4e19d; width: 100%; max-width: 450px; border-radius: 12px; padding: 20px; box-sizing: border-box; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; }
         .modal-close { position: absolute; top: 12px; right: 15px; font-size: 1.5em; font-weight: bold; color: #7f8c8d; cursor: pointer; border: none; background: none; }
         .modal-title { color: #036838; }
         .modal-img { width: 100%; height: auto; max-height: 360px; object-fit: cover; border-radius: 6px; margin-top: 10px; background: #eee; }
