@@ -267,7 +267,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         container.innerHTML += `
             <div class="card">
                 <span class="time">${indicator}: ${startD} ${startT} - ${endT}</span>
-                <div class="card-title">${item.dname}</div>
+                <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
                     ${hasDetailsButton ? `<button onclick="openDetailsModal('${safeName}', '${safeDesc}', '${safeImg}')" class="btn btn-alt">View Details</button>` : ''}
