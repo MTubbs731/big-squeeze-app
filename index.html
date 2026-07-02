@@ -46,6 +46,13 @@
         .tab-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #7f8c8d; font-size: 0.75em; font-weight: bold; cursor: pointer; user-select: none; }
         .tab-link.active { color: #3498db; }
         .tab-icon { font-size: 1.4em; margin-bottom: 2px; }
+
+        /* MODAL DIALOG POPUP STYLES */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 15px; }
+        .modal-box { background: white; width: 100%; max-width: 450px; border-radius: 12px; padding: 20px; box-sizing: border-box; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; }
+        .modal-close { position: absolute; top: 12px; right: 15px; font-size: 1.5em; font-weight: bold; color: #7f8c8d; cursor: pointer; border: none; background: none; }
+        .modal-img { width: 100%; height: auto; max-height: 220px; object-fit: cover; border-radius: 6px; margin-top: 10px; background: #eee; }
+        .modal-desc { line-height: 1.5; color: #555; margin-top: 12px; font-size: 0.95em; white-space: pre-wrap; }
     </style>
 </head>
 <body>
@@ -77,6 +84,16 @@
             <div class="map-responsive">
                 <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1hTRsvmXzmZLwJjvV9iTtvOoa65q9VYs&ehbc=2E312F&z=18" loading="lazy"></iframe>
             </div>
+        </div>
+    </div>
+
+    <!-- DYNAMIC POPUP DETAILS DIALOG CONTAINER ELEMENT -->
+    <div id="details-modal" class="modal-overlay hidden" onclick="closeDetailsModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
+            <h2 id="modal-title" style="margin-top: 0; border-bottom: none; padding-bottom: 0;">Event Details</h2>
+            <img id="modal-image" class="modal-img hidden" src="" alt="Event Feature Graphic" />
+            <div id="modal-description" class="modal-desc">No context data specified.</div>
         </div>
     </div>
 
@@ -162,7 +179,7 @@ async function initDatabaseApp() {
                 locationName: dbLocations[locId]?.name || "Unknown Location",
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
                 image: dbDetails[DtlId]?.image || "",
-                details: dbDetails[DtlId]?.details || ""
+                details: dbDetails[DtlId]?.desc || ""
             };
         });
 
@@ -236,6 +253,11 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const indicator = isLive ? "🟢 OPEN NOW" : "⏰ UPCOMING";
+
+        // Escape content strings securely for click arguments
+        const safeName = item.name ? item.name.replace(/'/g, "\\'") : "";
+        const safeDesc = item.details ? item.details.replace(/'/g, "\\'") : "";
+        const safeImg = item.image ? item.image.replace(/'/g, "\\'") : "";
         
         // FIXED structured template markup appending routine strings
         container.innerHTML += `
@@ -243,11 +265,35 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <span class="time">${indicator}: ${startD} ${startT} - ${endT}</span>
                 <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
-                ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Show on Map</button>` : ''}
+                <div class="card-actions">
+                    ${hasDetailsButton ? `<button onclick="openDetailsModal('${safeName}', '${safeDesc}', '${safeImg}')" class="btn btn-alt">View Details</button>` : ''}
+                    ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Show on Map</button>` : ''}
+                </div>
             </div>`;
     });
 }
 
+// MODAL CONTROLLER HANDLERS
+function openDetailsModal(title, description, imageUrl) {
+    document.getElementById('modal-title').innerText = title || "Event Details";
+    document.getElementById('modal-description').innerText = description || "No detailed description provided.";
+    
+    const imgElement = document.getElementById('modal-image');
+    if (imageUrl && imageUrl.trim() !== "") {
+        imgElement.src = imageUrl;
+        imgElement.classList.remove('hidden');
+    } else {
+        imgElement.src = "";
+        imgElement.classList.add('hidden');
+    }
+    
+    document.getElementById('details-modal').classList.remove('hidden');
+}
+
+function closeDetailsModal(event) {
+    document.getElementById('details-modal').classList.add('hidden');
+}
+    
 // Global UI Interactivity View-switching State Layer Manipulation Commands Loops
 function switchTab(target) {
     // 1. Hide all layout tabs content wrappers and remove active states from buttons
