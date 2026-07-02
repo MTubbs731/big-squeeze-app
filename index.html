@@ -239,17 +239,20 @@ function switchTab(target) {
     document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
     document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
     
-    // 2. Display target matching presentation interface and apply visual activation markers
-    document.getElementById(`${target}-screen`).classList.remove('hidden');
+    // 2. Identify the specific target screen element we are switching to
+    const targetScreen = document.getElementById(`${target}-screen`);
+    
+    // 3. Display target matching presentation interface and apply visual activation markers
+    if (targetScreen) {
+        targetScreen.classList.remove('hidden');
+        
+        // 4. FIX: Programmatically force the individual container to scroll to the top
+        targetScreen.scrollTop = 0; 
+    }
+    
     document.getElementById(`nav-${target}`).classList.add('active');
-
-    // 3. Programmatically force the browser display layer viewport to snap back to the absolute top
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // Forces an elegant transition animation. Switch to 'auto' for an instant snap.
-    });
 }
-
+    
 function openLocationInAppMap(mapUrl) {
     // 1. Locate the iframe element inside your map layout screen wrapper
     const mapIframe = document.querySelector('#map-screen iframe');
