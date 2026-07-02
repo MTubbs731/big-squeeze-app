@@ -34,7 +34,8 @@
         .no-events { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
 
         /* Responsive Iframe Map Wrapper Aspect Scaling */
-        .map-responsive { overflow: hidden; padding-bottom: 120%; position: relative; height: 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        #map-screen {height: 100%;}
+        .map-responsive { flex: 1; position: relative; width: 100%; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 10px;}
         .map-responsive iframe { left: 0; top: 0; height: 100%; width: 100%; position: absolute; border: 0; }
 
         .hidden { display: none !important; }
