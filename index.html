@@ -53,6 +53,8 @@
         .modal-close { position: absolute; top: 12px; right: 15px; font-size: 1.5em; font-weight: bold; color: #7f8c8d; cursor: pointer; border: none; background: none; }
         .modal-img { width: 100%; height: auto; max-height: 360px; object-fit: cover; border-radius: 6px; margin-top: 10px; background: #eee; }
         .modal-desc { line-height: 1.5; color: #555; margin-top: 12px; font-size: 0.95em; white-space: pre-wrap; }
+
+        .responsive { width: 100%; height: auto;}
     </style>
 </head>
 <body>
@@ -100,15 +102,15 @@
     <nav class="bottom-nav">
         <div class="tab-link active" id="nav-events" onclick="switchTab('events')">
             <!--<span class="tab-icon">📅</span><span>Events</span>-->
-            <span class="tab-icon"></span><img src="./images/navigation/calendar-32.png" class="" /><span></span>
+            <span class="tab-icon"></span><img src="./images/navigation/calendar-32.png" class="responsive" /><span></span>
         </div>
         <div class="tab-link" id="nav-stands" onclick="switchTab('stands')">
             <!--<span class="tab-icon">🍋</span><span>Stands</span>-->
-            <span class="tab-icon"></span><img src="./images/navigation/lemonade-32.png" class="" /><span></span>
+            <span class="tab-icon"></span><img src="./images/navigation/lemonade-32.png" class="responsive" /><span></span>
         </div>
         <div class="tab-link" id="nav-map" onclick="switchTab('map')">
             <!--<span class="tab-icon">📍</span><span>Map View</span>-->
-            <span class="tab-icon"></span><img src="./images/navigation/map-32.png" class="" /><span></span>
+            <span class="tab-icon"></span><img src="./images/navigation/map-32.png" class="responsive" /><span></span>
         </div>
     </nav>
 
