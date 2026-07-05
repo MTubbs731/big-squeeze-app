@@ -7,7 +7,7 @@
         
         /* Day Switcher Tab Grid Buttons */
         .day-filter-container { display: flex; gap: 10px; margin-bottom: 15px; }
-        .day-btn { flex: 1; background: #8dc73e; color: gray; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 0.95em; }
+        .day-btn { flex: 1; background: #8dc73e; color: gray; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.1em; }
         .day-btn.active { background: #036838; color: white; }
 
         /* Dynamic Presentation Data Cards Layout */
