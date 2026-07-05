@@ -23,8 +23,8 @@
         
         <div id="events-screen" class="tab-content">
             <div class="day-filter-container">
-                <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-07-10', event)">Day 1 (Fri)</button>
-                <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-11', event)">Day 2 (Sat)</button>
+                <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-07-10', event)">Friday</button>
+                <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-11', event)">Saturday</button>
             </div>
             <h2>Happening Right Now</h2>
             <div id="live-events">Loading active schedule items...</div>
@@ -229,7 +229,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
-                    ${hasDetailsButton ? `<button onclick="openDetailsModal('${safeName}', '${safeDesc}', '${safeImg}')" class="btn btn-alt">View Details</button>` : ''}
+                    ${hasDetailsButton ? `<button onclick="openDetailsModal('${safeName}', '${safeDesc}', '${safeImg}')" class="btn btn-alt dtl-btn">View Details</button>` : ''}
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Show on Map</button>` : ''}
                 </div>
             </div>`;
