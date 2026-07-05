@@ -26,7 +26,7 @@
                 <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-07-10', event)">Friday</button>
                 <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-11', event)">Saturday</button>
             </div>
-            <h2>Happening Right Now</h2>
+            <h2>Happening Now</h2>
             <div id="live-events">Loading active schedule items...</div>
             <h2>Upcoming Next</h2>
             <div id="upcoming-events">Loading upcoming schedule items...</div>
@@ -212,7 +212,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit' }) : "??";
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
-        const indicator = isLive ? "🟢 OPEN NOW" : "⏰ UPCOMING";
+        const indicator = isLive ? "🟢 " : "⏰ ";
 
         // Escape content strings securely for click arguments
         const safeName = item.dname ? item.dname.replace(/'/g, "\\'") : "";
