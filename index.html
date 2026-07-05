@@ -33,9 +33,9 @@
         </div>
 
         <div id="stands-screen" class="tab-content hidden">
-            <h2>Active Lemonade Stands</h2>
+            <h2>Lemonade Stands</h2>
             <div id="live-stands">Loading open lemonade stands...</div>
-            <h2>Closed / Upcoming Stands</h2>
+            <!--<h2>Closed / Upcoming Stands</h2>-->
             <div id="closed-stands">Loading closed stand operational timelines...</div>
         </div>
 
@@ -195,8 +195,8 @@ function processAllSchedules() {
     const liveStands = dbStands.filter(s => now >= new Date(s.start) && now <= new Date(s.end));
     const closedStands = dbStands.filter(s => now < new Date(s.start) || now > new Date(s.end));
 
-    renderCards(liveStands, "live-stands", "No lemonade stands are currently open.", true);
-    renderCards(closedStands, "closed-stands", "No other stands scheduled right now.", false);
+    renderCards(liveStands, "live-stands", "", true);
+    renderCards(closedStands, "closed-stands", "", false);
 }
 
 function renderCards(list, elementId, emptyMsg, isLive) {
