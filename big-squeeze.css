@@ -14,7 +14,7 @@
         h2 { color: #036838; font-size: 1.5em; border-bottom: 2px solid #036838; padding-bottom: 5px; margin-top: 20px; }
         .card { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: #2c3e50; }
-        .time { font-weight: bold; color: #e67e22; font-size: 0.9em; }
+        .time { font-weight: bold; color: #e67e22; font-size: 1em; }
         .location { color: #000; font-size: 1em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
         .btn { display: inline-block; background: #3498db; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; margin-top: 10px; font-size: 0.85em; font-weight: bold; }
         .no-events { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
