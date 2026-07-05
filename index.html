@@ -46,9 +46,9 @@
         </div>
     </div>
 
-    <!-- DYNAMIC POPUP DETAILS DIALOG CONTAINER ELEMENT -->
-    <div id="details-modal" class="modal-overlay hidden" onclick="closeDetailsModal(event)">
-        <div class="modal-box" onclick="event.stopPropagation()">
+    <!-- DYNAMIC SLIDE-IN DETAILS PANEL -->
+    <div id="details-modal" class="slide-panel" onclick="closeDetailsModal(event)">
+        <div class="slide-panel-content" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
             <h2 id="modal-title" style="margin-top: 0; border-bottom: none; padding-bottom: 0;">Event Details</h2>
             <img id="modal-image" class="modal-img hidden" src="" alt="" />
@@ -236,7 +236,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     });
 }
 
-// MODAL CONTROLLER HANDLERS
+// MODAL CONTROLLER HANDLERS (UPDATED FOR SLIDE-IN ANIMATION)
 function openDetailsModal(title, description, imageUrl) {
     document.getElementById('modal-title').innerText = title || "Event Details";
     document.getElementById('modal-description').innerText = description || "No detailed description provided.";
@@ -250,12 +250,14 @@ function openDetailsModal(title, description, imageUrl) {
         imgElement.classList.add('hidden');
     }
     
-    document.getElementById('details-modal').classList.remove('hidden');
+    // Add the active class to trigger the slide-up animation
+    document.getElementById('details-modal').classList.add('active');
 }
 
 function closeDetailsModal(event) {
-    document.getElementById('details-modal').classList.add('hidden');
-}
+    // Remove the active class to trigger the slide-down animation
+    document.getElementById('details-modal').classList.remove('active');
+}    
     
 // Global UI Interactivity View-switching State Layer Manipulation Commands Loops
 function switchTab(target) {
