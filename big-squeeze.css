@@ -1,13 +1,13 @@
          /* Base Reset & Native Mobile Layouts */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fae980; color: #333; height: 100vh; overflow: hidden; }
         h1 { text-align: center; color: #036838; margin: 15px 0 5px 0; font-size: 2em; }
-        .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 10px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-sizing: border-box;}
+        .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 5px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-sizing: border-box;}
         .tab-content {flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 20px; box-sizing: border-box;}
         .header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
         
         /* Day Switcher Tab Grid Buttons */
         .day-filter-container { display: flex; gap: 10px; margin-bottom: 15px; }
-        .day-btn { flex: 1; background: #8dc73e; color: gray; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.1em; }
+        .day-btn { flex: 1; background: #8dc73e; color: gray; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
         .day-btn.active { background: #036838; color: white; }
 
         /* Dynamic Presentation Data Cards Layout */
@@ -45,7 +45,7 @@
          .slide-panel { position: fixed; top: 90px; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;}
 
          /* Slide-panel Content Box (The Sheet) */
-         .slide-panel-content { position: absolute; top: 0; left: 0; width: 100%; max-height: 90%; overflow-y: auto; background: #c4e19d; padding: 20px; border-radius: 16px 16px 0 0; box-sizing: border-box; transform: translateX(100%); transition: transform 0.3s ease-out;}
+         .slide-panel-content { position: absolute; top: 0; left: 0; width: 100%; max-height: 90%; overflow-y: auto; background: #c4e19d; padding: 20px; box-sizing: border-box; transform: translateX(100%); transition: transform 0.3s ease-out;}
 
          /* Active State: Triggered via JavaScript class toggle */
          .slide-panel.active { opacity: 1; pointer-events: auto;}
