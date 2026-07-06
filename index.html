@@ -214,7 +214,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit' }) : "??";
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
-        const indicator = isLive ? "🟢 " : "⏰ ";
+        const indicator = isLive ? "⏰ " : "⏰ ";
 
         // Escape content strings securely for click arguments
         const safeName = item.dname ? item.dname.replace(/'/g, "\\'") : "";
@@ -227,7 +227,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         // FIXED structured template markup appending routine strings
         container.innerHTML += `
             <div class="card">
-                <span class="time">${indicator}: ${startD} ${startT} - ${endT}</span>
+                <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
                 <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
