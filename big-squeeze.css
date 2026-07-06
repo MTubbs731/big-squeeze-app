@@ -3,7 +3,7 @@
         h1 { text-align: center; color: #036838; margin: 15px 0 5px 0; font-size: 2.2em;}
         .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 5px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-sizing: border-box;}
         .tab-content {flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 20px; box-sizing: border-box;}
-        .header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; background-image: url("./images/lemon-skin-600x90.jpg"); }
+        .header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; background-image: url("./images/lemon-skin-600x90.jpg"); }
         
         /* Day Switcher Tab Grid Buttons */
         .day-filter-container { display: flex; gap: 10px; margin-bottom: 15px; }
