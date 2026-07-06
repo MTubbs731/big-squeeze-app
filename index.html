@@ -26,17 +26,13 @@
                 <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-07-10', event)">Friday</button>
                 <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-11', event)">Saturday</button>
             </div>
-            <h2>Happening Now</h2>
-            <div id="live-events">Loading active schedule items...</div>
-            <h2>Upcoming Next</h2>
-            <div id="upcoming-events">Loading upcoming schedule items...</div>
+            <h2>Events Schedule</h2>
+            <div id="all-events">Loading events schedule...</div>
         </div>
 
         <div id="stands-screen" class="tab-content hidden">
             <h2>Lemonade Stands</h2>
-            <div id="live-stands">Loading open lemonade stands...</div>
-            <h2>Closed / Upcoming Stands</h2>
-            <div id="closed-stands">Loading closed stand operational timelines...</div>
+            <div id="all-stands">Loading lemonade stands...</div>
         </div>
 
         <div id="map-screen" class="tab-content hidden">
@@ -166,38 +162,26 @@ async function initDatabaseApp() {
 }
 
 function processAllSchedules() {
-    const now = new Date();
-    
-    // Parse our tracking string ("2026-06-30" or "2026-07-01") into local YYYY, MM, DD integers
+    // Parse our tracking string into local YYYY, MM, DD integers
     const [targetYear, targetMonth, targetDay] = selectedDayString.split('-').map(Number);
 
-    // Helper helper function to check if an event falls on the currently selected tab day
     const isSelectedDay = (dateStr) => {
         if (!dateStr) return false;
         const d = new Date(dateStr);
-        // getMonth() is 0-indexed (Jan is 0), so add 1 to match your string format
         return d.getFullYear() === targetYear && (d.getMonth() + 1) === targetMonth && d.getDate() === targetDay;
     };
 
-    // --- MAIN EVENTS VIEWS LAYERS ---
-    // 1. Matches today's date AND current clock is inside the event window
-    const liveEv = dbEvents.filter(e => isSelectedDay(e.start) && now >= new Date(e.start) && now <= new Date(e.end));
+    // Filter events by day and sort strictly chronologically by starting time
+    const filteredEvents = dbEvents
+        .filter(e => isSelectedDay(e.start))
+        .sort((a, b) => new Date(a.start) - new Date(b.start));
     
-    // 2. Matches today's date AND event starts in the future
-    const upcomingEv = dbEvents.filter(e => isSelectedDay(e.start) && new Date(e.start) > now)
-                              .sort((a,b) => new Date(a.start) - new Date(b.start));
-    
-    renderCards(liveEv, "live-events", "Currently there are no events happening.", true);
-    renderCards(upcomingEv, "upcoming-events", "No more events scheduled today.", false);
+    renderCards(filteredEvents, "all-events", "No events scheduled for this day.", false);
 
-    // --- LEMONADE STANDS VIEWS LAYERS ---
-    // (Stands don't usually filter by day tabs, they just look at current absolute clock availability)
-    const liveStands = dbStands.filter(s => now >= new Date(s.start) && now <= new Date(s.end));
-    const closedStands = dbStands.filter(s => now < new Date(s.start) || now > new Date(s.end));
+    // Sort lemonade stands alphabetically by name
+    const sortedStands = [...dbStands].sort((a, b) => a.name.localeCompare(b.name));
     
-    renderCards(liveStands, "live-stands", "", true);
-    renderCards(closedStands, "closed-stands", "", false);
-    
+    renderCards(sortedStands, "all-stands", "No lemonade stands found.", false);
 }
 
 function renderCards(list, elementId, emptyMsg, isLive) {
