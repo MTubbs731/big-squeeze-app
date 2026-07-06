@@ -35,8 +35,8 @@
         <div id="stands-screen" class="tab-content hidden">
             <h2>Lemonade Stands</h2>
             <div id="live-stands">Loading open lemonade stands...</div>
-            <!--<h2>Closed / Upcoming Stands</h2>
-            <div id="closed-stands">Loading closed stand operational timelines...</div>-->
+            <h2>Closed / Upcoming Stands</h2>
+            <div id="closed-stands">Loading closed stand operational timelines...</div>
         </div>
 
         <div id="map-screen" class="tab-content hidden">
@@ -194,11 +194,10 @@ function processAllSchedules() {
     // (Stands don't usually filter by day tabs, they just look at current absolute clock availability)
     const liveStands = dbStands.filter(s => now >= new Date(s.start) && now <= new Date(s.end));
     const closedStands = dbStands.filter(s => now < new Date(s.start) || now > new Date(s.end));
-    const lemStands = dbStands.sort((a,b) => a.name.localeCompare(b.name));
-
-    // renderCards(liveStands, "live-stands", "", true);
-    // renderCards(closedStands, "closed-stands", "", false);
-    renderCards(lemStands,"live-stands", "", true);
+    
+    renderCards(liveStands, "live-stands", "", true);
+    renderCards(closedStands, "closed-stands", "", false);
+    
 }
 
 function renderCards(list, elementId, emptyMsg, isLive) {
