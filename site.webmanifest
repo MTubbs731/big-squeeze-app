@@ -1,11 +1,11 @@
 {
     "name": "The Big Squeeze App",
     "short_name": "Big Squeeze",
-    "description": "Your ultimate live schedule, interactive map, and stand tracker for the festival.",
+    "description": "Your ultimate live schedule, interactive map, and lemonade stand tracker for the festival.",
     "start_url": "./index.html",
     "display": "standalone",
     "orientation": "portrait",
-    "background_color": "#f4f4f9",
+    "background_color": "#fae980",
     "theme_color": "#2c3e50",
     "categories": ["festivals", "utilities"],
     "icons": [
@@ -16,7 +16,7 @@
             "purpose": "any"
         },
         {
-            "src": "images/icon-512.png",
+            "src": "images/lemmy-wave-512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
