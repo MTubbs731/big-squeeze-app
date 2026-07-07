@@ -59,3 +59,5 @@
 
         /* Responsive Images */
         .responsive { width: 100%; height: auto; }
+
+        .character-r { position: fixed; top: 85; right: 0; }
