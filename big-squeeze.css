@@ -59,3 +59,6 @@
         .center { text-align: center; }
         .left { text-align: left; }
         .right { text-align: right; }
+
+        /* Web Fonts */
+        .luckiest-guy-regular { font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal;}
