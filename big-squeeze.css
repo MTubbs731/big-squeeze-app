@@ -1,18 +1,26 @@
          /* Base Reset & Native Mobile Layouts */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fae980; color: #333; height: 100vh; overflow: hidden; }
         h1 { text-align: center; color: #036838; margin: 15px 0 5px 0; font-size: 2.2em;}
+        h2 { color: #036838; font-size: 1.5em; border-bottom: 2px solid #036838; padding-bottom: 5px; margin-top: 20px; }
+        .hero-text { color: #036838; font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal; font-size: 2.5em; padding-bottom: 5px; margin-top: 20px; }
+        .center { text-align: center; }
+        .left { text-align: left; }
+        .right { text-align: right; }
+
         .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 80px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-sizing: border-box;}
         .tab-content {flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 20px; box-sizing: border-box;}
         .header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; background-image: url("./images/lemon-skin-600x90.jpg"); }
-        .hero-text { color: #036838; font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal; font-size: 2.5em; padding-bottom: 5px; margin-top: 20px; }
+        .hidden { display: none !important; }
+
+        /* Web Fonts */
+        .luckiest-guy-regular { font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal;}
         
         /* Day Switcher Tab Grid Buttons */
         .day-filter-container { display: flex; gap: 10px; margin-bottom: 15px; }
         .day-btn { flex: 1; background: #8dc73e; color: gray; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
         .day-btn.active { background: #036838; color: white; }
 
-        /* Dynamic Presentation Data Cards Layout */
-        h2 { color: #036838; font-size: 1.5em; border-bottom: 2px solid #036838; padding-bottom: 5px; margin-top: 20px; }
+        /* Dynamic Presentation Data Cards Layout */  
         .card { background: white; padding: 15px; margin: 10px 0; border: 1px solid #036838; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: #2c3e50; }
         .time { font-weight: bold; color: #e67e22; font-size: 1.1em; }
@@ -25,8 +33,6 @@
         #map-screen {height: 100%;}
         .map-responsive { flex: 1; position: relative; width: 100%; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 10px;}
         .map-responsive iframe { left: 0; top: 0; height: 100%; width: 100%; position: absolute; border: 0; }
-
-        .hidden { display: none !important; }
 
         /* Persistent Navigation Tab Layout Architecture */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; justify-content: space-around; align-items: center; box-sizing: border-box;}
@@ -42,13 +48,9 @@
         .modal-img { width: 100%; height: auto; max-height: 360px; object-fit: cover; border-radius: 6px; margin-top: 10px; background: #eee; }
         .modal-desc { line-height: 1.5; color: #000; margin-top: 12px; font-size: 1.1em; white-space: pre-wrap; }
 
-         /* Slide-in Panel Overlay */
+         /* Slide-in Panel */
          .slide-panel { position: fixed; top: 80px; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;}
-
-         /* Slide-panel Content Box (The Sheet) */
          .slide-panel-content { position: absolute; top: 0; left: 0; width: 100%; height: calc(100vh - 90px); /*max-height: 90%;*/ overflow-y: auto; background: #c4e19d; padding: 20px; box-sizing: border-box; transform: translateX(100%); transition: transform 0.3s ease-out;}
-
-         /* Active State: Triggered via JavaScript class toggle */
          .slide-panel.active { opacity: 1; pointer-events: auto;}
          .slide-panel.active .slide-panel-content { transform: translateX(0);}
 
@@ -57,9 +59,3 @@
 
         /* Responsive Images */
         .responsive { width: 100%; height: auto; }
-        .center { text-align: center; }
-        .left { text-align: left; }
-        .right { text-align: right; }
-
-        /* Web Fonts */
-        .luckiest-guy-regular { font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal;}
