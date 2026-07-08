@@ -28,9 +28,9 @@
         <div id="home-screen" class="tab-content">
             <div class="hero-text center">Hey there!</div>
             <div id="lemmy-wave" class="center"><img src="./images/character/lemmy-wave-512.webp" width="75%" alt="" /></div>
-            <div class="modal-desc">Last year's Big Squeeze raised over $25,000 for local veterans organizations. We've got big things happening this year!</div>
-            <div class="modal-desc">Have you ever wanted to go up in a hot air balloon?</div>
-            <div class="modal-desc">Use the navigation below to get up-to-date information about all the events, lemonade stands and where everthing is happening. We'll see you at The Big Squeeze.</div>
+            <div class="dtl-desc">Last year's Big Squeeze raised over $25,000 for local veterans organizations. We've got big things happening this year!</div>
+            <div class="dtl-desc">Have you ever wanted to go up in a hot air balloon?</div>
+            <div class="dtl-desc">Use the navigation below to get up-to-date information about all the events, lemonade stands and where everthing is happening. We'll see you at The Big Squeeze.</div>
         </div>
         
         <div id="events-screen" class="tab-content hidden">
@@ -247,7 +247,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                         <div id="${uniqueId}"-image" class="dtl-image">
                         ${item.image ? `<img src="${item.image}" alt="${item.dname || 'Details'}" />` : ''}
                         </div>
-                        <p class="modal-desc">${item.details || 'No detailed description provided.'}</p>
+                        <p class="dtl-desc">${item.details || 'No detailed description provided.'}</p>
                     </div>
                 ` : ''}
             </div>`;
