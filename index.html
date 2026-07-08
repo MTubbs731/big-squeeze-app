@@ -55,16 +55,6 @@
         </div>
     </div>
 
-    <!-- DYNAMIC SLIDE-IN DETAILS PANEL -->
-    <div id="details-modal" class="slide-panel" onclick="closeDetailsModal(event)">
-        <div class="slide-panel-content" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeDetailsModal()"><strong>&rarr;</strong></button>
-            <h2 id="modal-title">Event Details</h2>
-            <img id="modal-image" class="modal-img hidden" src="" alt="" />
-            <div id="modal-description" class="modal-desc">No context data specified.</div>
-        </div>
-    </div>
-
     <nav class="bottom-nav">
          <div class="tab-link active" id="nav-home" onclick="switchTab('home')">
             <span class="tab-icon" aria-hidden="true"><img src=./images/navigation/home-32.webp alt="" /></span>
@@ -81,20 +71,17 @@
     </nav>
 
 <script>
-// Published Google Sheet Tab CSV Endpoints
 const URL_EVENTS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=0&single=true&output=csv";
 const URL_STANDS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=605861319&single=true&output=csv";
 const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=127409386&single=true&output=csv";
 const URL_DETAILS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2086466838&single=true&output=csv";    
 
-// Database memory engine collection caches
 let dbEvents = [];
 let dbStands = [];
-let dbLocations = {}; // Adjusted into an object map to support key-value assignments
+let dbLocations = {}; 
 let dbDetails = {};
-let selectedDayString = "2026-07-10"; // Set to match your Day 1 Event Default Initialization Filter
+let selectedDayString = "2026-07-10"; 
 
-// Promisified Remote Dataset Network PapaParse Fetcher execution routine loop block
 function fetchAndParseCsv(url) {
     return new Promise((resolve, reject) => {
         Papa.parse(url, {
@@ -109,7 +96,6 @@ function fetchAndParseCsv(url) {
 
 async function initDatabaseApp() {
     try {
-        // FIXED Pipeline order to map correctly with the deconstructed array variables
         const [rawLocations, rawDetails, rawEvents, rawStands] = await Promise.all([
             fetchAndParseCsv(URL_LOCATIONS),
             fetchAndParseCsv(URL_DETAILS),
@@ -117,7 +103,6 @@ async function initDatabaseApp() {
             fetchAndParseCsv(URL_STANDS)
         ]);
 
-        // 1. FIXED condition from row.id to row.Loc_ID to build the relational map structure
         rawLocations.forEach(row => {
             if(row.Loc_ID) {
                 dbLocations[row.Loc_ID.trim()] = {
@@ -138,7 +123,7 @@ async function initDatabaseApp() {
                 };
             }
         });
-        // 2. Hydrate local state array collections (Events JOIN Locations)
+
         dbEvents = rawEvents.map(row => {
             const locId = row.Event_Loc_ID ? row.Event_Loc_ID.trim() : "";
             const DtlId = row.Event_Details_ID ? row.Event_Details_ID.trim() : "";
@@ -155,7 +140,6 @@ async function initDatabaseApp() {
             };
         });
 
-        // 3. Hydrate local state array collections (Stands JOIN Locations)
         dbStands = rawStands.map(row => {
             const locId = row.Stand_Loc_ID ? row.Stand_Loc_ID.trim() : "";
             return {
@@ -168,17 +152,15 @@ async function initDatabaseApp() {
             };
         });
 
-        // Run data rendering logic
         processAllSchedules();
 
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
-        document.getElementById("live-events").innerText = "Failed to sync remote database entries layers records.";
+        document.getElementById("all-events").innerText = "Failed to sync remote database entries.";
     }
 }
 
 function processAllSchedules() {
-    // Parse our tracking string into local YYYY, MM, DD integers
     const [targetYear, targetMonth, targetDay] = selectedDayString.split('-').map(Number);
 
     const isSelectedDay = (dateStr) => {
@@ -187,14 +169,12 @@ function processAllSchedules() {
         return d.getFullYear() === targetYear && (d.getMonth() + 1) === targetMonth && d.getDate() === targetDay;
     };
 
-    // Filter events by day and sort strictly chronologically by starting time
     const filteredEvents = dbEvents
         .filter(e => isSelectedDay(e.start))
         .sort((a, b) => new Date(a.start) - new Date(b.start));
     
     renderCards(filteredEvents, "all-events", "No events scheduled for this day.", false);
 
-    // Sort lemonade stands alphabetically by name
     const sortedStands = [...dbStands].sort((a, b) => a.name.localeCompare(b.name));
     
     renderCards(sortedStands, "all-stands", "No lemonade stands found.", false);
@@ -209,87 +189,66 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         return;
     }
 
-    list.forEach(item => {
+    list.forEach((item, index) => {
         const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit' }) : "??";
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const indicator = isLive ? "⏰ " : "⏰ ";
 
-        // Escape content strings securely for click arguments
-        const safeName = item.dname ? item.dname.replace(/'/g, "\\'") : "";
-        const safeDesc = item.details ? item.details.replace(/'/g, "\\'") : "";
-        const safeImg = item.image ? item.image.replace(/'/g, "\\'") : "";
-
-        // Check conditions to selectively show details action trigger
-        const hasDetailsButton = (safeDesc !== "" || safeImg !== "");
+        const hasDetailsButton = (item.details && item.details.trim() !== "") || (item.image && item.image.trim() !== "");
+        const uniqueId = `${elementId}-details-${index}`;
         
-        // FIXED structured template markup appending routine strings
         container.innerHTML += `
             <div class="card">
                 <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
                 <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
-                    ${hasDetailsButton ? `<button onclick="openDetailsModal('${safeName}', '${safeDesc}', '${safeImg}')" class="btn btn-alt dtl-btn">View Details</button>` : ''}
+                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="btn btn-alt dtl-btn">View Details</button>` : ''}
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Show on Map</button>` : ''}
                 </div>
+                ${hasDetailsButton ? `
+                    <div id="${uniqueId}" class="expanded-details">
+                        ${item.dname ? `<h3>${item.dname}</h3>` : ''}
+                        ${item.image ? `<img src="${item.image}" alt="${item.dname || 'Details'}" />` : ''}
+                        <p class="modal-desc">${item.details || 'No detailed description provided.'}</p>
+                    </div>
+                ` : ''}
             </div>`;
     });
 }
 
-// MODAL CONTROLLER HANDLERS (UPDATED FOR SLIDE-IN ANIMATION)
-function openDetailsModal(title, description, imageUrl) {
-    document.getElementById('modal-title').innerText = title || "Event Details";
-    document.getElementById('modal-description').innerText = description || "No detailed description provided.";
-    
-    const imgElement = document.getElementById('modal-image');
-    if (imageUrl && imageUrl.trim() !== "") {
-        imgElement.src = imageUrl;
-        imgElement.classList.remove('hidden');
-    } else {
-        imgElement.src = "";
-        imgElement.classList.add('hidden');
+// TOGGLE FUNCTION REPLACING MODAL HANDLERS
+function toggleCardDetails(targetDivId) {
+    const targetDiv = document.getElementById(targetDivId);
+    if(targetDiv) {
+        targetDiv.classList.toggle('show');
+        
+        // Dynamic text adjustment on the button itself
+        const associatedButton = targetDiv.previousElementSibling.querySelector('.dtl-btn');
+        if (associatedButton) {
+            associatedButton.innerText = targetDiv.classList.contains('show') ? "Hide Details" : "View Details";
+        }
     }
-    
-    // Add the active class to trigger the slide-up animation
-    document.getElementById('details-modal').classList.add('active');
 }
-
-function closeDetailsModal(event) {
-    // Remove the active class to trigger the slide-down animation
-    document.getElementById('details-modal').classList.remove('active');
-}    
     
-// Global UI Interactivity View-switching State Layer Manipulation Commands Loops
 function switchTab(target) {
-    // 1. Hide all layout tabs content wrappers and remove active states from buttons
     document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
     document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
     
-    // 2. Identify the specific target screen element we are switching to
     const targetScreen = document.getElementById(`${target}-screen`);
-    
-    // 3. Display target matching presentation interface and apply visual activation markers
     if (targetScreen) {
         targetScreen.classList.remove('hidden');
-        
-        // 4. FIX: Programmatically force the individual container to scroll to the top
         targetScreen.scrollTop = 0; 
     }
-    
     document.getElementById(`nav-${target}`).classList.add('active');
 }
     
 function openLocationInAppMap(mapUrl) {
-    // 1. Locate the iframe element inside your map layout screen wrapper
     const mapIframe = document.querySelector('#map-screen iframe');
-    
     if (mapIframe) {
-        // 2. Set the target iframe source to the clean map destination URL 
         mapIframe.src = mapUrl;
     }
-    
-    // 3. Programmatically trigger the existing switch view command routine
     switchTab('map');
 }
 
@@ -302,13 +261,11 @@ function switchDay(dateStr, event) {
     processAllSchedules();
 }
 
-// Recalculate layout schedules every 5 minutes
 setInterval(() => {
     console.log("Locally recalculating timelines based on current device clock...");
     processAllSchedules();
 }, 300000); 
 
-// Initialize Application Engine
 initDatabaseApp();
 </script>
 </body>
