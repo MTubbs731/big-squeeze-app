@@ -3,12 +3,14 @@ const URL_STANDS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h4
 const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=127409386&single=true&output=csv";
 const URL_DETAILS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2086466838&single=true&output=csv";    
 const URL_PARAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=218585894&single=true&output=csv";    
+const URL_NEWS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2012752905&single=true&output=csv";
 
 let dbEvents = [];
 let dbStands = [];
 let dbLocations = {}; 
 let dbDetails = {};
-let dbParams = []
+let dbParams = [];
+let dbNews = [];
 let selectedDayString = ""; 
 let scheduleRefreshTimer = null;
     
@@ -26,12 +28,13 @@ function fetchAndParseCsv(url) {
 
 async function initDatabaseApp() {
     try {
-        const [rawLocations, rawDetails, rawEvents, rawStands, rawParams] = await Promise.all([
+        const [rawLocations, rawDetails, rawEvents, rawStands, rawParams, rawNews] = await Promise.all([
             fetchAndParseCsv(URL_LOCATIONS),
             fetchAndParseCsv(URL_DETAILS),
             fetchAndParseCsv(URL_EVENTS),
             fetchAndParseCsv(URL_STANDS),
-            fetchAndParseCsv(URL_PARAMS)
+            fetchAndParseCsv(URL_PARAMS),
+            fetchAndParseCsv(URL_NEWS)
         ]);
 
         // Load paramters from database
@@ -151,6 +154,17 @@ async function initDatabaseApp() {
             };
         });
 
+        dbNews = rawNews.map(row => {
+            let processedContent = row.News_Content ? row.News_Content.trim() : "";
+            processedContent = processedContent.replace(/\n/g, "<br>"); 
+
+            return {
+                date: row.News_Date ? row.News_Date.trim() : "",
+                title: row.News_Title ? row.News_Title.trim() : "Announcement",
+                content: processedContent
+            };
+        });
+        
         processAllSchedules();
 
     } catch (err) {
@@ -232,7 +246,37 @@ function toggleCardDetails(targetDivId) {
         }
     }
 }
-    
+
+function renderNewsFeed() {
+    const newsContainer = document.getElementById("news-feed");
+    if (!newsContainer) return;
+
+    newsContainer.innerHTML = "";
+
+    if (dbNews.length === 0) {
+        newsContainer.innerHTML = `<p class="no-events">No news announcements posted yet.</p>`;
+        return;
+    }
+
+    // Sort descending: converts strings into real dates and subtracts them (B - A)
+    const sortedNews = [...dbNews].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    sortedNews.forEach(item => {
+        // Formats the timestamp nicely for humans (e.g., "Jul 08, 3:33 PM")
+        const displayDate = item.date 
+            ? new Date(item.date).toLocaleDateString([], { month: 'short', day: '2-digit' }) + ", " + 
+              new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : "Recent Update";
+
+        newsContainer.innerHTML += `
+            <div class="card news-card">
+                // <span class="time">📢 ${displayDate}</span>
+                <div class="card-title" style="margin-top: 5px; margin-bottom: 5px;">${item.title}</div>
+                <p class="modal-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
+            </div>`;
+    });
+}
+
 function switchTab(target) {
     document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
     document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
@@ -260,6 +304,7 @@ function switchDay(dateStr, event) {
         event.target.classList.add('active');
     }
     processAllSchedules();
+    renderNewsFeed();
 }
 
 initDatabaseApp();
