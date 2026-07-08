@@ -17,7 +17,7 @@
         
         /* Day Switcher Tab Grid Buttons */
         .day-filter-container {  position: sticky; top: 0; background-color: #fae980; z-index: 10; gap: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; width: 100%; box-sizing: border-box;  }
-        .day-filter-container.day-btn { flex: 1; }
+        .day-filter-container .day-btn { flex: 1; }
         .day-btn { background: #8dc73e; color: gray; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
         .day-btn.active { background: #036838; color: white; }
 
