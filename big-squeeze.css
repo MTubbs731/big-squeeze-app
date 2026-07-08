@@ -61,3 +61,8 @@
         .responsive { width: 100%; height: auto; }
 
         .character-r { position: fixed; top: 85px; right: 0; }
+
+        /* Expandable Details in Card */
+        .expanded-details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; }
+        .expanded-details.show { display: block; }
+        .expanded-details img { max-width: 100%; border-radius: 8px; margin-bottom: 10px; display: block; }
