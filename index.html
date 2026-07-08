@@ -75,12 +75,14 @@ const URL_EVENTS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h4
 const URL_STANDS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=605861319&single=true&output=csv";
 const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=127409386&single=true&output=csv";
 const URL_DETAILS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2086466838&single=true&output=csv";    
+const URL_PARAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=218585894&single=true&output=csv";    
 
 let dbEvents = [];
 let dbStands = [];
 let dbLocations = {}; 
 let dbDetails = {};
-let selectedDayString = "2026-07-10"; 
+let dbParams = []
+let selectedDayString = ""; 
 
 function fetchAndParseCsv(url) {
     return new Promise((resolve, reject) => {
@@ -100,9 +102,37 @@ async function initDatabaseApp() {
             fetchAndParseCsv(URL_LOCATIONS),
             fetchAndParseCsv(URL_DETAILS),
             fetchAndParseCsv(URL_EVENTS),
-            fetchAndParseCsv(URL_STANDS)
+            fetchAndParseCsv(URL_STANDS),
+            fetchAndParseCsv(URL_PARAMS)
         ]);
 
+        // ---------------- DYNAMIC PARAMS EXTRACTION ----------------
+        // Find the row where the key is "Festival_Start_Date"
+        const dateRow = rawParams.find(row => row.Param_Key && row.Param_Key.trim() === "Festival_Start_Date");
+        
+        if (dateRow && dateRow.Param_Value) {
+            // Set our global tracking state to the spreadsheet value (e.g., "2026-07-10")
+            selectedDayString = dateRow.Param_Value.trim();
+            
+            // Calculate Day 2 by parsing Day 1 and adding 24 hours
+            const day1Date = new Date(selectedDayString + "T00:00:00");
+            const day2Date = new Date(day1Date);
+            day2Date.setDate(day1Date.getDate() + 1);
+            
+            // Format Day 2 back to standard YYYY-MM-DD string
+            const day2String = day2Date.toISOString().split('T')[0];
+
+            // Dynamically update the onclick behaviors of your Friday/Saturday DOM buttons
+            const btnDay1 = document.getElementById('btn-day1');
+            const btnDay2 = document.getElementById('btn-day2');
+            
+            if (btnDay1) btnDay1.setAttribute('onclick', `switchDay('${selectedDayString}', event)`);
+            if (btnDay2) btnDay2.setAttribute('onclick', `switchDay('${day2String}', event)`);
+        } else {
+            // Fallback safety setting if the sheet is missing or misconfigured
+            selectedDayString = "2026-07-10"; 
+        }
+        
         rawLocations.forEach(row => {
             if(row.Loc_ID) {
                 dbLocations[row.Loc_ID.trim()] = {
