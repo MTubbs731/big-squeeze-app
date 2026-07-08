@@ -269,7 +269,6 @@ function renderNewsFeed() {
 
         newsContainer.innerHTML += `
             <div class="card news-card">
-                // <span class="time">📢 ${displayDate}</span>
                 <div class="card-title" style="margin-top: 5px; margin-bottom: 5px;">${item.title}</div>
                 <p  class="dtl-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
             </div>`;
