@@ -57,8 +57,9 @@
          /* Close Button positioning inside the slide sheet */
          .modal-close { float: right; font-size: 28px; font-weight: bold; background: none; border: none; cursor: pointer;}
 
-        /* Responsive Images */
+        /* Images */
         .responsive { width: 100%; height: auto; }
+        .dtl-image { display: flex; justify-content: center; }
 
         .character-r { position: fixed; top: 85px; right: 0; }
 
