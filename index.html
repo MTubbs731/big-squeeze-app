@@ -50,7 +50,7 @@
 
         <div id="map-screen" class="tab-content hidden">
             <div class="map-responsive">
-                <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1hTRsvmXzmZLwJjvV9iTtvOoa65q9VYs&ehbc=2E312F&z=18" loading="lazy"></iframe>
+                <iframe id="default-map" src="about:blank" loading="lazy"></iframe>
             </div>
         </div>
     </div>
@@ -83,7 +83,8 @@ let dbLocations = {};
 let dbDetails = {};
 let dbParams = []
 let selectedDayString = ""; 
-
+let scheduleRefreshTimer = null;
+    
 function fetchAndParseCsv(url) {
     return new Promise((resolve, reject) => {
         Papa.parse(url, {
@@ -106,32 +107,69 @@ async function initDatabaseApp() {
             fetchAndParseCsv(URL_PARAMS)
         ]);
 
-        // ---------------- DYNAMIC PARAMS EXTRACTION ----------------
-        // Find the row where the key is "Festival_Start_Date"
-        const dateRow = rawParams.find(row => row.Param_Key && row.Param_Key.trim() === "Festival_Start_Date");
-        
-        if (dateRow && dateRow.Param_Value) {
-            // Set our global tracking state to the spreadsheet value (e.g., "2026-07-10")
-            selectedDayString = dateRow.Param_Value.trim();
-            
+        // Load paramters from database
+        const params = {};
+        rawParams.forEach(row => {
+            if (row.Param_Key) {
+                params[row.Param_Key.trim()] = row.Param_Value ? row.Param_Value.trim() : "";
+            }
+        });
+
+        // 2. Extracted Start Date Logic (Cleaned up using the new map)
+        if (params["Festival_Start_Date"]) {
+            // Set our global tracking state to the spreadsheet value
+            selectedDayString = params["Festival_Start_Date"];
+    
             // Calculate Day 2 by parsing Day 1 and adding 24 hours
             const day1Date = new Date(selectedDayString + "T00:00:00");
             const day2Date = new Date(day1Date);
             day2Date.setDate(day1Date.getDate() + 1);
-            
-            // Format Day 2 back to standard YYYY-MM-DD string
+    
             const day2String = day2Date.toISOString().split('T')[0];
 
             // Dynamically update the onclick behaviors of your Friday/Saturday DOM buttons
             const btnDay1 = document.getElementById('btn-day1');
             const btnDay2 = document.getElementById('btn-day2');
-            
+    
             if (btnDay1) btnDay1.setAttribute('onclick', `switchDay('${selectedDayString}', event)`);
             if (btnDay2) btnDay2.setAttribute('onclick', `switchDay('${day2String}', event)`);
         } else {
-            // Fallback safety setting if the sheet is missing or misconfigured
+            // Fallback safety setting if the key is missing or misconfigured
             selectedDayString = "2026-07-10"; 
         }
+
+        // Update DOM from parameters
+        if (params["App_Title"]) {
+            document.querySelector("#header h1").innerText = params["App_Title"];
+            document.title = params["App_Title"];
+        }
+        if (params["Welcome_Hero"]) {
+            document.querySelector("#home-screen .hero-text").innerText = params["Welcome_Hero"];
+        }
+        if (params["Default_Map_URL"]) {
+            const mainMapIframe = document.getElementById("default-map");
+            if (mainMapIframe) {
+                mainMapIframe.src = params["Default_Map_URL"];
+            }
+        }
+
+        // Get cache refresh rate from parameters
+        let refreshRate = 300000; // 5 minutes fallback default if missing from sheet
+        if (params["Refresh_Interval_MS"]) {
+            const parsedRate = parseInt(params["Refresh_Interval_MS"].trim(), 10);
+            if (!isNaN(parsedRate) && parsedRate > 0) {
+                refreshRate = parsedRate;
+            }
+        }
+        // Clear any existing timer cycle first to avoid stacking duplicate loops
+        if (scheduleRefreshTimer) {
+            clearInterval(scheduleRefreshTimer);
+        }
+        // Start the schedule calculation interval loop using your dynamic value
+        scheduleRefreshTimer = setInterval(() => {
+            console.log(`Recalculating timelines based on current device clock every ${refreshRate}ms...`);
+            processAllSchedules();
+        }, refreshRate);
         
         rawLocations.forEach(row => {
             if(row.Loc_ID) {
@@ -296,11 +334,6 @@ function switchDay(dateStr, event) {
     }
     processAllSchedules();
 }
-
-setInterval(() => {
-    console.log("Locally recalculating timelines based on current device clock...");
-    processAllSchedules();
-}, 300000); 
 
 initDatabaseApp();
 </script>
