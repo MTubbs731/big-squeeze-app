@@ -166,7 +166,7 @@ async function initDatabaseApp() {
         });
         
         processAllSchedules();
-
+        renderNewsFeed();
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
         document.getElementById("all-events").innerText = "Failed to sync remote database entries.";
@@ -223,8 +223,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
-                        <div id="${uniqueId}"-image" class="dtl-image">
-                        ${item.image ? `<img src="${item.image}" alt="${item.dname || 'Details'}" />` : ''}
+                        <div id="${uniqueId}-image" class="dtl-image">  ${item.image ? `<img src="${item.image}" alt="${item.dname || 'Details'}" />` : ''}
                         </div>
                         <p class="dtl-desc">${item.details || 'No detailed description provided.'}</p>
                     </div>
@@ -239,8 +238,8 @@ function toggleCardDetails(targetDivId) {
     if(targetDiv) {
         targetDiv.classList.toggle('show');
         
-        // Dynamic text adjustment on the button itself
-        const associatedButton = targetDiv.previousElementSibling.querySelector('.dtl-btn');
+        // FIXED: Use .parentElement to find the card, then look inside it for the button
+        const associatedButton = targetDiv.parentElement.querySelector('.dtl-btn');
         if (associatedButton) {
             associatedButton.innerText = targetDiv.classList.contains('show') ? "Hide Details" : "View Details";
         }
@@ -304,7 +303,6 @@ function switchDay(dateStr, event) {
         event.target.classList.add('active');
     }
     processAllSchedules();
-    renderNewsFeed();
 }
 
 initDatabaseApp();
