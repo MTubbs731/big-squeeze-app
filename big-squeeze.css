@@ -24,6 +24,7 @@
         /* Dynamic Presentation Data Cards Layout */  
         .card { background: white; padding: 15px; margin: 10px 0; border: 1px solid #036838; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: #2c3e50; }
+        .card-actions { gap: 10px; }
         .time { font-weight: bold; color: #e67e22; font-size: 1.1em; }
         .location { color: #000; font-size: 1em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
         .btn { display: inline-block; background: #3498db; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; margin-top: 10px; font-size: 0.85em; font-weight: bold; }
@@ -42,21 +43,20 @@
         .tab-icon { font-size: 1.4em; margin-bottom: 2px; }
 
         /* MODAL DIALOG POPUP STYLES */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 15px; }
+        /* .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 15px; }
         .modal-box { background: #c4e19d; width: 100%; max-width: 450px; border-radius: 12px; padding: 20px; box-sizing: border-box; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; }
-        /*.modal-close { position: absolute; top: 12px; right: 15px; font-size: 1.5em; font-weight: bold; color: #7f8c8d; cursor: pointer; border: none; background: none; }*/
         .modal-title { color: #036838; margin-top: 0; border-bottom: none; padding-bottom: 0; }
         .modal-img { width: 100%; height: auto; max-height: 360px; object-fit: cover; border-radius: 6px; margin-top: 10px; background: #eee; }
-        .modal-desc { line-height: 1.5; color: #000; margin-top: 12px; font-size: 1.1em; white-space: pre-wrap; }
+        .modal-desc { line-height: 1.5; color: #000; margin-top: 12px; font-size: 1.1em; white-space: pre-wrap; } */
 
          /* Slide-in Panel */
-         .slide-panel { position: fixed; top: 80px; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;}
-         .slide-panel-content { position: absolute; top: 0; left: 0; width: 100%; height: calc(100vh - 90px); /*max-height: 90%;*/ overflow-y: auto; background: #c4e19d; padding: 20px; box-sizing: border-box; transform: translateX(100%); transition: transform 0.3s ease-out;}
+         /* .slide-panel { position: fixed; top: 80px; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;}
+         .slide-panel-content { position: absolute; top: 0; left: 0; width: 100%; height: calc(100vh - 90px); overflow-y: auto; background: #c4e19d; padding: 20px; box-sizing: border-box; transform: translateX(100%); transition: transform 0.3s ease-out;}
          .slide-panel.active { opacity: 1; pointer-events: auto;}
-         .slide-panel.active .slide-panel-content { transform: translateX(0);}
+         .slide-panel.active .slide-panel-content { transform: translateX(0);} */
 
          /* Close Button positioning inside the slide sheet */
-         .modal-close { float: right; font-size: 28px; font-weight: bold; background: none; border: none; cursor: pointer;}
+         /* .modal-close { float: right; font-size: 28px; font-weight: bold; background: none; border: none; cursor: pointer;} */
 
         /* Images */
         .responsive { width: 100%; height: auto; }
