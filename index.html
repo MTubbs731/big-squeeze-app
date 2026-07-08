@@ -98,7 +98,7 @@ function fetchAndParseCsv(url) {
 
 async function initDatabaseApp() {
     try {
-        const [rawLocations, rawDetails, rawEvents, rawStands] = await Promise.all([
+        const [rawLocations, rawDetails, rawEvents, rawStands, rawParams] = await Promise.all([
             fetchAndParseCsv(URL_LOCATIONS),
             fetchAndParseCsv(URL_DETAILS),
             fetchAndParseCsv(URL_EVENTS),
