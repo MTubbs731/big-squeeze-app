@@ -53,6 +53,8 @@
         /* Images */
         .responsive { width: 100%; height: auto; }
         .dtl-image { display: flex; justify-content: center; }
+        .news-image-l { float: left; margin: 0 10px 0 10px; }
+        .news-image-r { float: right; margin: 0 10px 0 10px; }
 
         /* Character Positioning */
         .character-r { position: fixed; top: 85px; right: 0; }
