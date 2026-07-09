@@ -6,6 +6,7 @@
         .center { text-align: center; }
         .left { text-align: left; }
         .right { text-align: right; }
+        .no-border { border-style: none; }
 
         .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 80px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-sizing: border-box;}
         .tab-content {flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 20px; box-sizing: border-box;}
