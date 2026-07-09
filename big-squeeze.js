@@ -231,7 +231,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Show on Map</button>` : ''}
                     
                     <div class="reminder-dropdown">
-                        <button onclick="toggleReminderMenu('${menuId}', event)" class="btn btn-alt" style="background-color: #ffeb3b; color: #000;">🔔 Remind Me</button>
+                        <button onclick="toggleReminderMenu('${menuId}', event)" class="btn btn-alt" >🔔 Remind Me</button>
                         <div id="${menuId}" class="reminder-menu">
                             <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
                             <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
