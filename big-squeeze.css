@@ -53,8 +53,12 @@
         /* Images */
         .responsive { width: 100%; height: auto; }
         .dtl-image { display: flex; justify-content: center; }
-        .news-image-l { float: left; margin: 0 10px 0 10px; }
-        .news-image-r { float: right; margin: 0 10px 0 10px; }
+        /* News Image Custom Styling */
+       .news-thumb { max-width: 40%; height: auto; border-radius: 6px; margin-bottom: 5px; }
+       .news-float-l { float: left; margin-right: 12px; }
+       .news-float-r { float: right; margin-left: 12px; }
+       /* Clearfix for the card to ensure it scales nicely if the image is tall */
+       .news-card::after { content: ""; clear: both; display: table; }
 
         /* Character Positioning */
         .character-r { position: fixed; top: 85px; right: 0; }
