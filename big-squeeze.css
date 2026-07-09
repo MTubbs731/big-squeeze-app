@@ -61,7 +61,7 @@
        .news-card::after { content: ""; clear: both; display: table; }
 
         /* Character Positioning */
-        .character-r { position: fixed; top: 85px; right: 0; }
+        .character-r { position: absolute; top: 85px; right: 0; }
 
         /* Remind Me Dropdown Container */
        .reminder-dropdown { position: relative; display: inline-block; }
