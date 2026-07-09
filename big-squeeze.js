@@ -163,7 +163,7 @@ async function initDatabaseApp() {
                 title: row.News_Title ? row.News_Title.trim() : "Announcement",
                 content: processedContent,
                 image: row.News_Image ? row.News_Image.trim() : "",
-                placement: row.News_Image_Loc ? row.News_Image_Loc.trim() : "L"
+                imageLoc: row.News_Image_Loc ? row.News_Image_Loc.trim().toUpperCase() : "L"
             };
         });
         
@@ -259,20 +259,27 @@ function renderNewsFeed() {
         return;
     }
 
-    // Sort descending: converts strings into real dates and subtracts them (B - A)
     const sortedNews = [...dbNews].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     sortedNews.forEach(item => {
-        // Formats the timestamp nicely for humans (e.g., "Jul 08, 3:33 PM")
         const displayDate = item.date 
             ? new Date(item.date).toLocaleDateString([], { month: 'short', day: '2-digit' }) + ", " + 
               new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             : "Recent Update";
 
+        // Determine layout class based on R or L parameter parameters
+        const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
+        
+        // Build the image tag string if a URL string exists in your sheet cell
+        const imageHtml = item.image 
+            ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
+            : "";
+
         newsContainer.innerHTML += `
             <div class="card news-card">
                 <div class="card-title" style="margin-top: 5px; margin-bottom: 5px;">${item.title}</div>
-                <p  class="dtl-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
+                ${imageHtml}
+                <p class="modal-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
             </div>`;
     });
 }
