@@ -213,6 +213,14 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const hasDetailsButton = (item.details && item.details.trim() !== "") || (item.image && item.image.trim() !== "");
         const uniqueId = `${elementId}-details-${index}`;
         
+        // Escape parameters cleanly for inline string safety checks
+        const safeName = item.name.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        const safeStart = item.start;
+        const safeEnd = item.end;
+        const safeLoc = item.locationName.replace(/'/g, "\\'").replace(/"/g, '\\"');
+
+        const menuId = `${elementId}-remind-${index}`;
+
         container.innerHTML += `
             <div class="card">
                 <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
@@ -221,16 +229,26 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <div class="card-actions">
                     ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="btn btn-alt dtl-btn">View Details</button>` : ''}
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Show on Map</button>` : ''}
+                    
+                    <div class="reminder-dropdown">
+                        <button onclick="toggleReminderMenu('${menuId}', event)" class="btn btn-alt" style="background-color: #ffeb3b; color: #000;">🔔 Remind Me</button>
+                        <div id="${menuId}" class="reminder-menu">
+                            <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
+                            <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
+                        </div>
+                    </div>
                 </div>
+                
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
-                        <div id="${uniqueId}-image" class="dtl-image">  ${item.image ? `<img src="${item.image}" alt="${item.dname || 'Details'}" />` : ''}
+                        <div id="${uniqueId}-image" class="dtl-image">
+                            ${item.image ? `<img src="${item.image}" alt="${item.dname || 'Details'}" />` : ''}
                         </div>
                         <p class="dtl-desc">${item.details || 'No detailed description provided.'}</p>
                     </div>
                 ` : ''}
-            </div>`;
+            </div>`;    
     });
 }
 
@@ -312,5 +330,65 @@ function switchDay(dateStr, event) {
     }
     processAllSchedules();
 }
+
+// Utility helper to convert sheet times into ISO basic strings (YYYYMMDDTHHMMSSZ)
+function formatToCalTime(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    // Force format directly to UTC string layout layout
+    return d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+}
+
+// 1. GENERATE GOOGLE CALENDAR WEB LINK
+function openGoogleCalendar(name, start, end, location) {
+    const gStart = formatToCalTime(start);
+    const gEnd = formatToCalTime(end);
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(name)}&dates=${gStart}/${gEnd}&details=Set from Big Squeeze App&location=${encodeURIComponent(location)}&sf=true&output=xml`;
+    window.open(url, '_blank');
+}
+
+// 2. GENERATE AND DOWNLOAD APPLE (.ICS) CARD FILE
+function downloadAppleCalendar(name, start, end, location) {
+    const iStart = formatToCalTime(start);
+    const iEnd = formatToCalTime(end);
+    
+    // Create raw file context strings structures
+    const icsContent = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Big Squeeze//Event Calendar//EN",
+        "BEGIN:VEVENT",
+        `SUMMARY:${name}`,
+        `DTSTART:${iStart}`,
+        `DTEND:${iEnd}`,
+        `LOCATION:${location}`,
+        "DESCRIPTION:Reminder from The Big Squeeze App",
+        "END:VEVENT",
+        "END:VCALENDAR"
+    ].join("\r\n");
+
+    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", `${name.replace(/\s+/g, '_')}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// 3. UI TOGGLE HANDLER FOR DROPDOWN MENUS
+function toggleReminderMenu(menuId, event) {
+    event.stopPropagation(); // Prevents clicks from firing parent layout cards operations
+    // Close any other open reminder menus first
+    document.querySelectorAll('.reminder-menu').forEach(m => {
+        if(m.id !== menuId) m.classList.remove('show');
+    });
+    document.getElementById(menuId).classList.toggle('show');
+}
+
+// Close dropdowns automatically if the user clicks anywhere else on the window screen
+window.addEventListener('click', () => {
+    document.querySelectorAll('.reminder-menu').forEach(m => m.classList.remove('show'));
+});
 
 initDatabaseApp();
