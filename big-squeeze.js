@@ -161,7 +161,9 @@ async function initDatabaseApp() {
             return {
                 date: row.News_Date ? row.News_Date.trim() : "",
                 title: row.News_Title ? row.News_Title.trim() : "Announcement",
-                content: processedContent
+                content: processedContent,
+                image: row.News_Image ? row.News_Image.trim() : "",
+                placement: row.News_Image_Loc ? row.News_Image_Loc.trim() : "L"
             };
         });
         
