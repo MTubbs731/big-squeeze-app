@@ -186,6 +186,7 @@ async function initDatabaseApp() {
         
         processAllSchedules();
         renderNewsFeed();
+        renderAmenities();
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
         document.getElementById("all-events").innerText = "Failed to sync remote database entries.";
@@ -347,8 +348,8 @@ function renderAmenities() {
         return;
     }
 
-    list.forEach(item => {
-        // Build the image tag string if a URL string exists in your sheet cell
+    // FIXED: Changed "list.forEach" to "dbAmenities.forEach"
+    dbAmenities.forEach(item => {
         const imageHtml = item.image 
             ? `<img src="${item.image}" class="news-thumb" alt="Amenities graphic" />` 
             : "";
