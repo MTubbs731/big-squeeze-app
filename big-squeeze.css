@@ -32,7 +32,7 @@
         .time { font-weight: bold; color: #e67e22; font-size: 1.1em; }
         .location { color: #000; font-size: 1em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
         .btn { display: inline-block; background: #3498db; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; margin-top: 10px; font-size: 0.85em; font-weight: bold; }
-        .g-btn { display: inline-block; background: #8dc73e; padding: 8px; text-decoration: none; border: 2px outset #036838; border-radius: 4px; margin-top: 10px; }
+        .g-btn { display: inline-block; background: #a4c774; padding: 8px; text-decoration: none; border: 2px outset; border-color:  #036838; border-radius: 4px; margin-top: 10px; }
         .no-events { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
         .dtl-btn { padding-right: 20px;}
         .dtl-desc { line-height: 1.5; color: #000; margin-top: 12px; font-size: 1.1em; white-space: pre-wrap; }
