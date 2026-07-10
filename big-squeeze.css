@@ -10,6 +10,7 @@
 
         .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 80px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-sizing: border-box;}
         .tab-content {flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 20px; box-sizing: border-box;}
+        #stands-screen { position: relative; padding-top: 20px; }
         .header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; background-image: url("./images/lemon-skin-600x90.jpg"); }
         .stands-screen { position: relative; }
         .hidden { display: none !important; }
@@ -63,7 +64,21 @@
        .news-card::after { content: ""; clear: both; display: table; }
 
         /* Character Positioning */
-        .character-r { position: absolute; top: 0; right: 0; }
+        /* .character-r { position: absolute; top: 0; right: 0; } */
+        #lemmy-lemonade {
+          position: absolute; /* Takes Lemmy completely out of the normal text flow layout */
+          top: -45px;         /* Negative tracking forces him UPWARDS over the top of the header border line */
+          right: 10px;        /* Pushes him tightly flush against the far right boundary edge */
+          z-index: 100;       /* Higher indexing layer guarantees he stacks ON TOP of headers instead of under them */
+          width: 80px;        /* Explicitly locks his size constraints so layout scaling doesn't break */
+        }
+
+        /* 3. Ensure the image inside scales cleanly to fill its new locked target box */
+        #lemmy-lemonade img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
 
         /* Remind Me Dropdown Container */
        .reminder-dropdown { position: relative; display: inline-block; }
