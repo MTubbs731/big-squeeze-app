@@ -337,7 +337,7 @@ function renderNewsFeed() {
 }
 
 function renderAmenities() {
-    const amenitiesContainer = document.getElementById("amenities-feed");
+    const amenitiesContainer = document.getElementById("all-amenities");
     if (!amenitiesContainer) return;
 
     amenitiesContainer.innerHTML = "";
