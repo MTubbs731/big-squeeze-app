@@ -227,11 +227,14 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
-                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="btn btn-alt dtl-btn">View Details</button>` : ''}
-                    ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Show on Map</button>` : ''}
+                    // ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="btn btn-alt dtl-btn">View Details</button>` : ''}
+                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" alt="" /></button>` : ''}
+                    // ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="btn">Show on Map</button>` : ''}
+                    ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="" /></button>` : ''}
                     
                     <div class="reminder-dropdown">
-                        <button onclick="toggleReminderMenu('${menuId}', event)" class="btn btn-alt" >Remind Me</button>
+                        // <button onclick="toggleReminderMenu('${menuId}', event)" class="btn btn-alt" >Remind Me</button>
+                        <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" ><img src="images/buttons/add-to-calendar.webp" alt="" /></button>
                         <div id="${menuId}" class="reminder-menu">
                             <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
                             <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
