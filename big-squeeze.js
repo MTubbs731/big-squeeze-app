@@ -361,7 +361,6 @@ function renderAmenities() {
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="" /></button>` : ''}
-                    ` : ''}
                 </div>
             </div>`;
     });
