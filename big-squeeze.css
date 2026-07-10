@@ -67,7 +67,7 @@
         /* .character-r { position: absolute; top: 0; right: 0; } */
         #lemmy-lemonade {
           position: absolute; /* Takes Lemmy completely out of the normal text flow layout */
-          top: -45px;         /* Negative tracking forces him UPWARDS over the top of the header border line */
+          top: 0;         /* -45 Negative tracking forces him UPWARDS over the top of the header border line */
           right: 10px;        /* Pushes him tightly flush against the far right boundary edge */
           z-index: 100;       /* Higher indexing layer guarantees he stacks ON TOP of headers instead of under them */
           width: 80px;        /* Explicitly locks his size constraints so layout scaling doesn't break */
