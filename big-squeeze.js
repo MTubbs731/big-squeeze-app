@@ -221,6 +221,9 @@ function renderCards(list, elementId, emptyMsg, isLive) {
 
         const menuId = `${elementId}-remind-${index}`;
 
+        // Dynamic check: only true if rendering the events list
+        const showReminderButton = (elementId === "all-events");
+
         container.innerHTML += `
             <div class="card">
                 <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
@@ -230,13 +233,15 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" width="75%" alt="" /></button>` : ''}
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="" /></button>` : ''}
                     
+                    ${showReminderButton ? `
                     <div class="reminder-dropdown">
-                        <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" ><img src="images/buttons/add-to-calendar.webp" width="75%" alt="" /></button>
+                        <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/add-to-calendar.webp" width="75%" alt="" /></button>
                         <div id="${menuId}" class="reminder-menu">
                             <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
                             <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
                         </div>
                     </div>
+                    ` : ''}
                 </div>
                 
                 ${hasDetailsButton ? `
