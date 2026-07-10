@@ -122,7 +122,7 @@ async function initDatabaseApp() {
                 processedDesc = processedDesc.replace(/\n/g, "<br>");
                 
                 dbDetails[row.Detail_ID.trim()] = {
-                    name: row.Detail_Name ? row.Detail_Name.trim() : "No Details",
+                    name: row.Detail_Name ? row.Detail_Name.trim() : "",
                     image: row.Detail_Image ? row.Detail_Image.trim() : "",
                     desc: processedDesc
                 };
