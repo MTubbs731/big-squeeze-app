@@ -257,16 +257,28 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     });
 }
 
-// TOGGLE FUNCTION REPLACING MODAL HANDLERS
 function toggleCardDetails(targetDivId) {
     const targetDiv = document.getElementById(targetDivId);
     if(targetDiv) {
         targetDiv.classList.toggle('show');
         
-        // FIXED: Use .parentElement to find the card, then look inside it for the button
-        const associatedButton = targetDiv.parentElement.querySelector('.dtl-btn');
+        // Use .parentElement to find the card, then look inside it for the button
+        const cardElement = targetDiv.parentElement;
+        const associatedButton = cardElement.querySelector('.dtl-btn');
         if (associatedButton) {
             associatedButton.innerText = targetDiv.classList.contains('show') ? "Hide Details" : "View Details";
+        }
+
+        // AUTOMATIC SCROLL LOGIC
+        // Only scroll if the card was just opened (has the 'show' class)
+        if (targetDiv.classList.contains('show')) {
+            // A tiny timeout gives the browser a split second to render the expanded height first
+            setTimeout(() => {
+                cardElement.scrollIntoView({ 
+                    behavior: 'smooth', // Smooth animated scrolling instead of a jarring jump
+                    block: 'nearest'    // Scrolls just enough to bring the bottom into the viewport
+                });
+            }, 50);
         }
     }
 }
