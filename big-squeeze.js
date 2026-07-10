@@ -4,6 +4,7 @@ const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v9
 const URL_DETAILS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2086466838&single=true&output=csv";    
 const URL_PARAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=218585894&single=true&output=csv";    
 const URL_NEWS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2012752905&single=true&output=csv";
+const URL_AMENITIES = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=295020352&single=true&output=csv";
 
 let dbEvents = [];
 let dbStands = [];
@@ -11,6 +12,7 @@ let dbLocations = {};
 let dbDetails = {};
 let dbParams = [];
 let dbNews = [];
+let dbAmenities = [];
 let selectedDayString = ""; 
 let scheduleRefreshTimer = null;
     
@@ -28,13 +30,14 @@ function fetchAndParseCsv(url) {
 
 async function initDatabaseApp() {
     try {
-        const [rawLocations, rawDetails, rawEvents, rawStands, rawParams, rawNews] = await Promise.all([
+        const [rawLocations, rawDetails, rawEvents, rawStands, rawParams, rawNews, rawAmenities] = await Promise.all([
             fetchAndParseCsv(URL_LOCATIONS),
             fetchAndParseCsv(URL_DETAILS),
             fetchAndParseCsv(URL_EVENTS),
             fetchAndParseCsv(URL_STANDS),
             fetchAndParseCsv(URL_PARAMS),
-            fetchAndParseCsv(URL_NEWS)
+            fetchAndParseCsv(URL_NEWS),
+            fetchAndParseCsv(URL_AMENITIES)
         ]);
 
         // Load paramters from database
@@ -164,6 +167,20 @@ async function initDatabaseApp() {
                 content: processedContent,
                 image: row.News_Image ? row.News_Image.trim() : "",
                 imageLoc: row.News_Image_Loc ? row.News_Image_Loc.trim().toUpperCase() : "L"
+            };
+        });
+
+        dbAmenities = rawAmenities.map(row => {
+            const locId = row.Amenity_Loc_ID ? row.Amenity_Loc_ID.trim() : "";
+            let processedContent = row.Amenity_Desc ? row.Amenity_Desc.trim() : "";
+            processedContent = processedContent.replace(/\n/g, "<br>"); 
+
+            return {
+                title: row.Amenity_Title ? row.Amenity_Title.trim() : "",
+                content: processedContent,
+                image: row.Amenity_Image ? row.Amenity_Image.trim() : "",
+                locationName: dbLocations[locId]?.name || "Unknown Location",
+                mapUrl: dbLocations[locId]?.mapUrl || "#"
             };
         });
         
@@ -315,6 +332,37 @@ function renderNewsFeed() {
                 <div class="card-title" style="margin-top: 5px; margin-bottom: 5px;">${item.title}</div>
                 ${imageHtml}
                 <p class="dtl-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
+            </div>`;
+    });
+}
+
+function renderAmenities() {
+    const amenitiesContainer = document.getElementById("amenities-feed");
+    if (!amenitiesContainer) return;
+
+    amenitiesContainer.innerHTML = "";
+
+    if (dbAmenities.length === 0) {
+        amenitiesContainer.innerHTML = `<p class="no-events">No amenities posted yet.</p>`;
+        return;
+    }
+
+    list.forEach(item => {
+        // Build the image tag string if a URL string exists in your sheet cell
+        const imageHtml = item.image 
+            ? `<img src="${item.image}" class="news-thumb" alt="Amenities graphic" />` 
+            : "";
+
+        amenitiesContainer.innerHTML += `
+            <div class="card news-card">
+                <div class="card-title" style="margin-top: 5px; margin-bottom: 5px;">${item.title}</div>
+                ${imageHtml}
+                <p class="dtl-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
+                <div class="location">📍 ${item.locationName}</div>
+                <div class="card-actions">
+                    ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="" /></button>` : ''}
+                    ` : ''}
+                </div>
             </div>`;
     });
 }
