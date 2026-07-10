@@ -1,4 +1,4 @@
-         /* Base Reset & Native Mobile Layouts */
+         /* Base Reset & Native Mobile Layouts */  /* colors light yellow #fff300  dark yellow #ffde13  light green #8dc73e  dark green #036838  */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fae980; color: #333; height: 100vh; overflow: hidden; }
         h1 { text-align: center; color: #036838; margin: 15px 0 5px 0; font-size: 2.2em;}
         h2 { color: #036838; font-size: 1.5em; border-bottom: 2px solid #036838; padding-bottom: 5px; margin-top: 20px; }
@@ -32,6 +32,7 @@
         .time { font-weight: bold; color: #e67e22; font-size: 1.1em; }
         .location { color: #000; font-size: 1em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
         .btn { display: inline-block; background: #3498db; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; margin-top: 10px; font-size: 0.85em; font-weight: bold; }
+        .g-btn { display: inline-block; background: #8dc73e; padding: 8px; text-decoration: none; border-radius: 4px; margin-top: 10px; }
         .no-events { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
         .dtl-btn { padding-right: 20px;}
         .dtl-desc { line-height: 1.5; color: #000; margin-top: 12px; font-size: 1.1em; white-space: pre-wrap; }
@@ -64,7 +65,6 @@
        .news-card::after { content: ""; clear: both; display: table; }
 
         /* Character Positioning */
-        /* .character-r { position: absolute; top: 0; right: 0; } */
         #lemmy-lemonade {
           position: absolute; /* Takes Lemmy completely out of the normal text flow layout */
           top: 0px;         /* -45 Negative tracking forces him UPWARDS over the top of the header border line */
