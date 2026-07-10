@@ -54,6 +54,7 @@
         /* Images */
         .responsive { width: 100%; height: auto; }
         .dtl-image { display: flex; justify-content: center; }
+
         /* News Image Custom Styling */
        .news-thumb { max-width: 40%; height: auto; border-radius: 6px; margin-bottom: 5px; }
        .news-float-l { float: left; margin-right: 12px; }
