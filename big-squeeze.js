@@ -280,27 +280,34 @@ function toggleCardDetails(targetDivId) {
     if(targetDiv) {
         targetDiv.classList.toggle('show');
         
-        // Use .parentElement to find the card, then look inside it for the button
+        // Find the parent card layout element box wrapper
         const cardElement = targetDiv.parentElement;
-        const associatedButton = cardElement.querySelector('.dtl-btn');
-        if (associatedButton) {
-            associatedButton.innerText = targetDiv.classList.contains('show') ? "Hide Details" : "View Details";
+        
+        // Target the inner image tag sitting inside your dynamic button container
+        const buttonImage = cardElement.querySelector('.g-btn img');
+        
+        if (buttonImage) {
+            // Check if the card is currently visible or hidden
+            if (targetDiv.classList.contains('show')) {
+                // SWAP TO YOUR HIDE DETAILS GRAPHIC PATH
+                buttonImage.src = "images/buttons/hide-details.webp";
+            } else {
+                // RESET BACK TO YOUR VIEW DETAILS GRAPHIC PATH
+                buttonImage.src = "images/buttons/view-details.webp";
+            }
         }
 
         // AUTOMATIC SCROLL LOGIC
-        // Only scroll if the card was just opened (has the 'show' class)
         if (targetDiv.classList.contains('show')) {
-            // A tiny timeout gives the browser a split second to render the expanded height first
             setTimeout(() => {
                 cardElement.scrollIntoView({ 
-                    behavior: 'smooth', // Smooth animated scrolling instead of a jarring jump
-                    block: 'nearest'    // Scrolls just enough to bring the bottom into the viewport
+                    behavior: 'smooth',
+                    block: 'nearest'
                 });
             }, 50);
         }
     }
 }
-
 function renderNewsFeed() {
     const newsContainer = document.getElementById("news-feed");
     if (!newsContainer) return;
