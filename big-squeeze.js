@@ -248,12 +248,12 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
-                    ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="" /></button>` : ''}
-                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" width="75%" alt="" /></button>` : ''}
+                    ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="Show on map" /></button>` : ''}
+                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" width="75%" alt="Show details" /></button>` : ''}
                     
                     ${showReminderButton ? `
                     <div class="reminder-dropdown">
-                        <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/remind-me.webp" width="75%" alt="" /></button>
+                        <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/remind-me.webp" width="75%" alt="Remind me" /></button>
                         <div id="${menuId}" class="reminder-menu">
                             <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
                             <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
