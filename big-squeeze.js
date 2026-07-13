@@ -280,34 +280,31 @@ function toggleCardDetails(targetDivId) {
     if(targetDiv) {
         targetDiv.classList.toggle('show');
         
-        // Find the parent card layout element box wrapper
         const cardElement = targetDiv.parentElement;
-        
-        // Target the inner image tag sitting inside your dynamic button container
-        const buttonImage = cardElement.querySelector('.g-btn img');
+        const associatedButton = cardElement.querySelector('.g-btn img');
         
         if (buttonImage) {
-            // Check if the card is currently visible or hidden
             if (targetDiv.classList.contains('show')) {
-                // SWAP TO YOUR HIDE DETAILS GRAPHIC PATH
                 buttonImage.src = "images/buttons/hide-details.webp";
             } else {
-                // RESET BACK TO YOUR VIEW DETAILS GRAPHIC PATH
                 buttonImage.src = "images/buttons/view-details.webp";
             }
         }
 
         // AUTOMATIC SCROLL LOGIC
         if (targetDiv.classList.contains('show')) {
+            // INCREASED TIMEOUT: Waits 250ms so the card is mostly slid open 
+            // before the browser tracks its final dimensions!
             setTimeout(() => {
                 cardElement.scrollIntoView({ 
                     behavior: 'smooth',
                     block: 'nearest'
                 });
-            }, 50);
+            }, 250); 
         }
     }
 }
+
 function renderNewsFeed() {
     const newsContainer = document.getElementById("news-feed");
     if (!newsContainer) return;
