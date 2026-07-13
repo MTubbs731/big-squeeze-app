@@ -249,7 +249,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="" /></button>` : ''}
-                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" width="75%" alt="" /></button>` : ''}
+                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" width="75%" alt="" /></button>` : ''}
                     
                     ${showReminderButton ? `
                     <div class="reminder-dropdown">
@@ -282,8 +282,8 @@ function toggleCardDetails(targetDivId) {
         
         const cardElement = targetDiv.parentElement;
         
-        // FIXED: Declared as buttonImage to match the code below
-        const buttonImage = cardElement.querySelector('.g-btn img');
+        // TARGET ONLY THE DETAILS IMAGE SPECIFICALLY
+        const buttonImage = cardElement.querySelector('.details-btn-img');
         
         if (buttonImage) {
             if (targetDiv.classList.contains('show')) {
