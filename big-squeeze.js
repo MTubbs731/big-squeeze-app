@@ -248,8 +248,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 <div class="card-title">${item.name}</div>
                 <div class="location">📍 ${item.locationName}</div>
                 <div class="card-actions">
-                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" width="75%" alt="" /></button>` : ''}
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="" /></button>` : ''}
+                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" width="75%" alt="" /></button>` : ''}
                     
                     ${showReminderButton ? `
                     <div class="reminder-dropdown">
