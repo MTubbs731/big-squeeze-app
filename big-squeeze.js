@@ -281,7 +281,9 @@ function toggleCardDetails(targetDivId) {
         targetDiv.classList.toggle('show');
         
         const cardElement = targetDiv.parentElement;
-        const associatedButton = cardElement.querySelector('.g-btn img');
+        
+        // FIXED: Declared as buttonImage to match the code below
+        const buttonImage = cardElement.querySelector('.g-btn img');
         
         if (buttonImage) {
             if (targetDiv.classList.contains('show')) {
@@ -293,8 +295,6 @@ function toggleCardDetails(targetDivId) {
 
         // AUTOMATIC SCROLL LOGIC
         if (targetDiv.classList.contains('show')) {
-            // INCREASED TIMEOUT: Waits 250ms so the card is mostly slid open 
-            // before the browser tracks its final dimensions!
             setTimeout(() => {
                 cardElement.scrollIntoView({ 
                     behavior: 'smooth',
