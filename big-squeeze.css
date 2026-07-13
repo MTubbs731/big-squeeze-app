@@ -49,8 +49,8 @@
         .tab-icon { font-size: 1.4em; margin-bottom: 2px; }
 
         /* Expandable Details in Card */
-        .expanded-details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; }
-        .expanded-details.show { display: block; }
+        .expanded-details { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out; padding: 0 10px; }
+        .expanded-details.show { max-height: 500px; opacity: 1; padding: 10px 10px; }
         .expanded-details img { max-width: 100%; border-radius: 8px; margin-bottom: 10px; display: block; }
 
         /* Images */
