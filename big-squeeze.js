@@ -355,7 +355,7 @@ function renderAmenities() {
     // FIXED: Changed "list.forEach" to "dbAmenities.forEach"
     dbAmenities.forEach(item => {
         const imageHtml = item.image 
-            ? `<img src="${item.image}" class="news-thumb" alt="Amenities graphic" />` 
+            ? `<img src="${item.image}" class="news-thumb news-float-r" alt="Amenities graphic" />` 
             : "";
 
         amenitiesContainer.innerHTML += `
