@@ -90,3 +90,5 @@
        .reminder-menu.show { display: block; }
 
        .spinner { display: flex; justify-content: center; align-items: center; height: 100%; }
+       .spin-img { animation: spin 3s linear infinite: }
+       @keyframes spin { from { rotate: 0deg; } to { rotate: 360deg; }}
