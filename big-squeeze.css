@@ -1,5 +1,5 @@
          /* Base Reset & Native Mobile Layouts */  /* colors light yellow #fff300  dark yellow #ffde13  pale yellow #faf47f  light green #8dc73e  dark green #036838  pale green #a4c774  */
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fae980; color: #333; height: 100vh; overflow: hidden; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fae980; color: #333; /* height: 100vh; */ overflow-y: auto; }
         h1 { text-align: center; color: #036838; margin: 15px 0 5px 0; font-size: 2.2em;}
         h2 { color: #036838; font-size: 1.5em; border-bottom: 2px solid #036838; padding-bottom: 5px; margin-top: 20px; }
         .hero-text { color: #036838; font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal; font-size: 2.5em; padding-bottom: 5px; margin-top: 20px; }
@@ -8,7 +8,7 @@
         .right { text-align: right; }
         .no-border { border-style: none; padding-bottom: 0; }
 
-        .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 80px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-sizing: border-box;}
+        .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 80px; height: auto; display: flex; flex-direction: column; box-sizing: border-box; }
         .tab-content {flex: 1; display: flex; flex-direction: column; height: auto; overflow-y: visible; padding-bottom: 20px; box-sizing: border-box;}
         #stands-screen { position: relative; padding-top: 20px; }
         .header { position: relative; top: 0; left: 0; width: 100%; z-index: 10; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
