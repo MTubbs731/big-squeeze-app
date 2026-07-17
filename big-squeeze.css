@@ -11,7 +11,7 @@
         .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 80px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-sizing: border-box;}
         .tab-content {flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 20px; box-sizing: border-box;}
         #stands-screen { position: relative; padding-top: 20px; }
-        .header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; background-image: url("./images/lemon-skin-600x90.jpg"); }
+        .header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
         .stands-screen { position: relative; }
         .hidden { display: none !important; }
 
