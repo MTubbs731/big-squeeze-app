@@ -227,8 +227,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit' }) : "??";
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
-        const indicator = isLive ? "⏰ " : "⏰ ";
-
+        
         const hasDetailsButton = (item.details && item.details.trim() !== "") || (item.image && item.image.trim() !== "");
         const uniqueId = `${elementId}-details-${index}`;
         
@@ -245,9 +244,9 @@ function renderCards(list, elementId, emptyMsg, isLive) {
 
         container.innerHTML += `
             <div class="card">
-                <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
+                <span class="time">${startD} ${startT} - ${endT}</span>
                 <div class="card-title">${item.name}</div>
-                <div class="location">📍 ${item.locationName}</div>
+                <div class="location">${item.locationName}</div>
                 <div class="card-actions">
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="Show on map" /></button>` : ''}
                     ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" width="75%" alt="Show details" /></button>` : ''}
@@ -364,7 +363,7 @@ function renderAmenities() {
                 <div class="card-title" style="margin-top: 5px; margin-bottom: 5px;">${item.title}</div>
                 ${imageHtml}
                 <p class="dtl-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
-                <div class="location">📍 ${item.locationName}</div>
+                <div class="location">${item.locationName}</div>
                 <div class="card-actions">
                     ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="" /></button>` : ''}
                 </div>
