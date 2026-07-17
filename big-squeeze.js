@@ -214,7 +214,7 @@ function processAllSchedules() {
     // NEW: COUNT AND APPEND STANDS TOTAL TO THE HEADER
     const standsHeader = document.getElementById("stands-header-title");
     if (standsHeader) {
-        standsHeader.innerText = `(${sortedStands.length}) Lemonade Stands`;
+        standsHeader.innerText = `${sortedStands.length} Lemonade Stands`;
     }
     
     renderCards(sortedStands, "all-stands", "No lemonade stands found.", false);
