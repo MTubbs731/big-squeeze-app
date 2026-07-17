@@ -211,6 +211,12 @@ function processAllSchedules() {
 
     const sortedStands = [...dbStands].sort((a, b) => a.name.localeCompare(b.name));
     
+    // NEW: COUNT AND APPEND STANDS TOTAL TO THE HEADER
+    const standsHeader = document.getElementById("stands-header-title");
+    if (standsHeader) {
+        standsHeader.innerText = `(${sortedStands.length}) Lemonade Stands`;
+    }
+    
     renderCards(sortedStands, "all-stands", "No lemonade stands found.", false);
 }
 
