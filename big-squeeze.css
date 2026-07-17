@@ -89,6 +89,13 @@
        /* Toggle helper class triggered by JS */ 
        .reminder-menu.show { display: block; }
 
-       .spinner { display: flex; justify-content: center; align-items: center; height: 100%; }
-       .spin-img { animation: spin 3s linear infinite: }
-       @keyframes spin { from { rotate: 0deg; } to { rotate: 360deg; }}
+       .spinner { display: flex; justify-content: center; align-items: center; padding: 30px; }
+       .spin-img { display: block; animation: lemonRotation 2s linear infinite; }
+       @keyframes lemonRotation {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+       }
