@@ -65,7 +65,7 @@
         /* The Sliding Indicator Bar Line Style */
         #nav-indicator {
             position: absolute;
-            bottom: 2;
+            bottom: 0;
             left: 0;
             height: 4px;                  /* Thickness of your line */
             width: 20%;                   /* 100% split across 5 individual navigation tabs = 20% width each */
