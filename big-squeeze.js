@@ -187,6 +187,7 @@ async function initDatabaseApp() {
         processAllSchedules();
         renderNewsFeed();
         renderAmenities();
+        switchTab('home');
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
         document.getElementById("all-events").innerText = "Failed to sync remote database entries.";
@@ -378,17 +379,28 @@ function switchTab(target) {
     const targetScreen = document.getElementById(`${target}-screen`);
     if (targetScreen) {
         targetScreen.classList.remove('hidden');
-        targetScreen.scrollTop = 0; 
+        // If the header is no longer sticky, we reset root viewport scroll instead of container scroll
+        window.scrollTo({ top: 0, behavior: 'instant' }); 
     }
     document.getElementById(`nav-${target}`).classList.add('active');
-}
-    
-function openLocationInAppMap(mapUrl) {
-    const mapIframe = document.querySelector('#map-screen iframe');
-    if (mapIframe) {
-        mapIframe.src = mapUrl;
+
+    // NEW SLIDING INDICATOR TRACKING ENGINE LOGIC
+    const indicator = document.getElementById('nav-indicator');
+    if (indicator) {
+        // Map out the 0-4 grid column index order multiplier for each tab link target
+        const tabPositions = {
+            'home': 0,
+            'events': 1,
+            'stands': 2,
+            'map': 3,
+            'amenities': 4
+        };
+        
+        const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
+        
+        // Multiply by 100% to cleanly shift the 20% wide bar over to its matching slot
+        indicator.style.transform = `translateX(${positionIndex * 100}%)`;
     }
-    switchTab('map');
 }
 
 function switchDay(dateStr, event) {
