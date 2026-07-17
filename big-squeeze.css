@@ -88,3 +88,5 @@
 
        /* Toggle helper class triggered by JS */ 
        .reminder-menu.show { display: block; }
+
+       .spinner { display: flex; justify-content: center; align-items: center; height: 100%; }
