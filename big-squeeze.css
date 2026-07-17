@@ -1,4 +1,5 @@
-         /* Base Reset & Native Mobile Layouts */  /* colors light yellow #fff300  dark yellow #ffde13  pale yellow #faf47f  light green #8dc73e  dark green #036838  pale green #a4c774  */
+        /* colors light yellow #fff300  dark yellow #ffde13  pale yellow #faf47f  light green #8dc73e  dark green #036838  pale green #a4c774  */
+        /* Base Reset & Native Mobile Layouts */  
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fae980; color: #333; /* height: 100vh; */ overflow-y: auto; }
         h1 { text-align: center; color: #036838; margin: 15px 0 5px 0; font-size: 2.2em;}
         h2 { color: #036838; font-size: 1.5em; border-bottom: 2px solid #036838; padding-bottom: 5px; margin-top: 20px; }
