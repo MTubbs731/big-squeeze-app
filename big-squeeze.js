@@ -271,16 +271,17 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     <!-- 3. Action buttons (Conditionally inline right OR standard below) -->
                     <div class="card-actions ${inlineClass}">
                         ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
-                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}
                         
                         ${showReminderButton ? `
                         <div class="reminder-dropdown">
-                            <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/add-to-calendar.webp" alt="Remind" /></button>
+                            <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/remind-me.webp" alt="Remind" /></button>
                             <div id="${menuId}" class="reminder-menu">
                                 <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
                                 <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
                             </div>
                         </div>
+
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}                        
                         ` : ''}
                     </div>
         
