@@ -20,7 +20,7 @@ function fetchAndParseCsv(url) {
     return new Promise((resolve, reject) => {
         Papa.parse(url, {
             download: true,       
-            header: true,         
+            header: true,          
             skipEmptyLines: true,  
             complete: (results) => resolve(results.data),
             error: (error) => reject(error)
@@ -247,31 +247,34 @@ function renderCards(list, elementId, emptyMsg, isLive) {
 
         const menuId = `${elementId}-remind-${index}`;
 
-        // Dynamic checks based on which list we are rendering
+        // Dynamic layout definitions based on card context
+        const isStandsScreen = (elementId === "all-stands");
         const showReminderButton = (elementId === "all-events");
         
-        // DYNAMIC LAYOUT ENGINE: 
-        // If it's the stands list, apply side-by-side split row formatting. Otherwise, keep standard stacking flow.
-        const useInlineLayout = (elementId === "all-stands");
-        const splitClass = useInlineLayout ? "card-content-split" : "";
-        const inlineClass = useInlineLayout ? "ca-inline" : "";
+        const splitClass = isStandsScreen ? "card-content-split" : "";
+        const inlineClass = isStandsScreen ? "ca-inline" : "";
 
         container.innerHTML += `
             <div class="card">
-                <!-- 1. Open the content wrapper layout (Dynamic Split vs Normal) -->
+                <!-- Open the layout wrapper context wrapper -->
                 <div class="${splitClass}">
                     
-                    <!-- 2. Text blocks stay grouped together -->
+                    <!-- Text elements frame -->
                     <div class="card-text-block">
                         <div class="card-title">${item.name}</div>
-                        <span class="time">${indicator}${startD} ${startT} - ${endT}</span>
+                        
+                        <!-- FIXED: Date/Time row displays ONLY if it's NOT the stands screen -->
+                        ${!isStandsScreen ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
+                        
                         <div class="location">${item.locationName}</div>
                     </div>
         
-                    <!-- 3. Action buttons (Conditionally inline right OR standard below) -->
+                    <!-- Action buttons row layout -->
                     <div class="card-actions ${inlineClass}">
+                        <!-- 1st: Show on Map Button -->
                         ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                         
+                        <!-- 2nd: Reminder Calendar dropdown box block (Events only) -->
                         ${showReminderButton ? `
                         <div class="reminder-dropdown">
                             <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/remind-me.webp" alt="Remind" /></button>
@@ -280,14 +283,15 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                                 <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
                             </div>
                         </div>
-
-                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}                        
                         ` : ''}
+
+                        <!-- 3rd: Show Details Button (FIXED: Unlinked from reminder check template container syntax error) -->
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}                       
                     </div>
         
                 </div> <!-- Close content wrapper -->
                 
-                <!-- Details box naturally renders below the card content boundary frame when clicked open -->
+                <!-- Details drawer drawer panel -->
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
@@ -300,6 +304,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
             </div>`;
     });
 }
+
 function toggleCardDetails(targetDivId) {
     const targetDiv = document.getElementById(targetDivId);
     if(targetDiv) {
