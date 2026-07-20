@@ -222,6 +222,7 @@ function processAllSchedules() {
 
 function renderCards(list, elementId, emptyMsg, isLive) {
     const container = document.getElementById(elementId);
+    if (!container) return; // Prevent DOM targeting errors
     container.innerHTML = "";
 
     if(list.length === 0) {
@@ -230,12 +231,13 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     }
 
     list.forEach((item, index) => {
-        /* const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit' }) : "??";
-        const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
-        const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??"; */
-        const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "??";
-        const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}) : "??";
-        const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}) : "??";
+        // FIXED: Safe date parsing checks safeguard your amenities data from crashing the thread
+        const hasValidStart = item.start && item.start.trim() !== "";
+        const hasValidEnd = item.end && item.end.trim() !== "";
+
+        const startD = hasValidStart ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "";
+        const startT = hasValidStart ? new Date(item.start).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}) : "";
+        const endT = hasValidEnd ? new Date(item.end).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}) : "";
         
         const indicator = isLive ? "" : "";
         
@@ -243,31 +245,37 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const uniqueId = `${elementId}-details-${index}`;
         
         // Escape parameters cleanly for inline string safety checks
-        const safeName = item.name.replace(/'/g, "\\'").replace(/"/g, '\\"');
-        const safeStart = item.start;
-        const safeEnd = item.end;
-        const safeLoc = item.locationName.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        const safeName = (item.name || item.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+        const safeStart = item.start || '';
+        const safeEnd = item.end || '';
+        const safeLoc = (item.locationName || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
 
         const menuId = `${elementId}-remind-${index}`;
 
         // Dynamic layout definitions based on card context
         const isStandsScreen = (elementId === "all-stands");
+        const isAmenitiesScreen = (elementId === "all-amenities");
         const showReminderButton = (elementId === "all-events");
         
-        const splitClass = isStandsScreen ? "card-content-split" : "";
-        const inlineClass = isStandsScreen ? "ca-inline" : "";
+        // Treat stands and amenities as split screens, events as standard stacks
+        const useSplitLayout = isStandsScreen || isAmenitiesScreen;
+        const splitClass = useSplitLayout ? "card-content-split" : "card-content-stack";
+        const inlineClass = useSplitLayout ? "ca-inline" : "";
 
-container.innerHTML += `
+        // Normalize display name handles since Amenities tables use .title while events use .name
+        const cardTitleText = item.name || item.title || "Unnamed Item";
+
+        container.innerHTML += `
             <div class="card">
-                <!-- Open the layout wrapper context wrapper (Forces clean layout segregation on BOTH screens) -->
-                <div class="${isStandsScreen ? 'card-content-split' : 'card-content-stack'}">
+                <!-- Open the layout wrapper context wrapper -->
+                <div class="${splitClass}">
                     
                     <!-- Text elements frame -->
                     <div class="card-text-block">
-                        <div class="card-title">${item.name}</div>
+                        <div class="card-title">${cardTitleText}</div>
                         
-                        <!-- Date/Time row displays ONLY if it's NOT the stands screen -->
-                        ${!isStandsScreen ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
+                        <!-- Date/Time row displays ONLY if a valid timeline entry exists -->
+                        ${hasValidStart ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
                         
                         <div class="location">${item.locationName}</div>
                     </div>
@@ -294,14 +302,14 @@ container.innerHTML += `
         
                 </div> <!-- Close content wrapper -->
                 
-                <!-- Details drawer drawer panel -->
+                <!-- Details drawer panel -->
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
                         <div id="${uniqueId}-image" class="dtl-image">
                             ${item.image ? `<img src="${item.image}" alt="${item.dname || 'Details'}" />` : ''}
                         </div>
-                        <p class="dtl-desc">${item.details || 'No detailed description provided.'}</p>
+                        <p class="dtl-desc">${item.details || item.content || 'No detailed description provided.'}</p>
                     </div>
                 ` : ''}
             </div>`;
