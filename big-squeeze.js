@@ -230,9 +230,12 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     }
 
     list.forEach((item, index) => {
-        const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit' }) : "??";
+        /* const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit' }) : "??";
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
-        const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
+        const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??"; */
+        const startD = item.start ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "??";
+        const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}) : "??";
+        const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}) : "??";
         
         const indicator = isLive ? "" : "";
         
