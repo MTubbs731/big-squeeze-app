@@ -36,7 +36,7 @@
         .time { font-weight: bold; color: #e67e22; font-size: 1.1em; }
         .location { color: #000; font-size: 1em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
         .btn { display: inline-block; background: #f9f497; color: white; padding: 8px 12px; text-decoration: none; border-radius: 2px; margin-top: 10px; font-size: 0.85em; font-weight: bold; }
-        .g-btn { display: inline-flex; align-items: center; justify-content: center; background: #f9f497; width: 64px; height: 64px; box-sizing: border-box; border-radius: 50%; text-decoration: none; border: 2px outset #036838; margin-top: 10px; cursor: pointer; padding: 0; }
+        .g-btn { display: inline-flex; align-items: center; justify-content: center; background: #f9f497; width: 64px; height: 64px; box-sizing: border-box; border-radius: 50%; text-decoration: none; border: 1px outset #036838; margin-top: 10px; cursor: pointer; padding: 0; }
         .g-btn img { width: 60%; height: auto; display: block; }
         .no-events { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
         .dtl-btn { padding-right: 20px;}
