@@ -255,6 +255,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const useInlineLayout = (elementId === "all-stands");
         const splitClass = useInlineLayout ? "card-content-split" : "";
         const inlineClass = useInlineLayout ? "ca-inline" : "";
+        const showTimeSpan = showReminderButton ? '<span class="time">'${indicator}${startD} ${startT}' - '${endT}'</span>' : '';
 
         container.innerHTML += `
             <div class="card">
@@ -264,7 +265,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     <!-- 2. Text blocks stay grouped together -->
                     <div class="card-text-block">
                         <div class="card-title">${item.name}</div>
-                        <span class="time">${indicator}${startD} ${startT} - ${endT}</span>
+                        /* <span class="time">${indicator}${startD} ${startT} - ${endT}</span> */
+                        ${showTimeSpan}
                         <div class="location">${item.locationName}</div>
                     </div>
         
