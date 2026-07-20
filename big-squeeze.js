@@ -248,26 +248,38 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         // Dynamic check: only true if rendering the events list
         const showReminderButton = (elementId === "all-events");
 
+        // Locate this section inside your renderCards() loop and replace it with this structured layout:
         container.innerHTML += `
             <div class="card">
-                <span class="time">${startD} ${startT} - ${endT}</span>
-                <div class="card-title">${item.name}</div>
-                <div class="location">${item.locationName}</div>
-                <div class="card-actions">
-                    ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="Show on map" /></button>` : ''}
-                    ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" width="75%" alt="Show details" /></button>` : ''}
+                <!-- 1. Open your new horizontal split wrapper block -->
+                <div class="card-content-split">
                     
-                    ${showReminderButton ? `
-                    <div class="reminder-dropdown">
-                        <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/remind-me.webp" width="75%" alt="Remind me" /></button>
-                        <div id="${menuId}" class="reminder-menu">
-                            <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
-                            <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
-                        </div>
+                    <!-- 2. Keep text blocks grouped tightly together on the left -->
+                    <div class="card-text-block">
+                        <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
+                        <div class="card-title">${item.name}</div>
+                        <div class="location">📍 ${item.locationName}</div>
                     </div>
-                    ` : ''}
-                </div>
+        
+                    <!-- 3. Append your optional helper class ".ca-inline" directly to the row right side -->
+                    <div class="card-actions ca-inline">
+                        ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="" /></button>` : ''}
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="" /></button>` : ''}
+                        
+                        ${showReminderButton ? `
+                        <div class="reminder-dropdown">
+                            <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/add-to-calendar.webp" alt="" /></button>
+                            <div id="${menuId}" class="reminder-menu">
+                                <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
+                                <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+        
+                </div> <!-- Close .card-content-split -->
                 
+                <!-- Details box naturally renders below the split boundary frame when clicked open -->
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
@@ -277,7 +289,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                         <p class="dtl-desc">${item.details || 'No detailed description provided.'}</p>
                     </div>
                 ` : ''}
-            </div>`;    
+            </div>`;
     });
 }
 
