@@ -234,7 +234,6 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         
-        // FIXED: Restored the indicator definition so the template string doesn't crash!
         const indicator = isLive ? "" : "";
         
         const hasDetailsButton = (item.details && item.details.trim() !== "") || (item.image && item.image.trim() !== "");
@@ -248,23 +247,29 @@ function renderCards(list, elementId, emptyMsg, isLive) {
 
         const menuId = `${elementId}-remind-${index}`;
 
-        // Dynamic check: only true if rendering the events list
+        // Dynamic checks based on which list we are rendering
         const showReminderButton = (elementId === "all-events");
+        
+        // DYNAMIC LAYOUT ENGINE: 
+        // If it's the stands list, apply side-by-side split row formatting. Otherwise, keep standard stacking flow.
+        const useInlineLayout = (elementId === "all-stands");
+        const splitClass = useInlineLayout ? "card-content-split" : "";
+        const inlineClass = useInlineLayout ? "ca-inline" : "";
 
         container.innerHTML += `
             <div class="card">
-                <!-- 1. Open your horizontal split wrapper block -->
-                <div class="card-content-split">
+                <!-- 1. Open the content wrapper layout (Dynamic Split vs Normal) -->
+                <div class="${splitClass}">
                     
-                    <!-- 2. Text blocks grouped on the left -->
+                    <!-- 2. Text blocks stay grouped together -->
                     <div class="card-text-block">
-                        <span class="time">${indicator}${startD} ${startT} - ${endT}</span>
+                        <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
                         <div class="card-title">${item.name}</div>
                         <div class="location">${item.locationName}</div>
                     </div>
         
-                    <!-- 3. Action buttons float elegantly to the right edge -->
-                    <div class="card-actions ca-inline">
+                    <!-- 3. Action buttons (Conditionally inline right OR standard below) -->
+                    <div class="card-actions ${inlineClass}">
                         ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                         ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}
                         
@@ -279,9 +284,9 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                         ` : ''}
                     </div>
         
-                </div> <!-- Close .card-content-split -->
+                </div> <!-- Close content wrapper -->
                 
-                <!-- Details box naturally renders below the split boundary frame when clicked open -->
+                <!-- Details box naturally renders below the card content boundary frame when clicked open -->
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
@@ -294,7 +299,6 @@ function renderCards(list, elementId, emptyMsg, isLive) {
             </div>`;
     });
 }
-
 function toggleCardDetails(targetDivId) {
     const targetDiv = document.getElementById(targetDivId);
     if(targetDiv) {
