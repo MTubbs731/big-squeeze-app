@@ -248,32 +248,32 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         // Dynamic check: only true if rendering the events list
         const showReminderButton = (elementId === "all-events");
 
-        // Locate this section inside your renderCards() loop and replace it with this structured layout:
         container.innerHTML += `
             <div class="card">
-                <!-- 1. Open your new horizontal split wrapper block -->
+                <!-- 1. Open your horizontal split wrapper block -->
                 <div class="card-content-split">
                     
-                    <!-- 2. Keep text blocks grouped tightly together on the left -->
+                    <!-- 2. Text blocks grouped on the left -->
                     <div class="card-text-block">
-                        <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
+                        <span class="time">${startD} ${startT} - ${endT}</span>
                         <div class="card-title">${item.name}</div>
-                        <div class="location">📍 ${item.locationName}</div>
+                        <div class="location">${item.locationName}</div>
                     </div>
         
-                    <!-- 3. Append your optional helper class ".ca-inline" directly to the row right side -->
+                    <!-- 3. Action buttons float elegantly to the right edge -->
                     <div class="card-actions ca-inline">
-                        ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="" /></button>` : ''}
-                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="" /></button>` : ''}
+                        ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                         
                         ${showReminderButton ? `
                         <div class="reminder-dropdown">
-                            <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/add-to-calendar.webp" alt="" /></button>
+                            <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/add-to-calendar.webp" alt="Remind" /></button>
                             <div id="${menuId}" class="reminder-menu">
                                 <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
                                 <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
                             </div>
                         </div>
+                        
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}                        
                         ` : ''}
                     </div>
         
