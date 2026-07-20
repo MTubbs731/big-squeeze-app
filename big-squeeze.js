@@ -257,16 +257,16 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const splitClass = isStandsScreen ? "card-content-split" : "";
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
-        container.innerHTML += `
+container.innerHTML += `
             <div class="card">
-                <!-- Open the layout wrapper context wrapper -->
-                <div class="${splitClass}">
+                <!-- Open the layout wrapper context wrapper (Forces clean layout segregation on BOTH screens) -->
+                <div class="${isStandsScreen ? 'card-content-split' : 'card-content-stack'}">
                     
                     <!-- Text elements frame -->
                     <div class="card-text-block">
                         <div class="card-title">${item.name}</div>
                         
-                        <!-- FIXED: Date/Time row displays ONLY if it's NOT the stands screen -->
+                        <!-- Date/Time row displays ONLY if it's NOT the stands screen -->
                         ${!isStandsScreen ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
                         
                         <div class="location">${item.locationName}</div>
@@ -275,7 +275,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     <!-- Action buttons row layout -->
                     <div class="card-actions ${inlineClass}">
                         <!-- 1st: Show on Map Button -->
-                        ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                        ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                         
                         <!-- 2nd: Reminder Calendar dropdown box block (Events only) -->
                         ${showReminderButton ? `
@@ -288,8 +288,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                         </div>
                         ` : ''}
 
-                        <!-- 3rd: Show Details Button (FIXED: Unlinked from reminder check template container syntax error) -->
-                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}                       
+                        <!-- 3rd: Show Details Button -->
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}                       
                     </div>
         
                 </div> <!-- Close content wrapper -->
