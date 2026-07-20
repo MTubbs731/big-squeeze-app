@@ -263,8 +263,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     
                     <!-- 2. Text blocks stay grouped together -->
                     <div class="card-text-block">
-                        <span class="time">${indicator}- ${startD} ${startT} - ${endT}</span>
                         <div class="card-title">${item.name}</div>
+                        <span class="time">${indicator}${startD} ${startT} - ${endT}</span>
                         <div class="location">${item.locationName}</div>
                     </div>
         
