@@ -378,30 +378,9 @@ function renderAmenities() {
     const amenitiesContainer = document.getElementById("all-amenities");
     if (!amenitiesContainer) return;
 
-    amenitiesContainer.innerHTML = "";
-
-    if (dbAmenities.length === 0) {
-        amenitiesContainer.innerHTML = `<p class="no-events">No amenities posted yet.</p>`;
-        return;
-    }
-
-    // FIXED: Changed "list.forEach" to "dbAmenities.forEach"
-    dbAmenities.forEach(item => {
-        const imageHtml = item.image 
-            ? `<img src="${item.image}" class="news-thumb news-float-r" alt="Amenities graphic" />` 
-            : "";
-
-        amenitiesContainer.innerHTML += `
-            <div class="card news-card">
-                <div class="card-title" style="margin-top: 5px; margin-bottom: 5px;">${item.title}</div>
-                ${imageHtml}
-                <p class="dtl-desc" style="margin: 0; padding-top: 5px;">${item.content}</p>
-                <div class="location">${item.locationName}</div>
-                <div class="card-actions">
-                    ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" width="75%" alt="" /></button>` : ''}
-                </div>
-            </div>`;
-    });
+    // Use your unified, isolated rendering engine loop instead of manual loops!
+    // Passing "all-amenities" treats it as a stacked layout similar to events.
+    renderCards(dbAmenities, "all-amenities", "No amenities posted yet.", false);
 }
 
 function switchTab(target) {
