@@ -28,8 +28,10 @@
         /* Dynamic Presentation Data Cards Layout */  
         .card { background: #cef29d; padding: 15px; margin: 10px 0; border: 1px solid #036838; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: #2c3e50; }
-        .card-actions { display: flex; gap: 12px; margin-top: 12px; margin-left: auto; }
-        .ca-inline { width: max-content; justify-content: space-between; }
+        .card-actions { display: flex; gap: 12px; margin-top: 12px; justify-content: flex-end; width: 100%; box-sizing: border-box; }
+        .ca-inline { display: inline-flex; width: auto; margin-top: 0; align-self: center; flex-shrink: 0; }
+        .card-content-split { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
+        .card-text-block { flex: 1; }
         .news-card { background-color: #fae980; border-style: none; box-shadow: none; }
         .time { font-weight: bold; color: #e67e22; font-size: 1.1em; }
         .location { color: #000; font-size: 1em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
