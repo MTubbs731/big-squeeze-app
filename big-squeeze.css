@@ -26,7 +26,7 @@
         .day-btn.active { background: #036838; color: white; }
 
         /* Dynamic Presentation Data Cards Layout */  
-        .card { background: #cef29d; padding: 15px; margin: 10px 0; border: 1px solid #036838; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .card { background: #cef29d; padding: 15px; margin: 10px 0; border: 1px solid #036838; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: #2c3e50; }
         .card-actions { display: flex; gap: 12px; margin-top: 12px; justify-content: flex-end; width: 100%; box-sizing: border-box; }
         .ca-inline { display: inline-flex; width: auto; margin-top: 0; align-self: center; flex-shrink: 0; }
