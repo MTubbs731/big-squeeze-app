@@ -234,6 +234,9 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const startT = item.start ? new Date(item.start).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         const endT = item.end ? new Date(item.end).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "??";
         
+        // FIXED: Restored the indicator definition so the template string doesn't crash!
+        const indicator = isLive ? "" : "";
+        
         const hasDetailsButton = (item.details && item.details.trim() !== "") || (item.image && item.image.trim() !== "");
         const uniqueId = `${elementId}-details-${index}`;
         
@@ -255,7 +258,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     
                     <!-- 2. Text blocks grouped on the left -->
                     <div class="card-text-block">
-                        <span class="time">${startD} ${startT} - ${endT}</span>
+                        <span class="time">${indicator}${startD} ${startT} - ${endT}</span>
                         <div class="card-title">${item.name}</div>
                         <div class="location">${item.locationName}</div>
                     </div>
@@ -263,6 +266,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     <!-- 3. Action buttons float elegantly to the right edge -->
                     <div class="card-actions ca-inline">
                         ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}')" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}
                         
                         ${showReminderButton ? `
                         <div class="reminder-dropdown">
@@ -272,8 +276,6 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                                 <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
                             </div>
                         </div>
-                        
-                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}')" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}                        
                         ` : ''}
                     </div>
         
