@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. CONFIGURATION & CSV ENDPOINTS
+   ========================================================================== */
 const URL_EVENTS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=0&single=true&output=csv";
 const URL_STANDS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=605861319&single=true&output=csv";
 const URL_LOCATIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=127409386&single=true&output=csv";
@@ -6,6 +9,9 @@ const URL_PARAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h4
 const URL_NEWS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=2012752905&single=true&output=csv";
 const URL_AMENITIES = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVpMD0v95h405KGnE8GNU1-gq0yBVhrUvVAFQly-0nK8W8Mhj7RnKFdf5LVPaBV8MOxjbGnRMSIe1B/pub?gid=295020352&single=true&output=csv";
 
+/* ==========================================================================
+   2. GLOBAL STATE & DATABASE STORES
+   ========================================================================== */
 let dbEvents = [];
 let dbStands = [];
 let dbLocations = {}; 
@@ -15,7 +21,10 @@ let dbNews = [];
 let dbAmenities = [];
 let selectedDayString = ""; 
 let scheduleRefreshTimer = null;
-    
+
+/* ==========================================================================
+   3. APP INITIALIZATION & CSV PARSING
+   ========================================================================== */
 function fetchAndParseCsv(url) {
     return new Promise((resolve, reject) => {
         Papa.parse(url, {
@@ -40,7 +49,7 @@ async function initDatabaseApp() {
             fetchAndParseCsv(URL_AMENITIES)
         ]);
 
-        // Load paramters from database
+        // Load parameters from database
         const params = {};
         rawParams.forEach(row => {
             if (row.Param_Key) {
@@ -48,30 +57,26 @@ async function initDatabaseApp() {
             }
         });
 
-        // 2. Extracted Start Date Logic (Cleaned up using the new map)
+        // Date Tracking Logic
         if (params["Festival_Start_Date"]) {
-            // Set our global tracking state to the spreadsheet value
             selectedDayString = params["Festival_Start_Date"];
     
-            // Calculate Day 2 by parsing Day 1 and adding 24 hours
             const day1Date = new Date(selectedDayString + "T00:00:00");
             const day2Date = new Date(day1Date);
             day2Date.setDate(day1Date.getDate() + 1);
     
             const day2String = day2Date.toISOString().split('T')[0];
 
-            // Dynamically update the onclick behaviors of your Friday/Saturday DOM buttons
             const btnDay1 = document.getElementById('btn-day1');
             const btnDay2 = document.getElementById('btn-day2');
     
             if (btnDay1) btnDay1.setAttribute('onclick', `switchDay('${selectedDayString}', event)`);
             if (btnDay2) btnDay2.setAttribute('onclick', `switchDay('${day2String}', event)`);
         } else {
-            // Fallback safety setting if the key is missing or misconfigured
             selectedDayString = "2026-07-10"; 
         }
 
-        // Update DOM from parameters
+        // DOM Parameter Overrides
         if (params["App_Title"]) {
             document.querySelector("#header h1").innerText = params["App_Title"];
             document.title = params["App_Title"];
@@ -86,24 +91,25 @@ async function initDatabaseApp() {
             }
         }
 
-        // Get cache refresh rate from parameters
-        let refreshRate = 300000; // 5 minutes fallback default if missing from sheet
+        // Cache Refresh Timer Setup
+        let refreshRate = 300000; // 5 minutes fallback default
         if (params["Refresh_Interval_MS"]) {
             const parsedRate = parseInt(params["Refresh_Interval_MS"].trim(), 10);
             if (!isNaN(parsedRate) && parsedRate > 0) {
                 refreshRate = parsedRate;
             }
         }
-        // Clear any existing timer cycle first to avoid stacking duplicate loops
+
         if (scheduleRefreshTimer) {
             clearInterval(scheduleRefreshTimer);
         }
-        // Start the schedule calculation interval loop using your dynamic value
+
         scheduleRefreshTimer = setInterval(() => {
-            console.log(`Recalculating timelines based on current device clock every ${refreshRate}ms...`);
+            console.log(`Recalculating timelines based on device clock every ${refreshRate}ms...`);
             processAllSchedules();
         }, refreshRate);
         
+        // Data Normalization Maps
         rawLocations.forEach(row => {
             if(row.Loc_ID) {
                 dbLocations[row.Loc_ID.trim()] = {
@@ -117,7 +123,6 @@ async function initDatabaseApp() {
 
         rawDetails.forEach(row => {
             if(row.Detail_ID) {
-                /* Replace line breaks with <br> */
                 let processedDesc = row.Detail_Descrip ? row.Detail_Descrip.trim() : "";
                 processedDesc = processedDesc.replace(/\n/g, "<br>");
                 
@@ -185,16 +190,21 @@ async function initDatabaseApp() {
             };
         });
         
+        // Initial Render Execution
         processAllSchedules();
         renderNewsFeed();
         renderAmenities();
         switchTab('home');
+
     } catch (err) {
         console.error("Database initialization processing crash failure:", err);
         document.getElementById("all-events").innerText = "Failed to sync remote database entries.";
     }
 }
 
+/* ==========================================================================
+   4. DATA PROCESSORS & SCHEDULE ENGINE
+   ========================================================================== */
 function processAllSchedules() {
     const [targetYear, targetMonth, targetDay] = selectedDayString.split('-').map(Number);
 
@@ -212,7 +222,7 @@ function processAllSchedules() {
 
     const sortedStands = [...dbStands].sort((a, b) => a.name.localeCompare(b.name));
     
-    // NEW: COUNT AND APPEND STANDS TOTAL TO THE HEADER
+    // Count & append stands total to header
     const standsHeader = document.getElementById("stands-header-title");
     if (standsHeader) {
         standsHeader.innerText = `${sortedStands.length} Lemonade Stands`;
@@ -221,6 +231,9 @@ function processAllSchedules() {
     renderCards(sortedStands, "all-stands", "No lemonade stands found.", false);
 }
 
+/* ==========================================================================
+   5. UI RENDERING ENGINES
+   ========================================================================== */
 function renderCards(list, elementId, emptyMsg, isLive) {
     const container = document.getElementById(elementId);
     if (!container) return;
@@ -232,7 +245,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     }
 
     list.forEach((item, index) => {
-        // 1. DATE / TIME ENGINE
+        // Date & Time Engine
         const hasDates = item.start && item.start.trim() !== "";
         const startD = hasDates ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "??";
         const startT = hasDates ? new Date(item.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
@@ -240,13 +253,13 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         
         const indicator = isLive ? "" : "";
         
-        // 2. DETAILS & IMAGE ENGINE
+        // Details & Image Engine
         const itemDetails = item.details ? item.details.trim() : (item.content ? item.content.trim() : "");
         const itemImage = item.image ? item.image.trim() : "";
         const hasDetailsButton = (itemDetails !== "") || (itemImage !== "");
         const uniqueId = `${elementId}-details-${index}`;
         
-        // 3. CALENDAR & TEXT SAFETY
+        // String Escaping
         const cardTitle = item.name || item.title || 'Unnamed';
         const safeName = cardTitle.replace(/'/g, "\\'").replace(/"/g, '\\"');
         const safeStart = item.start || "";
@@ -255,18 +268,18 @@ function renderCards(list, elementId, emptyMsg, isLive) {
 
         const menuId = `${elementId}-remind-${index}`;
 
-        // 4. SCREEN CONTEXT CHECKS
+        // Screen Context Checks
         const isStandsScreen = elementId === "all-stands" || elementId.includes("stands");
         const showReminderButton = (elementId === "all-events");
         const eventThumbHtml = (item.thumbnail && !isStandsScreen) ? `<img src="${item.thumbnail}" class="event-thumb" alt="" />` : '';
         
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
-        // 5. CONDITIONAL CARD INNER HTML
+        // Template Builder
         let cardInnerHtml = "";
 
         if (isStandsScreen) {
-            // SIDE-BY-SIDE LAYOUT (LEMONADE STANDS)
+            // Side-by-Side Layout (Lemonade Stands)
             cardInnerHtml = `
                 <div class="card-content-split">
                     <div class="card-text-block">
@@ -280,7 +293,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     </div>
                 </div>`;
         } else {
-            // STACKED LAYOUT WITH BOTTOM ROW (EVENTS & AMENITIES)
+            // Stacked Layout with Bottom Row (Events & Amenities)
             cardInnerHtml = `
                 <div class="card-content-stack">
                     <div class="card-text-block">
@@ -318,36 +331,14 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
-			<div id="${uniqueId}-image" class="dtl-image">
-                        	${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
-                    	</div>
+                        <div id="${uniqueId}-image" class="dtl-image">
+                            ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
+                        </div>
                         <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
                     </div>
                 ` : ''}
             </div>`;
     });
-}
-function toggleCardDetails(targetDivId) {
-    const targetDiv = document.getElementById(targetDivId);
-    if (targetDiv) {
-        targetDiv.classList.toggle('show');
-        
-        // Toggle the .active state on the CSS plus button to trigger the rotation animation
-        const toggleBtn = document.getElementById(`${targetDivId}-btn`);
-        if (toggleBtn) {
-            toggleBtn.classList.toggle('active');
-        }
-
-        // Automatic smooth scroll logic
-        if (targetDiv.classList.contains('show')) {
-            setTimeout(() => {
-                targetDiv.parentElement.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'nearest'
-                });
-            }, 250); 
-        }
-    }
 }
 
 function renderNewsFeed() {
@@ -369,10 +360,7 @@ function renderNewsFeed() {
               new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             : "Recent Update";
 
-        // Determine layout class based on R or L parameter parameters
         const alignmentClass = item.imageLoc === "R" ? "news-float-r" : "news-float-l";
-        
-        // Build the image tag string if a URL string exists in your sheet cell
         const imageHtml = item.image 
             ? `<img src="${item.image}" class="news-thumb ${alignmentClass}" alt="News graphic" />` 
             : "";
@@ -390,74 +378,53 @@ function renderAmenities() {
     const amenitiesContainer = document.getElementById("all-amenities");
     if (!amenitiesContainer) return;
 
-    // Use your unified, isolated rendering engine loop instead of manual loops!
-    // Passing "all-amenities" treats it as a stacked layout similar to events.
     renderCards(dbAmenities, "all-amenities", "No amenities posted yet.", false);
 }
 
-// HANDLES NAVIGATION TO MAP TAB + UPDATES IFRAME LOCATION
-function openLocationInAppMap(mapUrl) {
-    if (!mapUrl || mapUrl === '#') return;
-
-    const mapIframe = document.getElementById('default-map');
-    if (mapIframe) {
-        // 1. Update the Google Map iframe source to point to the clicked location
-        mapIframe.src = mapUrl;
-    }
-
-    // 2. Switch UI view over to the Map screen tab
-    switchTab('map');
-}
-
-function switchTab(target) {
-    document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
-    document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
-    
-    const targetScreen = document.getElementById(`${target}-screen`);
-    if (targetScreen) {
-        targetScreen.classList.remove('hidden');
-        // If the header is no longer sticky, we reset root viewport scroll instead of container scroll
-        window.scrollTo({ top: 0, behavior: 'instant' }); 
-    }
-    document.getElementById(`nav-${target}`).classList.add('active');
-
-    // NEW SLIDING INDICATOR TRACKING ENGINE LOGIC
-    const indicator = document.getElementById('nav-indicator');
-    if (indicator) {
-        // Map out the 0-4 grid column index order multiplier for each tab link target
-        const tabPositions = {
-            'home': 0,
-            'events': 1,
-            'stands': 2,
-            'map': 3,
-            'amenities': 4
-        };
+/* ==========================================================================
+   6. UI EVENT HANDLERS & INTERACTIVITY
+   ========================================================================== */
+function toggleCardDetails(targetDivId) {
+    const targetDiv = document.getElementById(targetDivId);
+    if (targetDiv) {
+        targetDiv.classList.toggle('show');
         
-        const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
-        
-        // Multiply by 100% to cleanly shift the 20% wide bar over to its matching slot
-        indicator.style.transform = `translateX(${positionIndex * 100}%)`;
+        const toggleBtn = document.getElementById(`${targetDivId}-btn`);
+        if (toggleBtn) {
+            toggleBtn.classList.toggle('active');
+        }
+
+        if (targetDiv.classList.contains('show')) {
+            setTimeout(() => {
+                targetDiv.parentElement.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }, 250); 
+        }
     }
 }
 
-function switchDay(dateStr, event) {
-    selectedDayString = dateStr;
-    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
-    if(event && event.target) {
-        event.target.classList.add('active');
-    }
-    processAllSchedules();
+function toggleReminderMenu(menuId, event) {
+    event.stopPropagation();
+    document.querySelectorAll('.reminder-menu').forEach(m => {
+        if(m.id !== menuId) m.classList.remove('show');
+    });
+    document.getElementById(menuId).classList.toggle('show');
 }
 
-// Utility helper to convert sheet times into ISO basic strings (YYYYMMDDTHHMMSSZ)
+// Global click handler to dismiss open dropdown menus
+window.addEventListener('click', () => {
+    document.querySelectorAll('.reminder-menu').forEach(m => m.classList.remove('show'));
+});
+
+// Calendar Export Helpers
 function formatToCalTime(dateStr) {
     if (!dateStr) return "";
     const d = new Date(dateStr);
-    // Force format directly to UTC string layout layout
     return d.toISOString().replace(/-|:|\.\d\d\d/g, "");
 }
 
-// 1. GENERATE GOOGLE CALENDAR WEB LINK
 function openGoogleCalendar(name, start, end, location) {
     const gStart = formatToCalTime(start);
     const gEnd = formatToCalTime(end);
@@ -465,12 +432,10 @@ function openGoogleCalendar(name, start, end, location) {
     window.open(url, '_blank');
 }
 
-// 2. GENERATE AND DOWNLOAD APPLE (.ICS) CARD FILE
 function downloadAppleCalendar(name, start, end, location) {
     const iStart = formatToCalTime(start);
     const iEnd = formatToCalTime(end);
     
-    // Create raw file context strings structures
     const icsContent = [
         "BEGIN:VCALENDAR",
         "VERSION:2.0",
@@ -494,19 +459,57 @@ function downloadAppleCalendar(name, start, end, location) {
     document.body.removeChild(link);
 }
 
-// 3. UI TOGGLE HANDLER FOR DROPDOWN MENUS
-function toggleReminderMenu(menuId, event) {
-    event.stopPropagation(); // Prevents clicks from firing parent layout cards operations
-    // Close any other open reminder menus first
-    document.querySelectorAll('.reminder-menu').forEach(m => {
-        if(m.id !== menuId) m.classList.remove('show');
-    });
-    document.getElementById(menuId).classList.toggle('show');
+/* ==========================================================================
+   7. NAVIGATION & SCREEN SWITCHING
+   ========================================================================== */
+function openLocationInAppMap(mapUrl) {
+    if (!mapUrl || mapUrl === '#') return;
+
+    const mapIframe = document.getElementById('default-map');
+    if (mapIframe) {
+        mapIframe.src = mapUrl;
+    }
+
+    switchTab('map');
 }
 
-// Close dropdowns automatically if the user clicks anywhere else on the window screen
-window.addEventListener('click', () => {
-    document.querySelectorAll('.reminder-menu').forEach(m => m.classList.remove('show'));
-});
+function switchTab(target) {
+    document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+    
+    const targetScreen = document.getElementById(`${target}-screen`);
+    if (targetScreen) {
+        targetScreen.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' }); 
+    }
+    document.getElementById(`nav-${target}`).classList.add('active');
 
+    // Sliding Indicator Tracking
+    const indicator = document.getElementById('nav-indicator');
+    if (indicator) {
+        const tabPositions = {
+            'home': 0,
+            'events': 1,
+            'stands': 2,
+            'map': 3,
+            'amenities': 4
+        };
+        
+        const positionIndex = tabPositions[target] !== undefined ? tabPositions[target] : 0;
+        indicator.style.transform = `translateX(${positionIndex * 100}%)`;
+    }
+}
+
+function switchDay(dateStr, event) {
+    selectedDayString = dateStr;
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    if(event && event.target) {
+        event.target.classList.add('active');
+    }
+    processAllSchedules();
+}
+
+/* ==========================================================================
+   8. APPLICATION BOOTSTRAPPER
+   ========================================================================== */
 initDatabaseApp();
