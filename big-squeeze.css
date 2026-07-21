@@ -138,7 +138,7 @@
        }
       .highlight-shadow-box {
   /* 1. Base Border Setup */
-  border: 2px solid;
+  border: 1px solid;
     border-top-color: #ffffff;    /* Bright highlight */
   border-left-color: #ffffff;   /* Bright highlight */
   border-right-color: #b0b0b0;  /* Muted edge */
