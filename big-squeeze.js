@@ -297,7 +297,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                         ` : ''}
 
                         <!-- 3rd: Show Details Button -->
-                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn"><img src="images/buttons/view-details.webp" class="details-btn-img" alt="Details" /></button>` : ''}                       
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}
                     </div>
         
                 </div> <!-- Close content wrapper -->
@@ -318,26 +318,19 @@ function renderCards(list, elementId, emptyMsg, isLive) {
 
 function toggleCardDetails(targetDivId) {
     const targetDiv = document.getElementById(targetDivId);
-    if(targetDiv) {
+    if (targetDiv) {
         targetDiv.classList.toggle('show');
         
-        const cardElement = targetDiv.parentElement;
-        
-        // TARGET ONLY THE DETAILS IMAGE SPECIFICALLY
-        const buttonImage = cardElement.querySelector('.details-btn-img');
-        
-        if (buttonImage) {
-            if (targetDiv.classList.contains('show')) {
-                buttonImage.src = "images/buttons/hide-details.webp";
-            } else {
-                buttonImage.src = "images/buttons/view-details.webp";
-            }
+        // Toggle the .active state on the CSS plus button to trigger the rotation animation
+        const toggleBtn = document.getElementById(`${targetDivId}-btn`);
+        if (toggleBtn) {
+            toggleBtn.classList.toggle('active');
         }
 
-        // AUTOMATIC SCROLL LOGIC
+        // Automatic smooth scroll logic
         if (targetDiv.classList.contains('show')) {
             setTimeout(() => {
-                cardElement.scrollIntoView({ 
+                targetDiv.parentElement.scrollIntoView({ 
                     behavior: 'smooth',
                     block: 'nearest'
                 });
