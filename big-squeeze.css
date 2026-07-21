@@ -109,6 +109,11 @@ h2 {
   position: relative; 
 }
 
+#amenities-screen, 
+.amenities-screen { 
+  position: relative; 
+}
+
 /* ==========================================================================
    4. NAVIGATION COMPONENTS
    ========================================================================== */
