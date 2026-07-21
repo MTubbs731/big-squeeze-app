@@ -261,7 +261,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const eventThumbHtml = item.thumbnail ? `<img src="${item.thumbnail}" class="event-thumb" alt="" />` : '';
         
         container.innerHTML += `
-            <div class="card">
+            <div class="card highlight-shadow-box">
                 <div class="card-content-stack">
                     
                     <!-- Text Block -->
