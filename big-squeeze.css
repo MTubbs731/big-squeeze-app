@@ -456,7 +456,7 @@ h2 {
 /* Lemmy Mascot Anchor */
 #lemmy-lemonade { 
   position: absolute; 
-  top: 0px; 
+  top: -35px; 
   right: 10px; 
   z-index: 100; 
   width: 80px; 
