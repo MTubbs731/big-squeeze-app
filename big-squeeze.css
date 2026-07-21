@@ -122,7 +122,7 @@ h2 {
   position: sticky; 
   top: 0; 
   background-color: var(--pale-yellow); 
-  z-index: 10; 
+  z-index: 20; 
   padding-top: 10px; 
   padding-bottom: 10px; 
   display: flex; 
@@ -468,6 +468,21 @@ h2 {
 }
 
 #lemmy-lemonade img { 
+  width: 100%; 
+  height: auto; 
+  display: block; 
+}
+
+/* Event screen Lemmy positioning */
+#lemmy-events { 
+  position: absolute; 
+  top: -18px; /* Matches your stands/amenities offset */
+  right: 10px; 
+  z-index: 5;  /* Lower than sticky bar (20), but above body text */
+  width: 80px; 
+}
+
+#lemmy-events img { 
   width: 100%; 
   height: auto; 
   display: block; 
