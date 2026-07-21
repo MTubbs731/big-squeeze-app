@@ -22,7 +22,7 @@
         /* Day Switcher Tab Grid Buttons */
         .day-filter-container { position: sticky; top: 0; background-color: #fae980; z-index: 10; padding-top: 10px; padding-bottom: 10px; display: flex; gap: 10px; width: 100%; box-sizing: border-box; }
         .day-filter-container .day-btn { flex: 1; }
-        .day-btn { background: #8dc73e; color: gray; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
+        .day-btn { background: #8dc73e; color: #c3c3c3; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
         .day-btn.active { background: #036838; color: white; }
 
         /* Dynamic Presentation Data Cards Layout */  
