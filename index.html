@@ -32,15 +32,25 @@
             <div id="news-feed"><div class="spinner"><img class="spin-img" src="images/lemon-slice.webp" width="96px" alt="" /></div></div>
         </div>
         
-        <div id="events-screen" class="tab-content hidden">
-            <div class="day-filter-container">
-                <button class="day-btn active" id="btn-day1" onclick="switchDay('2026-07-10', event)">Friday</button>
-                <button class="day-btn" id="btn-day2" onclick="switchDay('2026-07-11', event)">Saturday</button>
+        <div id="events-screen" class="tab-content">
+          <!-- Header with Lemmy -->
+          <div class="header">
+            <h1>Events</h1>
+            <div id="lemmy-events" class="lemmy-mascot">
+              <img src="images/lemmy-thumbsup-512.webp"  width="25%" alt="" />
             </div>
-            <h2>Events Schedule</h2>
-            <div id="all-events"><div class="spinner"><img class="spin-img" src="images/lemon-slice.webp" width="96px" alt="" /></div></div>
+          </div>
+        
+          <!-- Sticky Day Filter Bar -->
+          <div class="day-filter-container">
+            <button id="btn-day1" class="day-btn active">Friday</button>
+            <button id="btn-day2" class="day-btn">Saturday</button>
+          </div>
+        
+          <!-- Cards Container -->
+          <div id="all-events"></div>
         </div>
-
+        
         <div id="stands-screen" class="tab-content hidden">
             <h2><span id="stands-header-title">Lemonade Stands</span></h2>
             <div id="lemmy-lemonade" class="character-r"><img src="./images/character/lemmy-lemonade-512.webp" width="25%" alt="" /></div>
