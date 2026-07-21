@@ -160,7 +160,7 @@
     position: absolute;
     width: 24px;
     height: 4px;                  /* Thickness of the lines */
-    background-color: #3498db;    /* Blue color for the plus/minus sign */
+    background-color: #0454BF;    /* Blue color for the plus/minus sign */
     border-radius: 2px;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
