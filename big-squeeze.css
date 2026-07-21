@@ -65,7 +65,7 @@ h2 { color: var(--bold-green); font-size: 1.5em; border-bottom: 2px solid var(--
 .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; justify-content: space-around; align-items: center; box-sizing: border-box; }
 #nav-indicator { position: absolute; bottom: 0; left: 0; height: 4px; width: 20%; background-color: var(--bold-green); border-top-left-radius: 4px; border-top-right-radius: 4px; transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
 .tab-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #7f8c8d; font-size: 0.75em; font-weight: bold; cursor: pointer; user-select: none; }
-.tab-link.active { color: var(--accent-blue); } /* Swapped #3498db to use your accent-blue variable */
+.tab-link.active { color: var(--accent-blue); } 
 .tab-icon { font-size: 1.4em; margin-bottom: 2px; }
 
 .expanded-details { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out; padding: 0 10px; }
@@ -84,7 +84,7 @@ h2 { color: var(--bold-green); font-size: 1.5em; border-bottom: 2px solid var(--
 
 /* Character Positioning */
 #lemmy-lemonade { position: absolute; top: 0px; right: 10px; z-index: 100; width: 80px; }
-#lemmy-lemonade img { width: 100%; height: auto; display: block; } /* FIXED: Closed missing bracket here! */
+#lemmy-lemonade img { width: 100%; height: auto; display: block; } 
 
 /* Remind Me Dropdown Container */
 .reminder-dropdown { position: relative; display: inline-block; }
