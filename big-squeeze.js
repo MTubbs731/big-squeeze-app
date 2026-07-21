@@ -222,73 +222,61 @@ function processAllSchedules() {
 
 function renderCards(list, elementId, emptyMsg, isLive) {
     const container = document.getElementById(elementId);
-    if (!container) return; // Prevent DOM targeting errors
+    if (!container) return;
     container.innerHTML = "";
 
-    if(list.length === 0) {
+    if (list.length === 0) {
         container.innerHTML = `<p class="no-events">${emptyMsg}</p>`;
         return;
     }
 
     list.forEach((item, index) => {
-        // FIXED: Safe date parsing checks safeguard your amenities data from crashing the thread
-        const hasValidStart = item.start && item.start.trim() !== "";
-        const hasValidEnd = item.end && item.end.trim() !== "";
-
-        const startD = hasValidStart ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "";
-        const startT = hasValidStart ? new Date(item.start).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}) : "";
-        const endT = hasValidEnd ? new Date(item.end).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}) : "";
+        const hasDates = item.start && item.start.trim() !== "";
+        const startD = hasDates ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "??";
+        const startT = hasDates ? new Date(item.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
+        const endT = item.end ? new Date(item.end).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
         
         const indicator = isLive ? "" : "";
         
-        const hasDetailsButton = (item.details && item.details.trim() !== "") || (item.image && item.image.trim() !== "");
+        const itemDetails = item.details ? item.details.trim() : "";
+        const itemImage = item.image ? item.image.trim() : "";
+        const hasDetailsButton = (itemDetails !== "") || (itemImage !== "");
         const uniqueId = `${elementId}-details-${index}`;
         
-        // Escape parameters cleanly for inline string safety checks
-        const safeName = (item.name || item.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
-        const safeStart = item.start || '';
-        const safeEnd = item.end || '';
-        const safeLoc = (item.locationName || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+        const safeName = item.name ? item.name.replace(/'/g, "\\'").replace(/"/g, '\\"') : "Item";
+        const safeStart = item.start || "";
+        const safeEnd = item.end || "";
+        const safeLoc = item.locationName ? item.locationName.replace(/'/g, "\\'").replace(/"/g, '\\"') : "Unknown Location";
 
         const menuId = `${elementId}-remind-${index}`;
 
-        // Dynamic layout definitions based on card context
-        const isStandsScreen = (elementId === "all-stands");
-        const isAmenitiesScreen = (elementId === "all-amenities");
+        // Robust check for the stands tab (catches all naming variants)
+        const isStandsScreen = elementId === "all-stands" || elementId.includes("stands");
         const showReminderButton = (elementId === "all-events");
         
-        // Treat stands and amenities as split screens, events as standard stacks
-        const useSplitLayout = isStandsScreen || isAmenitiesScreen;
-        const splitClass = useSplitLayout ? "card-content-split" : "card-content-stack";
-        const inlineClass = useSplitLayout ? "ca-inline" : "";
-
-        // Normalize display name handles since Amenities tables use .title while events use .name
-        const cardTitleText = item.name || item.title || "Unnamed Item";
+        const inlineClass = isStandsScreen ? "ca-inline" : "";
 
         container.innerHTML += `
-            <div class="card highlight-shadow-box">
-                <!-- Open the layout wrapper context wrapper -->
-                <div class="${splitClass}">
+            <div class="card">
+                <div class="${isStandsScreen ? 'card-content-split' : 'card-content-stack'}">
                     
-                    <!-- Text elements frame -->
                     <div class="card-text-block">
-                        <div class="card-title">${cardTitleText}</div>
+                        <div class="card-title">${item.name || item.title || 'Unnamed'}</div>
                         
-                        <!-- Date/Time row displays ONLY if a valid timeline entry exists -->
-                        ${hasValidStart ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
+                        <!-- Date & Time hidden entirely on Lemonade Stands -->
+                        ${(!isStandsScreen && hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
                         
-                        <div class="location">${item.locationName}</div>
+                        <div class="location">${item.locationName || 'Festival Grounds'}</div>
                     </div>
         
-                    <!-- Action buttons row layout -->
                     <div class="card-actions ${inlineClass}">
-                        <!-- 1st: Show on Map Button -->
-                        ${item.mapUrl !== '#' ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                        <!-- 1st: Show on Map -->
+                        ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                         
-                        <!-- 2nd: Reminder Calendar dropdown box block (Events only) -->
+                        <!-- 2nd: Reminder (Events only) -->
                         ${showReminderButton ? `
                         <div class="reminder-dropdown">
-                            <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn"><img src="images/buttons/remind-me.webp" alt="Remind" /></button>
+                            <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me"><img src="images/buttons/remind-me.webp" alt="Remind" /></button>
                             <div id="${menuId}" class="reminder-menu">
                                 <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
                                 <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
@@ -296,20 +284,19 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                         </div>
                         ` : ''}
 
-                        <!-- 3rd: Show Details Button -->
-                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}
+                        <!-- 3rd: Pure CSS Blue Plus/Minus Details Button -->
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                     </div>
         
-                </div> <!-- Close content wrapper -->
+                </div>
                 
-                <!-- Details drawer panel -->
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
                         <div id="${uniqueId}-image" class="dtl-image">
-                            ${item.image ? `<img src="${item.image}" alt="${item.dname || 'Details'}" />` : ''}
+                            ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
                         </div>
-                        <p class="dtl-desc">${item.details || item.content || 'No detailed description provided.'}</p>
+                        <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
                     </div>
                 ` : ''}
             </div>`;
