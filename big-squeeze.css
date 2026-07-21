@@ -40,7 +40,7 @@ h2 { color: var(--bold-green); font-size: 1.5em; border-bottom: 2px solid var(--
 .day-btn.active { background: var(--bold-green); color: white; }
 
 .card { background: var(--pale-green); padding: 15px; margin: 10px 0; border: 1px solid var(--bold-green); border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-.card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: var(--title-color); }
+.card-title { font-size: 1.2em; font-weight: bold; margin: 5px 0; color: var(--title-color); }
 .card-actions { display: flex; gap: 10px; margin-top: 12px; justify-content: flex-end; width: 100%; box-sizing: border-box; }
 .ca-inline { display: inline-flex; width: auto; margin-top: 0; align-self: center; flex-shrink: 0; }
 .card-content-stack { display: flex; flex-direction: column; gap: 5px; width: 100%; }
