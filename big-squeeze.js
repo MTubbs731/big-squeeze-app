@@ -391,6 +391,20 @@ function renderAmenities() {
     renderCards(dbAmenities, "all-amenities", "No amenities posted yet.", false);
 }
 
+// HANDLES NAVIGATION TO MAP TAB + UPDATES IFRAME LOCATION
+function openLocationInAppMap(mapUrl) {
+    if (!mapUrl || mapUrl === '#') return;
+
+    const mapIframe = document.getElementById('default-map');
+    if (mapIframe) {
+        // 1. Update the Google Map iframe source to point to the clicked location
+        mapIframe.src = mapUrl;
+    }
+
+    // 2. Switch UI view over to the Map screen tab
+    switchTab('map');
+}
+
 function switchTab(target) {
     document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
     document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
