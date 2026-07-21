@@ -104,21 +104,10 @@ h2 { color: var(--bold-green); font-size: 1.5em; border-bottom: 2px solid var(--
 .highlight-shadow-box { border: 1px solid; border-top-color: #ffffff; border-left-color: #ffffff; border-right-color: #b0b0b0; border-bottom-color: #b0b0b0; }
 
 /* Pure CSS Blue Plus/Minus Toggle Button */
-.plus-btn::before, .plus-btn::after { 
-  content: ''; 
-  position: absolute; 
-  width: 24px; 
-  height: 4px; 
-  background-color: var(--accent-blue); 
-  border-radius: 2px; 
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-}
-
+.plus-btn::before, .plus-btn::after { content: ''; position: absolute; width: 24px; height: 4px; background-color: var(--accent-blue); border-radius: 2px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 /* Horizontal line */
 .plus-btn::before { transform: rotate(0deg); }
-
 /* Vertical line (forms '+' when static) */
 .plus-btn::after { transform: rotate(90deg); }
-
 /* Active state: rotates vertical line into horizontal alignment (minus symbol) */
 .plus-btn.active::after { transform: rotate(180deg); }
