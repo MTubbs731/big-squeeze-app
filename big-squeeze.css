@@ -22,13 +22,13 @@
         /* Day Switcher Tab Grid Buttons */
         .day-filter-container { position: sticky; top: 0; background-color: #fae980; z-index: 10; padding-top: 10px; padding-bottom: 10px; display: flex; gap: 10px; width: 100%; box-sizing: border-box; }
         .day-filter-container .day-btn { flex: 1; }
-        .day-btn { background: #8dc73e; color: #c3c3c3; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
+        .day-btn { background: #8dc73e; color: #919191; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
         .day-btn.active { background: #036838; color: white; }
 
         /* Dynamic Presentation Data Cards Layout */  
         .card { background: #cef29d; padding: 15px; margin: 10px 0; border: 1px solid #036838; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: #2c3e50; }
-        .card-actions { display: flex; gap: 12px; margin-top: 12px; justify-content: flex-end; width: 100%; box-sizing: border-box; }
+        .card-actions { display: flex; gap: 10px; margin-top: 12px; justify-content: flex-end; width: 100%; box-sizing: border-box; }
         .ca-inline { display: inline-flex; width: auto; margin-top: 0; align-self: center; flex-shrink: 0; }
         .card-content-stack { display: flex; flex-direction: column; gap: 5px; width: 100%; }
         .card-content-split { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
