@@ -37,7 +37,23 @@
         .time { font-weight: bold; color: #e67e22; font-size: 1.1em; }
         .location { color: #000; font-size: 1em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
         .btn { display: inline-block; background: #f9f497; color: white; padding: 8px 12px; text-decoration: none; border-radius: 2px; margin-top: 10px; font-size: 0.85em; font-weight: bold; }
-        .g-btn { display: inline-flex; align-items: center; justify-content: center; background: #f9f497; width: 64px; height: 64px; box-sizing: border-box; border-radius: 50%; text-decoration: none; border: 1px outset #036838; margin-top: 10px; cursor: pointer; padding: 0; }
+        .g-btn { 
+    position: relative;          /* Needed to anchor the absolute pseudo-elements */
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: #f9f497;        /* Keeps your existing pale yellow background */
+    width: 64px; 
+    height: 64px; 
+    box-sizing: border-box; 
+    border-radius: 50%; 
+    text-decoration: none; 
+    border: 2px outset #036838;  /* Keeps your existing green border */
+    margin-top: 10px; 
+    cursor: pointer; 
+    padding: 0; 
+}
+        
         .g-btn img { width: 60%; height: auto; display: block; }
         .no-events { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
         .dtl-btn { padding-right: 20px;}
@@ -136,10 +152,30 @@
             transform: rotate(360deg);
           }
        }
-      .highlight-shadow-box {
-  /* 1. Base Border Setup */
-  border: 1px solid;
-    border-top-color: #ffffff;    /* Bright highlight */
-  border-left-color: #ffffff;   /* Bright highlight */
-  border-right-color: #b0b0b0;  /* Muted edge */
-  border-bottom-color: #b0b0b0; /* Muted edge */}
+      .highlight-shadow-box { border: 1px solid; border-top-color: #ffffff; border-left-color: #ffffff; border-right-color: #b0b0b0; border-bottom-color: #b0b0b0; }
+      /* Base styles for the pure CSS plus/minus icon segments */
+.plus-btn::before,
+.plus-btn::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 4px;                  /* Thickness of the lines */
+    background-color: #3498db;    /* Blue color for the plus/minus sign */
+    border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Horizontal line */
+.plus-btn::before {
+    transform: rotate(0deg);
+}
+
+/* Vertical line (forms '+' when static) */
+.plus-btn::after {
+    transform: rotate(90deg);
+}
+
+/* Active state: rotates the vertical line so it merges into a single horizontal minus '-' line */
+.plus-btn.active::after {
+    transform: rotate(180deg);
+}
