@@ -266,7 +266,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const cardTitleText = item.name || item.title || "Unnamed Item";
 
         container.innerHTML += `
-            <div class="card">
+            <div class="card highlight-shadow-box">
                 <!-- Open the layout wrapper context wrapper -->
                 <div class="${splitClass}">
                     
