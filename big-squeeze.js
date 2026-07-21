@@ -137,6 +137,7 @@ async function initDatabaseApp() {
                 name: row.Event_Name ? row.Event_Name.trim() : "Unnamed Event",
                 start: row.Event_Start ? row.Event_Start.trim() : "",
                 end: row.Event_End ? row.Event_End.trim() : "",
+                thumbnail: row.Event_Thumbnail ? row.Event_Thumbnail.trim() : "",
                 locationName: dbLocations[locId]?.name || "Unknown Location",
                 mapUrl: dbLocations[locId]?.mapUrl || "#",
                 dname: dbDetails[DtlId]?.name || "",
@@ -256,46 +257,52 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
+        /* Inside renderCards() loop for Events */
+        const eventThumbHtml = item.thumbnail ? `<img src="${item.thumbnail}" class="event-thumb" alt="" />` : '';
+        
         container.innerHTML += `
-            <div class="card highlight-shadow-box">
-                <div class="${isStandsScreen ? 'card-content-split' : 'card-content-stack'}">
+            <div class="card">
+                <div class="card-content-stack">
                     
+                    <!-- Text Block -->
                     <div class="card-text-block">
-                        <div class="card-title">${item.name || item.title || 'Unnamed'}</div>
-                        
-                        <!-- Date & Time hidden entirely on Lemonade Stands -->
+                        <div class="card-title">${item.name || 'Unnamed'}</div>
                         ${(!isStandsScreen && hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
-                        
-                        <div class="location">${item.locationName || 'Festival Grounds'}</div>
+                        <div class="location">📍 ${item.locationName || 'Festival Grounds'}</div>
                     </div>
         
-                    <div class="card-actions ${inlineClass}">
-                        <!-- 1st: Show on Map -->
-                        ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                    <!-- Bottom Row: Thumbnail (Left) + Buttons (Right) -->
+                    <div class="card-bottom-row">
                         
-                        <!-- 2nd: Reminder (Events only) -->
-                        ${showReminderButton ? `
-                        <div class="reminder-dropdown">
-                            <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me"><img src="images/buttons/remind-me.webp" alt="Remind" /></button>
-                            <div id="${menuId}" class="reminder-menu">
-                                <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
-                                <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
+                        ${eventThumbHtml}
+        
+                        <div class="card-actions ${inlineClass}">
+                            ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                            
+                            ${showReminderButton ? `
+                            <div class="reminder-dropdown">
+                                <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me"><img src="images/buttons/remind-me.webp" alt="Remind" /></button>
+                                <div id="${menuId}" class="reminder-menu">
+                                    <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
+                                    <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
+                                </div>
                             </div>
+                            ` : ''}
+        
+                            ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                         </div>
-                        ` : ''}
-
-                        <!-- 3rd: Pure CSS Blue Plus/Minus Details Button -->
-                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
-                    </div>
+        
+                    </div> <!-- End card-bottom-row -->
         
                 </div>
                 
+                <!-- Expandable Details Drawer -->
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
-                        <div id="${uniqueId}-image" class="dtl-image">
-                            ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
-                        </div>
+                            <div id="${uniqueId}-image" class="dtl-image">
+                                ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
+                            </div>
                         <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
                     </div>
                 ` : ''}
