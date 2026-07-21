@@ -102,6 +102,7 @@ h2 { color: var(--bold-green); font-size: 1.5em; border-bottom: 2px solid var(--
        transform: rotate(360deg);
      }
   }
+                     
 .highlight-shadow-box { border: 1px solid; border-top-color: #ffffff; border-left-color: #ffffff; border-right-color: #b0b0b0; border-bottom-color: #b0b0b0; }
 .plus-btn::before, .plus-btn::after { content: ''; position: absolute; width: 24px; height: 4px; background-color: var(--accent-blue); border-radius: 2px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 /* Horizontal line */
