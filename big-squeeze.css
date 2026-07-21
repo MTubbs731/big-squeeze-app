@@ -1,5 +1,5 @@
 /* Base Reset & Native Mobile Layouts */  
-        
+
 :root {
   --bold-green: #036838;
   --soft-green: #8dc73e;
@@ -7,7 +7,7 @@
   --faint-green: #a4c774;   
   --bold-yellow: #ffde13;
   --soft-yellow: #fff300;
-  --pale-yellow: #fae980    ;
+  --pale-yellow: #fae980;
   --faint-yellow: #f9f497;
   --accent-blue: #0454bf;
   --text-color: #333;
@@ -18,28 +18,28 @@
 body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: var(--pale-yellow); color: var(--text-color); overflow-y: auto; }
 h1 { text-align: center; color: var(--bold-green); margin: 15px 0 5px 0; font-size: 2.2em;}
 h2 { color: var(--bold-green); font-size: 1.5em; border-bottom: 2px solid var(--bold-green); padding-bottom: 5px; margin-top: 20px; }
-.hero-text { color:var(--bold-green); font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal; font-size: 2.5em; padding-bottom: 5px; margin-top: 20px; }
+.hero-text { color: var(--bold-green); font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal; font-size: 2.5em; padding-bottom: 5px; margin-top: 20px; }
 .center { text-align: center; }
 .left { text-align: left; }
 .right { text-align: right; }
 .no-border { border-style: none; padding-bottom: 0; }
 
 .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 80px; height: auto; display: flex; flex-direction: column; box-sizing: border-box; }
-.tab-content {flex: 1; display: flex; flex-direction: column; height: auto; overflow-y: visible; padding-bottom: 20px; box-sizing: border-box;}
+.tab-content { flex: 1; display: flex; flex-direction: column; height: auto; overflow-y: visible; padding-bottom: 20px; box-sizing: border-box; }
 #stands-screen { position: relative; padding-top: 20px; }
-.header { position: relative; top: 0; left: 0; width: 100%; z-index: 10; display: flex; align-items: center; justify-content: center; gap: 10px;  }
+.header { position: relative; top: 0; left: 0; width: 100%; z-index: 10; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .stands-screen { position: relative; }
 .hidden { display: none !important; }
 
 /* Web Fonts */
-.luckiest-guy-regular { font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal;}
+.luckiest-guy-regular { font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal; }
         
 .day-filter-container { position: sticky; top: 0; background-color: var(--pale-yellow); z-index: 10; padding-top: 10px; padding-bottom: 10px; display: flex; gap: 10px; width: 100%; box-sizing: border-box; }
 .day-filter-container .day-btn { flex: 1; }
 .day-btn { background: var(--soft-green); color: #5a5a5a; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
 .day-btn.active { background: var(--bold-green); color: white; }
 
-.card { background: #cef29d; padding: 15px; margin: 10px 0; border: 1px solid var(--bold-green); border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.card { background: var(--pale-green); padding: 15px; margin: 10px 0; border: 1px solid var(--bold-green); border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .card-title { font-size: 1.1em; font-weight: bold; margin: 5px 0; color: var(--title-color); }
 .card-actions { display: flex; gap: 10px; margin-top: 12px; justify-content: flex-end; width: 100%; box-sizing: border-box; }
 .ca-inline { display: inline-flex; width: auto; margin-top: 0; align-self: center; flex-shrink: 0; }
@@ -50,19 +50,22 @@ h2 { color: var(--bold-green); font-size: 1.5em; border-bottom: 2px solid var(--
 .time { font-weight: bold; color: var(--accent-text); font-size: 1.1em; }
 .location { color: #000; font-size: 1em; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
 .btn { display: inline-block; background: var(--faint-yellow); color: white; padding: 8px 12px; text-decoration: none; border-radius: 2px; margin-top: 10px; font-size: 0.85em; font-weight: bold; }
+
 .g-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; background: var(--faint-yellow); width: 64px; height: 64px; box-sizing: border-box; border-radius: 50%; text-decoration: none; border: 1px outset var(--bold-green); margin-top: 10px; cursor: pointer; padding: 0; }
 .g-btn img { width: 60%; height: auto; display: block; }
+
 .no-events { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px; }
-.dtl-btn { padding-right: 20px;}
+.dtl-btn { padding-right: 20px; }
 .dtl-desc { line-height: 1.5; color: #000; margin-top: 12px; font-size: 1.1em; white-space: pre-wrap; }
-#map-screen {height: auto; display: block;}
-.map-responsive { position: relative; width: 100%; aspect-ratio: 4 / 5; min-height: 450px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden;}
-.map-responsive iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;}
+
+#map-screen { height: auto; display: block; }
+.map-responsive { position: relative; width: 100%; aspect-ratio: 4 / 5; min-height: 450px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }
+.map-responsive iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
 .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; justify-content: space-around; align-items: center; box-sizing: border-box; }
 #nav-indicator { position: absolute; bottom: 0; left: 0; height: 4px; width: 20%; background-color: var(--bold-green); border-top-left-radius: 4px; border-top-right-radius: 4px; transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
 .tab-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #7f8c8d; font-size: 0.75em; font-weight: bold; cursor: pointer; user-select: none; }
-.tab-link.active { color: #3498db; }  /* what's this color? */
+.tab-link.active { color: var(--accent-blue); } /* Swapped #3498db to use your accent-blue variable */
 .tab-icon { font-size: 1.4em; margin-bottom: 2px; }
 
 .expanded-details { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-in-out; padding: 0 10px; }
@@ -77,37 +80,45 @@ h2 { color: var(--bold-green); font-size: 1.5em; border-bottom: 2px solid var(--
 .news-thumb { max-width: 40%; height: auto; border-radius: 6px; margin-bottom: 5px; }
 .news-float-l { float: left; margin-right: 12px; }
 .news-float-r { float: right; margin-left: 12px; }
-/* Clearfix for the card to ensure it scales nicely if the image is tall */
 .news-card::after { content: ""; clear: both; display: table; }
 
 /* Character Positioning */
 #lemmy-lemonade { position: absolute; top: 0px; right: 10px; z-index: 100; width: 80px; }
-#lemmy-lemonade img { width: 100%; height: auto; display: block; 
+#lemmy-lemonade img { width: 100%; height: auto; display: block; } /* FIXED: Closed missing bracket here! */
 
 /* Remind Me Dropdown Container */
 .reminder-dropdown { position: relative; display: inline-block; }
 .reminder-menu { display: none; position: absolute; bottom: 110%; right: 0; background-color: #ffffff; color: #000; min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); border: 1px solid #000; border-radius: 6px; z-index: 20; padding: 5px 0; }
 .reminder-menu button { background: none; border: none; color: #333333; padding: 10px 15px; text-align: left; width: 100%; display: block; font-size: 14px; cursor: pointer; }
 .reminder-menu button:hover { background-color: #f1f1f1; }
-/* Toggle helper class triggered by JS */ 
 .reminder-menu.show { display: block; }
 
+/* Loading Spinner Animation */
 .spinner { display: flex; justify-content: center; align-items: center; padding: 30px; }
 .spin-img { display: block; animation: lemonRotation 2s linear infinite; }
 @keyframes lemonRotation {
-    0% {
-       transform: rotate(0deg);
-     }
-     100% {
-       transform: rotate(360deg);
-     }
-  }
-                     
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+                                
 .highlight-shadow-box { border: 1px solid; border-top-color: #ffffff; border-left-color: #ffffff; border-right-color: #b0b0b0; border-bottom-color: #b0b0b0; }
-.plus-btn::before, .plus-btn::after { content: ''; position: absolute; width: 24px; height: 4px; background-color: var(--accent-blue); border-radius: 2px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Pure CSS Blue Plus/Minus Toggle Button */
+.plus-btn::before, .plus-btn::after { 
+  content: ''; 
+  position: absolute; 
+  width: 24px; 
+  height: 4px; 
+  background-color: var(--accent-blue); 
+  border-radius: 2px; 
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
 /* Horizontal line */
 .plus-btn::before { transform: rotate(0deg); }
+
 /* Vertical line (forms '+' when static) */
 .plus-btn::after { transform: rotate(90deg); }
-/* Active state: rotates the vertical line so it merges into a single horizontal minus '-' line */
+
+/* Active state: rotates vertical line into horizontal alignment (minus symbol) */
 .plus-btn.active::after { transform: rotate(180deg); }
