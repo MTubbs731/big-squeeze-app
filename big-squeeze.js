@@ -257,7 +257,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
         container.innerHTML += `
-            <div class="card">
+            <div class="card highlight-shadow-box">
                 <div class="${isStandsScreen ? 'card-content-split' : 'card-content-stack'}">
                     
                     <div class="card-text-block">
