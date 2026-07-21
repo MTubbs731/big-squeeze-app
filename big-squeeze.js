@@ -268,7 +268,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                     <div class="card-text-block">
                         <div class="card-title">${item.name || 'Unnamed'}</div>
                         ${(!isStandsScreen && hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
-                        <div class="location">📍 ${item.locationName || 'Festival Grounds'}</div>
+                        <div class="location">${item.locationName || 'Festival Grounds'}</div>
                     </div>
         
                     <!-- Bottom Row: Thumbnail (Left) + Buttons (Right) -->
