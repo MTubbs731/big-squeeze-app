@@ -232,6 +232,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
     }
 
     list.forEach((item, index) => {
+        // 1. DATE / TIME ENGINE
         const hasDates = item.start && item.start.trim() !== "";
         const startD = hasDates ? new Date(item.start).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : "??";
         const startT = hasDates ? new Date(item.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : "??";
@@ -239,43 +240,58 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         
         const indicator = isLive ? "" : "";
         
-        const itemDetails = item.details ? item.details.trim() : "";
+        // 2. DETAILS & IMAGE ENGINE
+        const itemDetails = item.details ? item.details.trim() : (item.content ? item.content.trim() : "");
         const itemImage = item.image ? item.image.trim() : "";
         const hasDetailsButton = (itemDetails !== "") || (itemImage !== "");
         const uniqueId = `${elementId}-details-${index}`;
         
-        const safeName = item.name ? item.name.replace(/'/g, "\\'").replace(/"/g, '\\"') : "Item";
+        // 3. CALENDAR & TEXT SAFETY
+        const cardTitle = item.name || item.title || 'Unnamed';
+        const safeName = cardTitle.replace(/'/g, "\\'").replace(/"/g, '\\"');
         const safeStart = item.start || "";
         const safeEnd = item.end || "";
         const safeLoc = item.locationName ? item.locationName.replace(/'/g, "\\'").replace(/"/g, '\\"') : "Unknown Location";
 
         const menuId = `${elementId}-remind-${index}`;
 
-        // Robust check for the stands tab (catches all naming variants)
+        // 4. SCREEN CONTEXT CHECKS
         const isStandsScreen = elementId === "all-stands" || elementId.includes("stands");
         const showReminderButton = (elementId === "all-events");
+        const eventThumbHtml = (item.thumbnail && !isStandsScreen) ? `<img src="${item.thumbnail}" class="event-thumb" alt="" />` : '';
         
         const inlineClass = isStandsScreen ? "ca-inline" : "";
 
-        /* Inside renderCards() loop for Events */
-        const eventThumbHtml = item.thumbnail ? `<img src="${item.thumbnail}" class="event-thumb" alt="" />` : '';
-        
-        container.innerHTML += `
-            <div class="card highlight-shadow-box">
-                <div class="card-content-stack">
-                    
-                    <!-- Text Block -->
+        // 5. CONDITIONAL CARD INNER HTML
+        let cardInnerHtml = "";
+
+        if (isStandsScreen) {
+            // SIDE-BY-SIDE LAYOUT (LEMONADE STANDS)
+            cardInnerHtml = `
+                <div class="card-content-split">
                     <div class="card-text-block">
-                        <div class="card-title">${item.name || 'Unnamed'}</div>
-                        ${(!isStandsScreen && hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
+                        <div class="card-title">${cardTitle}</div>
                         <div class="location">${item.locationName || 'Festival Grounds'}</div>
                     </div>
-        
-                    <!-- Bottom Row: Thumbnail (Left) + Buttons (Right) -->
+
+                    <div class="card-actions ca-inline">
+                        ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
+                        ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
+                    </div>
+                </div>`;
+        } else {
+            // STACKED LAYOUT WITH BOTTOM ROW (EVENTS & AMENITIES)
+            cardInnerHtml = `
+                <div class="card-content-stack">
+                    <div class="card-text-block">
+                        <div class="card-title">${cardTitle}</div>
+                        ${(hasDates) ? `<span class="time">${indicator}${startD} ${startT} - ${endT}</span>` : ''}
+                        <div class="location">${item.locationName || 'Festival Grounds'}</div>
+                    </div>
+
                     <div class="card-bottom-row">
-                        
                         ${eventThumbHtml}
-        
+
                         <div class="card-actions ${inlineClass}">
                             ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                             
@@ -288,28 +304,29 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                                 </div>
                             </div>
                             ` : ''}
-        
+
                             ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                         </div>
-        
-                    </div> <!-- End card-bottom-row -->
-        
-                </div>
+                    </div>
+                </div>`;
+        }
+
+        container.innerHTML += `
+            <div class="card highlight-shadow-box">
+                ${cardInnerHtml}
                 
-                <!-- Expandable Details Drawer -->
                 ${hasDetailsButton ? `
                     <div id="${uniqueId}" class="expanded-details">
                         ${item.dname ? `<h3>${item.dname}</h3>` : ''}
-                            <div id="${uniqueId}-image" class="dtl-image">
-                                ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
-                            </div>
+			<div id="${uniqueId}-image" class="dtl-image">
+                        	${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
+                    	</div>
                         <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
                     </div>
                 ` : ''}
             </div>`;
     });
 }
-
 function toggleCardDetails(targetDivId) {
     const targetDiv = document.getElementById(targetDivId);
     if (targetDiv) {
