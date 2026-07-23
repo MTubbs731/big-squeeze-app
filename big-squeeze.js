@@ -349,7 +349,9 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                             ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
                         </div>
                         <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
-                        <button onclick="shareEventDetails('${safeName}', '${safeDetails}')" class="g-btn"  aria-label="Share"><img src="images/buttons/share.webp" class="g-btn" alt="Share" /></button>
+                        <div class="share">
+                            <button onclick="shareEventDetails('${safeName}', '${safeDetails}')" class="g-btn"  aria-label="Share"><img src="images/buttons/share.webp" alt="Share" /></button>
+                        </div>
                     </div>
                 ` : ''}
             </div>`;
