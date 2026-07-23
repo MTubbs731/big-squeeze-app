@@ -425,6 +425,24 @@ h2 {
   cursor: pointer; 
 }
 
+.reminder-menu .menu-step {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.reminder-menu .menu-back-btn {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--accent-text);
+    border-bottom: 1px solid #eee;
+    padding: 6px 15px;
+}
+
+.reminder-menu .menu-back-btn:hover {
+    background-color: var(--faint-yellow);
+}
+
 .reminder-menu button:hover { background-color: var(--faint-yellow); }
 .reminder-menu.show { display: block; }
 
