@@ -304,12 +304,6 @@ h2 {
   display: table; 
 }
 
-.share {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
 /* ==========================================================================
    6. BUTTONS & INTERACTION ELEMENTS
    ========================================================================== */
@@ -343,29 +337,6 @@ h2 {
 }
 
 .g-btn img { 
-  width: 60%; 
-  height: auto; 
-  display: block; 
-}
-
-.share-btn { 
-  position: relative; 
-  display: inline-flex; 
-  align-items: center; 
-  justify-content: center; 
-  background: var(--faint-yellow); 
-  width: 64px; 
-  height: 64px; 
-  box-sizing: border-box; 
-  border-radius: 50%; 
-  text-decoration: none; 
-  border: 1px outset var(--bold-green); 
-  margin-top: 10px; 
-  cursor: pointer; 
-  padding: 0; 
-}
-
-.share img { 
   width: 60%; 
   height: auto; 
   display: block; 
@@ -409,6 +380,13 @@ h2 {
   max-width: 100%; 
   border-radius: 8px; 
   margin-bottom: 10px; 
+  display: block; 
+}
+
+.expanded-details .g-btn img { 
+  margin-bottom: 0 !important;
+  width: 60%; 
+  height: auto; 
   display: block; 
 }
 
