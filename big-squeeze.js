@@ -262,10 +262,11 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         // String Escaping
         const cardTitle = item.name || item.title || 'Unnamed';
         const safeName = cardTitle.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        const safeDetails = itemDetails.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/<br\s*\/?>/gi, '\n');
         const safeStart = item.start || "";
         const safeEnd = item.end || "";
         const safeLoc = item.locationName ? item.locationName.replace(/'/g, "\\'").replace(/"/g, '\\"') : "Unknown Location";
-        const safeDetails = itemDetails.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/<br\s*\/?>/gi, '\n');
+        
 
         const menuId = `${elementId}-remind-${index}`;
 
