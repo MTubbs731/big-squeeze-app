@@ -318,8 +318,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                                <div id="${menuId}" class="reminder-menu">
                                    <!-- STEP 1: INITIAL CHOICE MENU -->
                                    <div id="${menuId}-step1" class="menu-step">
-                                       <button onclick="triggerNotificationPlaceholder('${safeName}', event)">🔔 Push Notification</button>
-                                       <button onclick="showMenuStep('${menuId}', 2, event)">📅 Add to Calendar</button>
+                                       <button onclick="triggerNotificationPlaceholder('${safeName}', event)">Push Notification</button>
+                                       <button onclick="showMenuStep('${menuId}', 2, event)">Add to Calendar</button>
                                    </div>
                            
                                    <!-- STEP 2: CALENDAR CHOICE MENU -->
