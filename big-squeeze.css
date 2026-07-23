@@ -385,7 +385,7 @@ h2 {
 
 .dtl-desc { 
   line-height: 1.5; 
-  color: var(--bs-white); 
+  color: var(--text-color); 
   margin-top: 12px; 
   font-size: 1.1em; 
   white-space: pre-wrap; 
