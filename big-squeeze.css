@@ -342,6 +342,12 @@ h2 {
   display: block; 
 }
 
+.share img { 
+  width: 60%; 
+  height: auto; 
+  display: block; 
+}
+
 /* Pure CSS Blue Plus/Minus Toggle Button */
 .plus-btn::before, 
 .plus-btn::after { 
