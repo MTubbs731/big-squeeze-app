@@ -310,7 +310,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                             
                             ${showReminderButton ? `
                             <div class="reminder-dropdown">
-                                <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me"><img src="images/buttons/remind-me.webp" alt="Remind" /></button>
+                                <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me"><img src="images/buttons/bell.webp" alt="Remind" /></button>
                                 <div id="${menuId}" class="reminder-menu">
                                     <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
                                     <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
