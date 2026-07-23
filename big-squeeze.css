@@ -304,6 +304,12 @@ h2 {
   display: table; 
 }
 
+.share {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 /* ==========================================================================
    6. BUTTONS & INTERACTION ELEMENTS
    ========================================================================== */
@@ -342,6 +348,23 @@ h2 {
   display: block; 
 }
 
+.share-btn { 
+  position: relative; 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  background: var(--faint-yellow); 
+  width: 64px; 
+  height: 64px; 
+  box-sizing: border-box; 
+  border-radius: 50%; 
+  text-decoration: none; 
+  border: 1px outset var(--bold-green); 
+  margin-top: 10px; 
+  cursor: pointer; 
+  padding: 0; 
+}
+
 .share img { 
   width: 60%; 
   height: auto; 
@@ -363,21 +386,6 @@ h2 {
 .plus-btn::before { transform: rotate(0deg); } /* Horizontal */
 .plus-btn::after { transform: rotate(90deg); }  /* Vertical */
 .plus-btn.active::after { transform: rotate(180deg); } /* Rotates to minus */
-
-.share-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 15px;
-    padding: 8px 16px;
-    background-color: var(--bold-green);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-size: 0.9em;
-    font-weight: bold;
-    cursor: pointer;
-}
 
 /* ==========================================================================
    7. OVERLAYS & DRAWERS (Dropdowns & Expandables)
