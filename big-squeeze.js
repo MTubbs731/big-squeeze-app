@@ -347,6 +347,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                             ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
                         </div>
                         <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
+                        <button onclick="shareEventDetails('${safeName}', '${safeDetails}')" class="g-btn"><img src="images/buttons/share.webp" alt="Share" /></button>
                     </div>
                 ` : ''}
             </div>`;
@@ -505,6 +506,20 @@ function downloadAppleCalendar(name, start, end, location) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+function shareEventDetails(title, description) {
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: `Check out ${title} at the Big Squeeze Festival!\n\n${description}`,
+            url: window.location.href // or a direct link to the event
+        }).catch(err => console.log('Share canceled:', err));
+    } else {
+        // Fallback for older desktop browsers: Copy to Clipboard
+        navigator.clipboard.writeText(`${title} - ${description}`);
+        alert("Event details copied to clipboard!");
+    }
 }
 
 /* ==========================================================================
