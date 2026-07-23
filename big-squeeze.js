@@ -265,6 +265,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const safeStart = item.start || "";
         const safeEnd = item.end || "";
         const safeLoc = item.locationName ? item.locationName.replace(/'/g, "\\'").replace(/"/g, '\\"') : "Unknown Location";
+        const safeDetails = itemDetails.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/<br\s*\/?>/gi, '\n');
 
         const menuId = `${elementId}-remind-${index}`;
 
