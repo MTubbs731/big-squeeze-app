@@ -406,9 +406,9 @@ h2 {
   color: var(--bs-black); 
   font-size: 1em;
   min-width: 160px; 
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2); 
-  border: 1px solid var(--soft-green); 
-  border-radius: 6px; 
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2); 
+  border: 2px solid var(--bold-green); 
+  border-radius: 8px; 
   z-index: 20; 
   padding: 5px 0; 
 }
