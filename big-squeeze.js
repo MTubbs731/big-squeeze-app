@@ -349,9 +349,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                             ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
                         </div>
                         <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
-                        <div class="share">
-                            <button onclick="shareEventDetails('${safeName}', '${safeDetails}')" class="share-btn"  aria-label="Share"><img src="images/buttons/share.webp" alt="Share" /></button>
-                        </div>
+                        <button onclick="shareEventDetails('${safeName}', '${safeDetails}')" class="g-btn"  aria-label="Share"><img src="images/buttons/share.webp" alt="Share" /></button>
                     </div>
                 ` : ''}
             </div>`;
@@ -457,17 +455,31 @@ function toggleReminderMenu(menuId, event) {
     }
 }
 
-function shareEventDetails(title, description) {
+function shareDetails(title, description, event) {
+    if (event) {
+        event.stopPropagation(); // Prevents parent card/accordion from catching the tap
+        event.preventDefault();
+    }
+
     if (navigator.share) {
         navigator.share({
             title: title,
             text: `Check out ${title} at the Big Squeeze Festival!\n\n${description}`,
-            url: window.location.href // or a direct link to the event
-        }).catch(err => console.log('Share canceled:', err));
+            url: window.location.href
+        }).catch(err => {
+            // Suppress error log if the user simply closed/canceled the share sheet
+            if (err.name !== 'AbortError') {
+                console.error('Share failure:', err);
+            }
+        });
     } else {
-        // Fallback for older desktop browsers: Copy to Clipboard
-        navigator.clipboard.writeText(`${title} - ${description}`);
-        alert("Event details copied to clipboard!");
+        // Fallback for desktop browsers without Web Share API
+        const shareText = `${title} - ${description}\n${window.location.href}`;
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert("Event details copied to clipboard!");
+        }).catch(() => {
+            alert(`Share: ${title}`);
+        });
     }
 }
 
