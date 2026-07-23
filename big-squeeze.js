@@ -311,7 +311,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                               ${showReminderButton ? `
                               <div class="reminder-dropdown">
                                   <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me">
-                                      <img src="images/buttons/remind-me.webp" alt="Remind" />
+                                      <img src="images/buttons/bell.webp" alt="Remind" />
                                   </button>
                                   <div id="${menuId}" class="reminder-menu">
                                       <!-- STEP 1: INITIAL CHOICE MENU -->
