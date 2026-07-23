@@ -455,6 +455,20 @@ function toggleReminderMenu(menuId, event) {
     }
 }
 
+function shareEventDetails(title, description) {
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: `Check out ${title} at the Big Squeeze Festival!\n\n${description}`,
+            url: window.location.href // or a direct link to the event
+        }).catch(err => console.log('Share canceled:', err));
+    } else {
+        // Fallback for older desktop browsers: Copy to Clipboard
+        navigator.clipboard.writeText(`${title} - ${description}`);
+        alert("Event details copied to clipboard!");
+    }
+}
+
 // PLACEHOLDER HANDLER FOR ONESIGNAL PUSH NOTIFICATIONS
 function triggerNotificationPlaceholder(eventName, event) {
     if (event) event.stopPropagation();
@@ -508,20 +522,6 @@ function downloadAppleCalendar(name, start, end, location) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
-
-function shareEventDetails(title, description) {
-    if (navigator.share) {
-        navigator.share({
-            title: title,
-            text: `Check out ${title} at the Big Squeeze Festival!\n\n${description}`,
-            url: window.location.href // or a direct link to the event
-        }).catch(err => console.log('Share canceled:', err));
-    } else {
-        // Fallback for older desktop browsers: Copy to Clipboard
-        navigator.clipboard.writeText(`${title} - ${description}`);
-        alert("Event details copied to clipboard!");
-    }
 }
 
 /* ==========================================================================
