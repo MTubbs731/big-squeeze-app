@@ -266,7 +266,8 @@ function renderCards(list, elementId, emptyMsg, isLive) {
         const safeStart = item.start || "";
         const safeEnd = item.end || "";
         const safeLoc = item.locationName ? item.locationName.replace(/'/g, "\\'").replace(/"/g, '\\"') : "Unknown Location";
-        
+        const safeDetailsAttr = itemDetails.replace(/"/g, '&quot;').replace(/<br\s*\/?>/gi, ' ').replace(/\n/g, ' ');
+        const safeTitleAttr = cardTitle.replace(/"/g, '&quot;');
 
         const menuId = `${elementId}-remind-${index}`;
 
@@ -343,15 +344,25 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                 ${cardInnerHtml}
                 
                 ${hasDetailsButton ? `
-                    <div id="${uniqueId}" class="expanded-details">
-                        ${item.dname ? `<h3>${item.dname}</h3>` : ''}
-                        <div id="${uniqueId}-image" class="dtl-image">
-                            ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
-                        </div>
-                        <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
-                        <button onclick="shareEventDetails('${safeName}', '${safeDetails}')" class="g-btn"  aria-label="Share"><img src="images/buttons/share.webp" alt="Share" /></button>
-                    </div>
-                ` : ''}
+                   <div id="${uniqueId}" class="expanded-details">
+                       ${item.dname ? `<h3>${item.dname}</h3>` : ''}
+                       <div id="${uniqueId}-image" class="dtl-image">
+                           ${itemImage ? `<img src="${itemImage}" alt="${item.dname || 'Details'}" />` : ''}
+                       </div>
+                       <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
+                       
+                       <!-- Safe Share Button using Data Attributes -->
+                       <div class="details-share-wrapper">
+                           <button onclick="shareDetails(this, event)" 
+                                   data-title="${safeTitleAttr}" 
+                                   data-details="${safeDetailsAttr}" 
+                                   class="g-btn" 
+                                   aria-label="Share Event">
+                               <img src="images/buttons/share.webp" alt="Share" />
+                           </button>
+                       </div>
+                   </div>
+               ` : ''}
             </div>`;
     });
 }
@@ -455,11 +466,15 @@ function toggleReminderMenu(menuId, event) {
     }
 }
 
-function shareDetails(title, description, event) {
+function shareDetails(buttonEl, event) {
     if (event) {
-        event.stopPropagation(); // Prevents parent card/accordion from catching the tap
+        event.stopPropagation(); // Prevents parent card/accordion from collapsing
         event.preventDefault();
     }
+
+    // Safely extract text from HTML data-attributes
+    const title = buttonEl.getAttribute('data-title') || 'Big Squeeze Event';
+    const description = buttonEl.getAttribute('data-details') || '';
 
     if (navigator.share) {
         navigator.share({
@@ -467,13 +482,12 @@ function shareDetails(title, description, event) {
             text: `Check out ${title} at the Big Squeeze Festival!\n\n${description}`,
             url: window.location.href
         }).catch(err => {
-            // Suppress error log if the user simply closed/canceled the share sheet
             if (err.name !== 'AbortError') {
                 console.error('Share failure:', err);
             }
         });
     } else {
-        // Fallback for desktop browsers without Web Share API
+        // Fallback for desktop browsers
         const shareText = `${title} - ${description}\n${window.location.href}`;
         navigator.clipboard.writeText(shareText).then(() => {
             alert("Event details copied to clipboard!");
