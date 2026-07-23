@@ -308,29 +308,27 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                         <div class="card-actions ${inlineClass}">
                             ${(item.mapUrl && item.mapUrl !== '#') ? `<button onclick="openLocationInAppMap('${item.mapUrl}'); event.stopPropagation();" class="g-btn" aria-label="Show on Map"><img src="images/buttons/show-on-map.webp" alt="Map" /></button>` : ''}
                             
-                           /* Inside renderCards() loop in big-squeeze.js (Stacked Layout section) */
-                           
-                           ${showReminderButton ? `
-                           <div class="reminder-dropdown">
-                               <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me">
-                                   <img src="images/buttons/remind-me.webp" alt="Remind" />
-                               </button>
-                               <div id="${menuId}" class="reminder-menu">
-                                   <!-- STEP 1: INITIAL CHOICE MENU -->
-                                   <div id="${menuId}-step1" class="menu-step">
-                                       <button onclick="triggerNotificationPlaceholder('${safeName}', event)">Push Notification</button>
-                                       <button onclick="showMenuStep('${menuId}', 2, event)">Add to Calendar</button>
-                                   </div>
-                           
-                                   <!-- STEP 2: CALENDAR CHOICE MENU -->
-                                   <div id="${menuId}-step2" class="menu-step hidden">
-                                       <button onclick="showMenuStep('${menuId}', 1, event)" class="menu-back-btn">← Back</button>
-                                       <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
-                                       <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
-                                   </div>
-                               </div>
-                           </div>
-                           ` : ''}
+                              ${showReminderButton ? `
+                              <div class="reminder-dropdown">
+                                  <button onclick="toggleReminderMenu('${menuId}', event)" class="g-btn" aria-label="Remind Me">
+                                      <img src="images/buttons/remind-me.webp" alt="Remind" />
+                                  </button>
+                                  <div id="${menuId}" class="reminder-menu">
+                                      <!-- STEP 1: INITIAL CHOICE MENU -->
+                                      <div id="${menuId}-step1" class="menu-step">
+                                          <button onclick="triggerNotificationPlaceholder('${safeName}', event)">Push Notification</button>
+                                          <button onclick="showMenuStep('${menuId}', 2, event)">Add to Calendar</button>
+                                      </div>
+                              
+                                      <!-- STEP 2: CALENDAR CHOICE MENU -->
+                                      <div id="${menuId}-step2" class="menu-step hidden">
+                                          <button onclick="showMenuStep('${menuId}', 1, event)" class="menu-back-btn">← Back</button>
+                                          <button onclick="openGoogleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Google Calendar</button>
+                                          <button onclick="downloadAppleCalendar('${safeName}', '${safeStart}', '${safeEnd}', '${safeLoc}')">Apple / Outlook</button>
+                                      </div>
+                                  </div>
+                              </div>
+                              ` : ''}
                            
                             ${hasDetailsButton ? `<button onclick="toggleCardDetails('${uniqueId}'); event.stopPropagation();" class="g-btn plus-btn" id="${uniqueId}-btn" aria-label="Toggle Details"></button>` : ''}                       
                         </div>
