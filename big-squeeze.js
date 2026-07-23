@@ -350,7 +350,7 @@ function renderCards(list, elementId, emptyMsg, isLive) {
                         </div>
                         <p class="dtl-desc">${itemDetails || 'No detailed description provided.'}</p>
                         <div class="share">
-                            <button onclick="shareEventDetails('${safeName}', '${safeDetails}')" class="g-btn"  aria-label="Share"><img src="images/buttons/share.webp" alt="Share" /></button>
+                            <button onclick="shareEventDetails('${safeName}', '${safeDetails}')" class="share-btn"  aria-label="Share"><img src="images/buttons/share.webp" alt="Share" /></button>
                         </div>
                     </div>
                 ` : ''}
