@@ -407,7 +407,7 @@ h2 {
   font-size: 1em;
   min-width: 160px; 
   box-shadow: 0px 4px 8px rgba(0,0,0,0.2); 
-  border: 2px solid var(--bold-green); 
+  border: 1.5px solid var(--bold-green); 
   border-radius: 8px; 
   z-index: 20; 
   padding: 5px 0; 
@@ -428,11 +428,12 @@ h2 {
 .reminder-menu .menu-step {
     display: flex;
     flex-direction: column;
+    font-size: 1em;
     width: 100%;
 }
 
 .reminder-menu .menu-back-btn {
-    font-size: 12px;
+    font-size: 1em;
     font-weight: bold;
     color: var(--accent-text);
     border-bottom: 1px solid #eee;
